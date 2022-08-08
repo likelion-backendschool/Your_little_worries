@@ -99,8 +99,6 @@
     
 - 요구사항 명세서(22/08/
     ![image](https://user-images.githubusercontent.com/94169020/183369479-7ff5cf87-b038-4058-99ff-67e17553723c.png)
-
-    [요구 사항 [확정]](https://www.notion.so/3bb044a919ee488bb5de4c44ec7da764) 
     
 - ERD
     ![image](https://user-images.githubusercontent.com/94169020/183368674-80f7c87c-1edb-4b18-bf24-fc0c43c8cd6c.png)
