@@ -89,6 +89,5 @@
 - ERD
     ![image](https://user-images.githubusercontent.com/94169020/183368674-80f7c87c-1edb-4b18-bf24-fc0c43c8cd6c.png)
 
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/13d7bb18-3314-48a2-a96f-d7622994c06f/Untitled.png)
     
 - 필수) 팀원들과 함께 찍은 인증샷(온라인 만남시 스크린 캡쳐)도 함께 업로드 해주세요 🙂
