@@ -79,7 +79,10 @@
     
     [캠퍼스 핵데이 Java 코딩 컨벤션](https://naver.github.io/hackday-conventions-java/)
     
-- 요구사항 명세서(22/08/
+- 화면 정의서
+    https://ovenapp.io/view/NJggfnRr9IEg8rCrcHUXxDDkdGVyummT
+    
+- 요구사항 명세서
     ![image](https://user-images.githubusercontent.com/94169020/183369479-7ff5cf87-b038-4058-99ff-67e17553723c.png)
     
 - ERD
