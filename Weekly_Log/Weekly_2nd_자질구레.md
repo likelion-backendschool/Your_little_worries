@@ -36,7 +36,7 @@
     - 추가된 테이블 : 공지사항, 회원 댓글 추천, 회원 투표지 추천, 비회원투표지테이블, 댓글 신고, 투표지 항목, 통계수집테이블, 통계결과테이블
     - ERD 모델 설계 완성 단계에서 요구사항 명세서를 바탕으로 서비스적인 부분에서 수정이 필요한 파트들을 최종적으로 수정하였다.
 - 2022.08.16 기본 환경 세팅
-    - 2022.08.16 start.spring.io에서 Dependencies(타임리프, jpa, lombok 등)을 추가하여 프로젝트를 생성 하였다.
+    - start.spring.io에서 Dependencies(타임리프, jpa, lombok 등)을 추가하여 프로젝트를 생성 하였다.
     - 그 후 구조에 맞는 패키지를 생성하고 엔티티 클래스를 생성하였다.
 
 - 패키지 및 엔티티 클래스 정의
@@ -48,6 +48,19 @@
     - stats
     - anonymous
     - member
+- 역할 분배
+    - 💡 타임리프, spring security를 쓴다는 가정 하에 예를 든다면,
+
+    - 회원 파트 부터 설계시작
+    - 한 분이 `회원파트`를 맞는다 (1명)
+        - 근원 엔티티여서 이 부분이 중요하다*
+        - ex. 회원가입, 로그인, 로그아웃, 아이디찾기, 비밀번호 찾기
+    - `투표지` 부분은 조회할 때 쿼리를 잘 다루는 분 (2명)
+        - ex. 투표지, 투표지-항목, 항목-세분화
+        ※ 투표지를 위한 댓글도 이 부분에서 담당하여 개발
+        
+    - `공지사항&통계파트` 기능 구현 (2명)
+    - 우리가 설계한 ERD를 바탕으로 팀을 나눈다면, 위와 같은 방식으로 시스템 기능을 나눠 각자 파트를 맡아 개발을 진행하면 된다.
 
 
 ## 개발 과정에서 나왔던 질문 (최소 200자 이상)
@@ -107,9 +120,10 @@
 - **ERD** - 완료(22/08/12)
 ![image](https://user-images.githubusercontent.com/100131148/184840459-abf0ba30-396b-4759-8d39-91ae7f1a7cd4.png)
 
-- WBS [https://docs.google.com/spreadsheets/d/1xdRSq5bEFmFCpgP3jNxeu2BFxAPii4a3hssLnRH_FuE/edit#gid=0]-(https://docs.google.com/spreadsheets/d/1xdRSq5bEFmFCpgP3jNxeu2BFxAPii4a3hssLnRH_FuE/edit#gid=0)
+- WBS  
+(https://docs.google.com/spreadsheets/d/1xdRSq5bEFmFCpgP3jNxeu2BFxAPii4a3hssLnRH_FuE/edit#gid=0)
 
-- 필수) 팀원들과 함께 찍은 인증샷(온라인 만남시 스크린 캡쳐)도 함께 업로드 해주세요 🙂
-- ![image](https://user-images.githubusercontent.com/100131148/184840681-04c85e8f-4cc1-4433-aab0-98e5fff2dbca.png)
+- 필수) 팀원들과 함께 찍은 인증샷(온라인 만남시 스크린 캡쳐)도 함께 업로드 해주세요 🙂  
+![image](https://user-images.githubusercontent.com/100131148/184840681-04c85e8f-4cc1-4433-aab0-98e5fff2dbca.png)
 
 
