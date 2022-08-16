@@ -27,9 +27,27 @@
 ## 현재까지 개발 과정 요약 (최소 500자 이상)
 
 ---
+- ~2022.08.11
+    - ERD 수정 및 기능 요구서 수정
+- 2022.08.11
+    - 중간점검 시행 → ERD는 전체적으로 봤을 때 고칠부분이 없어보임
+- 2022.08.12 ERD 작성 완료
+    - 크게 핵심 테이블만 가지고 연관관계를 형성해주었던 부분에서 세부적인 테이블과 관계를 추가시켜줘서 ERD를 완성시켜주었다.
+    - 추가된 테이블 : 공지사항, 회원 댓글 추천, 회원 투표지 추천, 비회원투표지테이블, 댓글 신고, 투표지 항목, 통계수집테이블, 통계결과테이블
+    - ERD 모델 설계 완성 단계에서 요구사항 명세서를 바탕으로 서비스적인 부분에서 수정이 필요한 파트들을 최종적으로 수정하였다.
+- 2022.08.16 기본 환경 세팅
+    - 2022.08.16 start.spring.io에서 Dependencies(타임리프, jpa, lombok 등)을 추가하여 프로젝트를 생성 하였다.
+    - 그 후 구조에 맞는 패키지를 생성하고 엔티티 클래스를 생성하였다.
 
-- 소제목
-    - 내용
+- 패키지 및 엔티티 클래스 정의
+    - notice
+    - article
+    - comment
+    - user
+    - category
+    - stats
+    - anonymous
+    - member
 
 
 ## 개발 과정에서 나왔던 질문 (최소 200자 이상)
@@ -78,7 +96,20 @@
 ## 개발 결과물 공유
 
 ---
-
-- 소제목
+- **Github Repository**
     
-    내용이나 링크
+    https://github.com/likelion-backendschool/Your_little_worries
+    
+- **요구사항 명세서** - 완료(22/08/12)
+
+- **화면정의서** - 수정중(22/08/16)
+
+- **ERD** - 완료(22/08/12)
+![image](https://user-images.githubusercontent.com/100131148/184840459-abf0ba30-396b-4759-8d39-91ae7f1a7cd4.png)
+
+- WBS [https://docs.google.com/spreadsheets/d/1xdRSq5bEFmFCpgP3jNxeu2BFxAPii4a3hssLnRH_FuE/edit#gid=0]-(https://docs.google.com/spreadsheets/d/1xdRSq5bEFmFCpgP3jNxeu2BFxAPii4a3hssLnRH_FuE/edit#gid=0)
+
+- 필수) 팀원들과 함께 찍은 인증샷(온라인 만남시 스크린 캡쳐)도 함께 업로드 해주세요 🙂
+- ![image](https://user-images.githubusercontent.com/100131148/184840681-04c85e8f-4cc1-4433-aab0-98e5fff2dbca.png)
+
+
