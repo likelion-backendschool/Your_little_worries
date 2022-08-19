@@ -1,0 +1,16 @@
+<table>
+    <thead>
+    <tr>
+        <th>제목</th>
+        <th>내용</th>
+        <th>생성 시각</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="article : ${articleList}">
+        <td th:text="${article.title}"></td>
+        <td th:text="${article.content}"></td>
+        <td th:text="${article.getCreatedDate()}"
+    </tr>
+    </tbody>
+</table>
