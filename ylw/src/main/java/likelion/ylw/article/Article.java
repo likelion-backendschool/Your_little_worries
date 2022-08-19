@@ -6,6 +6,7 @@ import likelion.ylw.member.Role;
 import likelion.ylw.util.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -15,10 +16,11 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@ToString
 public class Article extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     private Member author;
@@ -28,7 +30,7 @@ public class Article extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private Integer viewCount;
+    private Long viewCount;
 
     @ManyToMany
     Set<Member> voter;
