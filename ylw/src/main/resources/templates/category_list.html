@@ -1,0 +1,18 @@
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>카테고리 이름</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="category : ${categoryList}">
+        <td>
+            <a th:href="@{/article/list(category = ${category.id})}" th:text="${category.id}"></a>
+        </td>
+        <td>
+            <a th:href="@{/article/list(category = ${category.id})}" th:text="|${category.name}게시판|"></a>
+        </td>
+    </tr>
+    </tbody>
+</table>

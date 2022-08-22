@@ -20,7 +20,7 @@ import java.util.Set;
 public class Article extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     private Member author;
@@ -40,5 +40,4 @@ public class Article extends BaseTimeEntity {
 
     @ManyToOne
     private Category category;
-
 }
