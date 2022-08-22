@@ -54,4 +54,11 @@ public class ArticleService {
         articleRepository.save(article);
         return article.getId();
     }
+
+    public void delete(Integer id) {
+        Optional<Article> article = articleRepository.findById(id);
+        if (article.isPresent()) {
+            articleRepository.delete(article.get());
+        }
+    }
 }

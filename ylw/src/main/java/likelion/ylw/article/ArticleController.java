@@ -70,4 +70,13 @@ public class ArticleController {
 
         return String.format("redirect:/article/vote/%d", id);
     }
+
+    @GetMapping("/delete/{id}")
+    public String deleteArticle(@PathVariable("id") Integer id) {
+        articleService.delete(id);
+
+        return String.format("redirect:/");
+    }
+
+
 }
