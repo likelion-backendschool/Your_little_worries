@@ -22,7 +22,7 @@ public class Member extends BaseTimeEntity {
     @Column(length = 255, nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -34,6 +34,6 @@ public class Member extends BaseTimeEntity {
 
 //    private LocalDateTime createdDate;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
 }

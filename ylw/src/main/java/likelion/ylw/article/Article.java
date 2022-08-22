@@ -2,7 +2,6 @@ package likelion.ylw.article;
 
 import likelion.ylw.category.Category;
 import likelion.ylw.member.Member;
-import likelion.ylw.member.Role;
 import likelion.ylw.util.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
