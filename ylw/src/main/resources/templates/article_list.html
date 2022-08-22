@@ -17,4 +17,5 @@
     </tbody>
 
     <a th:href="@{|/article/categoryList|}" th:text="|카테고리 리스트로 이동|"></a>
+    <a th:href="@{/article/create(category = ${category.id})}" th:text="|${category.name}게시판에 글 작성|"></a>
 </table>

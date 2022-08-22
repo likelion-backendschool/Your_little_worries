@@ -6,11 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -22,21 +21,13 @@ public class ArticleController {
 
     private final CategoryService categoryService;
 
-//    @RequestMapping("/list")
-//    public String list(Model model) {
-//        List<Article> articleList = articleService.getList();
-//
-//        model.addAttribute("articleList", articleList);
-//
-//        return "article_list";
-//    }
-
     @GetMapping("/list")
     public String list(Model model, @RequestParam("category") Integer category_id) {
         Category category = categoryService.findById(category_id);
         List<Article> articleList = articleService.findByCategory(category);
 
         model.addAttribute("articleList", articleList);
+        model.addAttribute("category", category);
 
         return "article_list";
     }
@@ -58,5 +49,34 @@ public class ArticleController {
 
         return "category_list";
     }
+
+    @GetMapping("/create")
+    public String createArticle(ArticleForm articleForm, @RequestParam("category") Integer category_id, Model model) {
+        List<Category> categoryList = categoryService.getList();
+
+        model.addAttribute("category_id", category_id);
+        model.addAttribute("categoryList", categoryList);
+        return "article_form";
+    }
+
+    @PostMapping("/create")
+    public String createArticle(@Valid ArticleForm articleForm, BindingResult bindingResult,
+                                @RequestParam("category") Integer category_id) {
+        if (bindingResult.hasErrors()) {
+            return "article_form";
+        }
+
+        Integer id = articleService.create(articleForm.getTitle(), articleForm.getContent(), category_id);
+
+        return String.format("redirect:/article/vote/%d", id);
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteArticle(@PathVariable("id") Integer id) {
+        articleService.delete(id);
+
+        return String.format("redirect:/");
+    }
+
 
 }
