@@ -74,22 +74,4 @@ class YlwApplicationTests {
 
         System.out.println(article.getCreatedDate());
     }
-
-    @Test
-    void category데이터생성() {
-        Category category1 = new Category();
-        category1.setName("스포츠");
-        System.out.println(category1.toString());
-        categoryRepository.save(category1);
-
-        Category category2 = new Category();
-        category2.setName("정치");
-        System.out.println(category2.toString());
-        categoryRepository.save(category2);
-
-        Category category3 = new Category();
-        category3.setName("문화");
-        System.out.println(category3.toString());
-        categoryRepository.save(category3);
-    }
 }
