@@ -1,5 +1,7 @@
 package likelion.ylw.article;
 
+import likelion.ylw.category.Category;
+import likelion.ylw.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,4 +25,20 @@ public class ArticleService {
             return null;
         }
     }
+
+    public Article findById(Integer id) {
+        Optional<Article> article = articleRepository.findById(id);
+        if (article.isPresent()) {
+            return article.get();
+        } else {
+            throw new DataNotFoundException("article not found");
+        }
+    }
+
+    public List<Article> findByCategory(Category category) {
+        List<Article> articleList = articleRepository.findByCategory(category);
+        return articleList;
+    }
+
+
 }

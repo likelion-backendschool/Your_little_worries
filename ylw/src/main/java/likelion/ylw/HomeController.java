@@ -8,6 +8,6 @@ public class HomeController {
 
     @RequestMapping("/")
     public String homeController() {
-        return "redirect:/article/list";
+        return "redirect:/article/categoryList";
     }
 }
