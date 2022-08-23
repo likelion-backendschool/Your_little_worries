@@ -61,4 +61,11 @@ public class ArticleService {
             articleRepository.delete(article.get());
         }
     }
+
+    public void modify(Article article, String title, String content) {
+        article.setTitle(title);
+        article.setContent(content);
+
+        articleRepository.save(article);
+    }
 }

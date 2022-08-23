@@ -78,5 +78,27 @@ public class ArticleController {
         return String.format("redirect:/");
     }
 
+    @GetMapping("modify/{id}")
+    public String modifyArticle(ArticleForm articleForm, @PathVariable("id") Integer id) {
+        Article article = articleService.findById(id);
 
+        articleForm.setTitle(article.getTitle());
+        articleForm.setContent(article.getContent());
+
+        return "article_form";
+    }
+
+    @PostMapping("modify/{id}")
+    public String modifyArticle(@Valid ArticleForm articleForm, BindingResult bindingResult,
+                                @PathVariable("id") Integer id) {
+        if (bindingResult.hasErrors()) {
+            return "article_form";
+        }
+
+        Article article = articleService.findById(id);
+
+        articleService.modify(article, articleForm.getTitle(), articleForm.getContent());
+
+        return String.format("redirect:/article/vote/%d", article.getId());
+    }
 }

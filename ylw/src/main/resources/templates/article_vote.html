@@ -1,30 +1,33 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
+    <h1 th:text="${article.title}"></h1>
+    <div th:text="${article.content}"></div>
+    <a th:href="@{|/article/modify/${article.id}|}" class="btn btn-sm btn-outline-secondary" th:text="수정"></a>
+    <!--       sec:authorize="isAuthenticated()"-->
+    <!--       th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"-->
 
-<h1 th:text="${article.title}"></h1>
-<div th:text="${article.content}"></div>
-
-
-<a href="javascript:void(0);" th:data-uri="@{|/article/delete/${article.id}|}"
-   class="delete btn btn-sm btn-outline-secondary"
-   th:text="삭제"></a>
-
+    <a href="javascript:void(0);" th:data-uri="@{|/article/delete/${article.id}|}"
+       class="delete btn btn-sm btn-outline-secondary"
+       th:text="삭제"></a>
+</div>
 <script layout:fragment="script" type='text/javascript'>
     const delete_elements = document.getElementsByClassName("delete");
-    Array.from(delete_elements).forEach(function(element) {
-        element.addEventListener('click', function() {
-            if(confirm("정말로 삭제하시겠습니까?")) {
+    Array.from(delete_elements).forEach(function (element) {
+        element.addEventListener('click', function () {
+            if (confirm("정말로 삭제하시겠습니까?")) {
                 location.href = this.dataset.uri;
-            };
+            }
+            ;
         });
     });
-
     const recommend_elements = document.getElementsByClassName("recommend");
-    Array.from(recommend_elements).forEach(function(element) {
-        element.addEventListener('click', function() {
-            if(confirm("정말로 추천하시겠습니까?")) {
+    Array.from(recommend_elements).forEach(function (element) {
+        element.addEventListener('click', function () {
+            if (confirm("정말로 추천하시겠습니까?")) {
                 location.href = this.dataset.uri;
-            };
+            }
+            ;
         });
     });
 </script>
+</html>
