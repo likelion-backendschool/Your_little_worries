@@ -10,4 +10,9 @@ public class HomeController {
     public String homeController() {
         return "redirect:/article/categoryList";
     }
+
+    @RequestMapping("/layout")
+    public String layouttest() {
+        return "examples/tables";
+    }
 }
