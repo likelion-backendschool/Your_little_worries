@@ -1,6 +1,7 @@
 package likelion.ylw.member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,22 @@ public class MemberController {
 
         memberService.create(memberCreateForm.getMemberId(),
                 memberCreateForm.getEmail(), memberCreateForm.getPassword1(), memberCreateForm.getNickname(), memberCreateForm.getScore());
+        try {
+            memberService.create(memberCreateForm.getMemberId(),
+                    memberCreateForm.getEmail(), memberCreateForm.getPassword1(), memberCreateForm.getNickname(), memberCreateForm.getScore());
+        } catch (SignupEmailDuplicatedException e) {
+            bindingResult.reject("signupEmailDuplicated", e.getMessage());
+            return "signup_form";
+        } catch (SignupMemberIdDuplicatedException e) {
+            bindingResult.reject("signupUsernameDuplicated", e.getMessage());
+            return "signup_form";
+        }
 
         return "redirect:/";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login_form";
     }
 }

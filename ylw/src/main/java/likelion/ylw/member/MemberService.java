@@ -1,6 +1,7 @@
 package likelion.ylw.member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,16 @@ public class MemberService {
         member.setNickname(nickname);
         member.setScore(score);
         this.memberRepository.save(member);
+
+        try {
+            memberRepository.save(member);
+        } catch (DataIntegrityViolationException e) {
+            if (memberRepository.existsByMemberId(memberId)) {
+                throw new SignupMemberIdDuplicatedException("이미 사용중인 아이디 입니다.");
+            } else {
+                throw new SignupEmailDuplicatedException("이미 사용중인 이메일 입니다.");
+            }
+        }
         return member;
     }
 }
