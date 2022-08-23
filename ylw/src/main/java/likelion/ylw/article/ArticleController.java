@@ -2,6 +2,8 @@ package likelion.ylw.article;
 
 import likelion.ylw.category.Category;
 import likelion.ylw.category.CategoryService;
+import likelion.ylw.comment.Comment;
+import likelion.ylw.comment.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final CommentService commentService;
 
     private final CategoryService categoryService;
 
@@ -100,5 +103,21 @@ public class ArticleController {
         articleService.modify(article, articleForm.getTitle(), articleForm.getContent());
 
         return String.format("redirect:/article/vote/%d", article.getId());
+    }
+
+    /**
+     * [임시] 투표 결과 페이지
+     */
+    @GetMapping("/result/{id}")
+    public String resultArticle(Model model, @PathVariable("id") Integer id) {
+        Article article = articleService.findById(id);
+        List<Comment> commentList = commentService.getCommentByArticleId(article);
+
+        model.addAttribute("article", article);
+        model.addAttribute("commentList",commentList);
+
+        // 댓글 전달
+
+        return "article_result";
     }
 }
