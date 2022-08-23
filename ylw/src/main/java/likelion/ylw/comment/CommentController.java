@@ -32,10 +32,10 @@ public class CommentController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("article", article);
-            return "article_list"; //미완료
+            return "article_result"; //미완료
         }
         // 답변 등록
         this.commentService.create(article, commentForm.getContent());
-        return String.format("redirect:/article/vote/%s", id); //미완료
+        return String.format("redirect:/article/result/%s", id); //미완료
     }
 }

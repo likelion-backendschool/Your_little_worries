@@ -101,4 +101,16 @@ public class ArticleController {
 
         return String.format("redirect:/article/vote/%d", article.getId());
     }
+
+    /**
+     * 임시 투표 결과 페이지
+     */
+    @GetMapping("/result/{id}")
+    public String result(@PathVariable("id") Integer id) {
+        Article article = articleService.findById(id);
+
+        // 댓글 전달
+
+        return "article_result";
+    }
 }
