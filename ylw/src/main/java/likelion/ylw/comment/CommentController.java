@@ -32,10 +32,10 @@ public class CommentController {
                                @Valid CommentForm commentForm, BindingResult bindingResult) {
         Article article = this.articleService.findById(id);
 
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("article", article);
-            return String.format("redirect:/article/result/%s", id);
-        }
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("article", article);
+//            return String.format("redirect:/article/result/%s", id);
+//        }
         // 답변 등록
         this.commentService.create(article, commentForm.getContent());
         return String.format("redirect:/article/result/%s", id);
