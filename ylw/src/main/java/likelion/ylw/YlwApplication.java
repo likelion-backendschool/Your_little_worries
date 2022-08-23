@@ -14,10 +14,4 @@ public class YlwApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(YlwApplication.class, args);
 	}
-
-	@Bean
-	public HiddenHttpMethodFilter hiddenHttpMethodFilter(){
-		return new HiddenHttpMethodFilter();
-	}
-
 }
