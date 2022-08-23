@@ -14,6 +14,6 @@ public class MemberServiceTests {
     @Test
     @DisplayName("회원가입이 가능하다.")
     public void t1() {
-        memberService.create("member2", "member2@email.com", "1234", "haha", 100);
+        memberService.create("member2", "1234", "1234member2@email.com", "haha", 100);
     }
 }
