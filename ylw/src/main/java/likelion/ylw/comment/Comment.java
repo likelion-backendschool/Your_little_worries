@@ -12,6 +12,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ *  추후 builder 추가
+ *  voter Entity 따로 추가 할지 말지
+ */
 @Getter
 @Setter
 @Entity
