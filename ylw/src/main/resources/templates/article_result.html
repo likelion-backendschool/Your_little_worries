@@ -1,5 +1,8 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content" class="container my-3">
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+        layout:decorate="~{layout}">
+<div layout:fragment="content" class="main-content-container container-fluid px-4">
 
     <h1>결과 페이지</h1>
     <hr>
@@ -14,7 +17,7 @@
 
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-            <textarea class="form-control" rows="10"></textarea>
+            <textarea name="content" class="form-control" rows="10"></textarea>
         </div>
         <input type="submit" value="저장하기" class="btn btn-primary my-2">
     </form>

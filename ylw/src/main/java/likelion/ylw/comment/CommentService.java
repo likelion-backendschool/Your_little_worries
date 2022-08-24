@@ -1,6 +1,7 @@
 package likelion.ylw.comment;
 
 import likelion.ylw.article.Article;
+import likelion.ylw.member.Member;
 import likelion.ylw.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,11 @@ public class CommentService {
     /**
      *  댓글 등록
      */
-    public void create(Article article, String content) {
+    public void create(Article article, String content, Member author) {
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setArticle(article);
-
+        comment.setAuthor(author);
         this.commentRepository.save(comment);
     }
 

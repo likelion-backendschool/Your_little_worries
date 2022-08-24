@@ -1,9 +1,12 @@
 package likelion.ylw.member;
 
+import likelion.ylw.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,5 +32,18 @@ public class MemberService {
             }
         }
         return member;
+    }
+
+
+    /**
+     * 유저아이디에 해당하는 유저 객체 가져오기
+     */
+    public Member getMemberId(String memberId) {
+        Optional<Member> member = this.memberRepository.findByMemberId(memberId);
+        if (member.isPresent()) {
+            return member.get();
+        } else {
+            throw new DataNotFoundException("memberId not found");
+        }
     }
 }
