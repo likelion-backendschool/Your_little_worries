@@ -11,8 +11,7 @@
         </div>
     </div>
     <signform>
-        <form th:action="@{/member/signup}" th:object="${memberCreateForm}" method="post">
-
+         <form th:action="@{|/member/signup|}" th:object="${memberCreateForm}" method="post">
             <div th:replace="form_errors :: formErrorsFragment"></div>
 
             <div class="mb-3">
