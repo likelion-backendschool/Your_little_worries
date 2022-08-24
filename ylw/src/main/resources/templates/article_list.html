@@ -1,4 +1,8 @@
-<html layout:decorate="~{layout}">
+<!--<html layout:decorate="~{layout}">-->
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+        layout:decorate="~{layout}">
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
     <table>
         <thead>
@@ -14,7 +18,7 @@
                 <a th:href="@{|/article/vote/${article.id}|}"  th:text="${article.title}"></a>
             </td>
             <td th:text="${article.content}"></td>
-            <td th:text="${article.getCreatedDate()}"
+            <td th:text="${article.getCreatedDate()}"></td>
         </tr>
         </tbody>
 
