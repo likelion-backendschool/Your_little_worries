@@ -36,7 +36,7 @@ public class MemberController {
 
         try {
             memberService.create(memberCreateForm.getMemberId(),
-                    memberCreateForm.getEmail(), memberCreateForm.getPassword1(), memberCreateForm.getNickname(), memberCreateForm.getScore());
+                    memberCreateForm.getPassword1(), memberCreateForm.getEmail(), memberCreateForm.getNickname());
         } catch (SignupEmailDuplicatedException e) {
             bindingResult.reject("signupEmailDuplicated", e.getMessage());
             return "signup_form";

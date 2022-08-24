@@ -17,10 +17,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+
+@RequiredArgsConstructor
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
     private final MemberSecurityService memberSecurityService;
 
@@ -33,14 +34,11 @@ public class SecurityConfig {
                 .formLogin()
                 .loginPage("/member/login")
                 .defaultSuccessUrl("/")
-
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true);
-
-        ;
         return http.build();
     }
     @Bean
