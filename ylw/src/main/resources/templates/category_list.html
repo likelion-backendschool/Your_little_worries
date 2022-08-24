@@ -1,18 +1,25 @@
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>카테고리 이름</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="category : ${categoryList}">
-        <td>
-            <a th:href="@{/article/list(category = ${category.id})}" th:text="${category.id}"></a>
-        </td>
-        <td>
-            <a th:href="@{/article/list(category = ${category.id})}" th:text="|${category.name}게시판|"></a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+        layout:decorate="~{layout}">
+<div layout:fragment="content" class="main-content-container container-fluid px-4">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>카테고리 이름</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category : ${categoryList}">
+            <td>
+                <a th:href="@{/article/list(category = ${category.id})}" th:text="${category.id}"></a>
+            </td>
+            <td>
+                <a th:href="@{/article/list(category = ${category.id})}" th:text="|${category.name}게시판|"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</html>
