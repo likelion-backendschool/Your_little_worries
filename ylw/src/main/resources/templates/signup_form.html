@@ -9,7 +9,7 @@
             <h4>회원가입</h4>
         </div>
     </div>
-    <form th:action="@{/member/signup}" th:object="${memberCreateForm}" method="post">
+    <form th:action="@{|/member/signup|}" th:object="${memberCreateForm}" method="post">
 
         <div th:replace="form_errors :: formErrorsFragment"></div>
 
