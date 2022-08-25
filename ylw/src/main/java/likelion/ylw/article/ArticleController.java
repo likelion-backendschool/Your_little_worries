@@ -3,6 +3,7 @@ package likelion.ylw.article;
 import likelion.ylw.category.Category;
 import likelion.ylw.category.CategoryService;
 import likelion.ylw.comment.Comment;
+import likelion.ylw.comment.CommentForm;
 import likelion.ylw.comment.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -109,7 +110,7 @@ public class ArticleController {
      * [임시] 투표 결과 페이지
      */
     @GetMapping("/result/{id}")
-    public String resultArticle(Model model, @PathVariable("id") Integer id) {
+    public String resultArticle(Model model, @PathVariable("id") Integer id, CommentForm commentForm) {
         Article article = articleService.findById(id);
         List<Comment> commentList = commentService.getCommentByArticleId(article);
 

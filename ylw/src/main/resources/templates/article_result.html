@@ -3,7 +3,7 @@
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-
+<!--<div>-->
     <h1>결과 페이지</h1>
     <hr>
     <h3 th:text="${article.title}"></h3>
@@ -13,11 +13,13 @@
 <!--    댓글 form-->
     <h2>댓글</h2>
 
-    <form th:action="@{|/comment/create/${article.getId()}|}" method="post">
-
+    <form th:action="@{|/comment/create/${article.getId()}|}" th:object="${commentForm}" method="post">
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+        </div>
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-            <textarea name="content" class="form-control" rows="10"></textarea>
+            <textarea th:field="*{content}" class="form-control" rows="10"></textarea>
         </div>
         <input type="submit" value="저장하기" class="btn btn-primary my-2">
     </form>
