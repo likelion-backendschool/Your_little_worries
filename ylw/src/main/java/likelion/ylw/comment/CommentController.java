@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 /**
  * Controller와 Service에 멤버를 적용하지 않은 상태입니다.
@@ -38,10 +39,12 @@ public class CommentController {
         Article article = this.articleService.findById(id);
         Member member = this.memberService.getMemberId(principal.getName());
         // form 검증
-//        if (bindingResult.hasErrors()) {
-//            model.addAttribute("article", article);
-//            return String.format("redirect:/article/result/%s", id);
-//        }
+        if (bindingResult.hasErrors()) {
+            List<Comment> commentList = commentService.getCommentByArticleId(article);
+            model.addAttribute("article", article);
+            model.addAttribute("commentList",commentList);
+            return "article_result";
+        }
         // 답변 등록
         this.commentService.create(article, commentForm.getContent(), member);
         return String.format("redirect:/article/result/%s", id);
