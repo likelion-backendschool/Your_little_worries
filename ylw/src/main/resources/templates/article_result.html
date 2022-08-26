@@ -3,14 +3,14 @@
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-<!--<div>-->
+    <!--<div>-->
     <h1>결과 페이지</h1>
     <hr>
     <h3 th:text="${article.title}"></h3>
     <h5 th:text="${article.content}"></h5>
     <hr>
 
-<!--    댓글 form-->
+    <!--    댓글 form-->
     <h2>댓글</h2>
 
     <form th:action="@{|/comment/create/${article.getId()}|}" th:object="${commentForm}" method="post">
@@ -19,13 +19,13 @@
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-            <textarea th:field="*{content}" class="form-control" rows="10"></textarea>
+            <textarea th:field="*{content}" class="form-control" rows="10" required></textarea>
         </div>
         <input type="submit" value="저장하기" class="btn btn-primary my-2">
     </form>
-<!--https://dev-coco.tistory.com/134-->
-<!--    댓글 목록-->
-    <table border="1">
+    <!--https://dev-coco.tistory.com/134-->
+    <!--    댓글 목록-->
+    <table>
         <thead>
         <tr>
             <th>아이디-</th>
@@ -47,21 +47,21 @@
                 수정완료 버튼,취소 버튼, textarea가 나옴
             -->
             <td>
-                <form action="@{|/comment/modify/${comment.id}|}"  method="post">
+                <form th:action="@{|/comment/modify/${comment.id}|}"  method="post">
                     <div class="form-group d-none">
-                        <textarea class="form-control" id="comment-content" rows="3">[[${comment.content}]]</textarea>
+                        <textarea class="form-control" name="content" rows="3" required>[[${comment.content}]]</textarea>
                         <input type="submit" class="btn btn-info" value="수정완료"></input>
-                        <button type="button" class="btn btn-info" id="comment-modify-cancel">취소</button>
+                        <button type="button" class="btn btn-info comment-modify-cancel" >취소</button>
                     </div>
                     <!--댓글 수정 버튼-->
-                    <a class="btn btn-sm btn-outline-secondary" id="comment-modify-toggle" th:text="수정"></a>
+                    <button type="button" class="btn btn-sm btn-outline-secondary comment-modify-toggle" th:text="수정"></button>
                     <!--댓글 삭제 버튼-->
                     <a href="javascript:void(0);" th:href="@{|/comment/delete/${comment.id}|}"
                        class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></a>
                 </form>
 
             </td>
-       </tr>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -69,18 +69,18 @@
 
 <!--script은 html에 밖에서 써줘야 동작합니다-->
 <script>
-    document.querySelectorAll("#comment-modify-toggle").forEach((item) => {
+    document.querySelectorAll(".comment-modify-toggle").forEach((item) => {
         item.addEventListener('click', () => {
-            const formDiv = item.closest('form').children[0]; // 첫 조상의 첫번째 자식
+            const formDiv = item.closest('form').children[1]; // 첫 조상은 form의 두번째 자식 (첫번째는 crsf토큰임)
             formDiv.classList.toggle("d-none"); // 수정 form 보여줌
             item.classList.toggle("d-none")     // 수정 버튼 숨겨줌
         })
     })
-    document.querySelectorAll("#comment-modify-cancel").forEach((item) => {
+    document.querySelectorAll(".comment-modify-cancel").forEach((item) => {
         item.addEventListener('click', () => {
             const div = item.closest('div'); // 첫 조상
             div.classList.toggle("d-none"); // 수정 form 숨겨줌
-            const a = item.closest('form').children[1];
+            const a = item.closest('form').children[2];
             a.classList.toggle("d-none"); // 수정 버튼 보여줌
         })
     })
