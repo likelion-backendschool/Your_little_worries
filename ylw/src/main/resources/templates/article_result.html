@@ -23,7 +23,7 @@
         </div>
         <input type="submit" value="저장하기" class="btn btn-primary my-2">
     </form>
-
+<!--https://dev-coco.tistory.com/134-->
 <!--    댓글 목록-->
     <table border="1">
         <thead>
@@ -37,41 +37,51 @@
         <tbody>
         <tr th:each="comment : ${commentList}">
             <td th:text="${comment.author.getNickname()}"></td>
-            <td th:text="${comment.content}"></td>
-
+            <td th:text="${comment.content}">
+            </td>
             <td th:text="${comment.getCreatedDate()}"></td>
             <td th:text="${comment.getModifiedDate()}"></td>
 
-            <td><a th:href="@{|/comment/modify/${comment.id}|}" class="btn btn-sm btn-outline-secondary" th:text="수정"></a></td>
+            <!--
+                댓글 수정 버튼 누르면 기존의 수정,삭제 버튼 없어지고
+                수정완료 버튼,취소 버튼, textarea가 나옴
+            -->
             <td>
-                <a href="javascript:void(0);" th:href="@{|/comment/delete/${comment.id}|}"
-               class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></a>
+                <form action="@{|/comment/modify/${comment.id}|}"  method="post">
+                    <div class="form-group d-none">
+                        <textarea class="form-control" id="comment-content" rows="3">[[${comment.content}]]</textarea>
+                        <input type="submit" class="btn btn-info" value="수정완료"></input>
+                        <button type="button" class="btn btn-info" id="comment-modify-cancel">취소</button>
+                    </div>
+                    <!--댓글 수정 버튼-->
+                    <a class="btn btn-sm btn-outline-secondary" id="comment-modify-toggle" th:text="수정"></a>
+                    <!--댓글 삭제 버튼-->
+                    <a href="javascript:void(0);" th:href="@{|/comment/delete/${comment.id}|}"
+                       class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></a>
+                </form>
+
             </td>
-        </tr>
+       </tr>
         </tbody>
     </table>
-
-
-<!--    <a th:href="@{|/article/result/${article.id}|}" class="btn btn-sm btn-outline-secondary" th:text="결과페이지"></a>-->
 </div>
-<script layout:fragment="script" type='text/javascript'>
-    const delete_elements = document.getElementsByClassName("delete");
-    Array.from(delete_elements).forEach(function (element) {
-        element.addEventListener('click', function () {
-            if (confirm("정말로 삭제하시겠습니까?")) {
-                location.href = this.dataset.uri;
-            }
-            ;
-        });
-    });
-    const recommend_elements = document.getElementsByClassName("recommend");
-    Array.from(recommend_elements).forEach(function (element) {
-        element.addEventListener('click', function () {
-            if (confirm("정말로 추천하시겠습니까?")) {
-                location.href = this.dataset.uri;
-            }
-            ;
-        });
-    });
-</script>
 </html>
+
+<!--script은 html에 밖에서 써줘야 동작합니다-->
+<script>
+    document.querySelectorAll("#comment-modify-toggle").forEach((item) => {
+        item.addEventListener('click', () => {
+            const formDiv = item.closest('form').children[0]; // 첫 조상의 첫번째 자식
+            formDiv.classList.toggle("d-none"); // 수정 form 보여줌
+            item.classList.toggle("d-none")     // 수정 버튼 숨겨줌
+        })
+    })
+    document.querySelectorAll("#comment-modify-cancel").forEach((item) => {
+        item.addEventListener('click', () => {
+            const div = item.closest('div'); // 첫 조상
+            div.classList.toggle("d-none"); // 수정 form 숨겨줌
+            const a = item.closest('form').children[1];
+            a.classList.toggle("d-none"); // 수정 버튼 보여줌
+        })
+    })
+</script>
