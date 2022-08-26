@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ko"
       xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 
 <aside th:fragment="sidebarFragment" class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
@@ -24,6 +25,7 @@
                     <i class="fas fa-search"></i>
                 </div>
             </div>
+            <!-- 검색 폼 -->
             <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
     </form>
     <div class="nav-wrapper">
