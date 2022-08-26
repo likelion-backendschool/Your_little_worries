@@ -5,6 +5,7 @@ import likelion.ylw.article.ArticleService;
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -55,17 +57,17 @@ public class CommentController {
      */
     @PostMapping("/modify/{id}")
     public String modifyComment(@Valid CommentForm commentForm, BindingResult bindingResult,
-                                @PathVariable("id") Integer id) {
-        if (bindingResult.hasErrors()) {
-            return String.format("redirect:/article/result/%s", id);
-        }
+                                @PathVariable("id") Integer id, Principal principal) {
+//        if (bindingResult.hasErrors()) {
+//            return String.format("redirect:/article/result/%s", id);
+//        }
         Comment comment = this.commentService.getComment(id);
 
-        /*수정 권한 체크*/
-
+        //수정 권한 체크
+        if (!comment.getAuthor().getMemberId().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
         this.commentService.modify(comment, commentForm.getContent());
-
-        commentForm.setContent(comment.getContent());
         return String.format("redirect:/article/result/%s", comment.getArticle().getId());
     }
 
@@ -73,11 +75,13 @@ public class CommentController {
      * 댓글 삭제하기
      */
     @GetMapping("/delete/{id}")
-    public String deleteComment(@PathVariable("id") Integer id) {
+    public String deleteComment(@PathVariable("id") Integer id, Principal principal) {
         Comment comment = this.commentService.getComment(id);
 
         /*수정 권한 체크*/
-
+        if (!comment.getAuthor().getMemberId().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
         this.commentService.delete(comment);
         return String.format("redirect:/article/result/%s", comment.getArticle().getId());
     }
