@@ -24,9 +24,12 @@
       modules: {
         toolbar: toolbarOptions
       },
-      placeholder: 'Words can be like x-rays if you use them properly...',
+      placeholder: '내용을 입력해주세요',
       theme: 'snow'
     });
+    $("#identifier").on("submit",function(){
+      $("#hiddenArea").val($("#quillArea").html());
+    })
 
   });
 })(jQuery);
