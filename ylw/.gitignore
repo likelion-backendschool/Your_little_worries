@@ -43,3 +43,7 @@ out/
 
 .vscode/
 
+### my ignore ###
+src/main/resources/application.yml
+sendgrid.env
+

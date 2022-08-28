@@ -4,26 +4,38 @@
         layout:decorate="~{layout}">
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <form th:action="@{/member/login}" method="post">
+    <div class="container mx-auto w-[700px] mt-5 p-10 bg-gray-200">
+        <form th:action="@{/member/login}" method="post" class="flex flex-col">
 
-        <div th:if="${param.error}">
-            <div class="alert alert-danger">
-                사용자ID 또는 비밀번호를 확인해 주세요.
+            <h4 class="text-center text-xl font-semibold mt-1 mb-12 pb-1">너의 자질구레한 고민들</h4>
+
+            <div class="mb-3 flex">
+                <label class="form-label w-[100px]">로그인ID</label>
+                <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none flex-grow" name="username" placeholder="아이디" />
             </div>
+            <div class="mb-3 flex">
+                <label class="form-label w-[100px]">비밀번호</label>
+                <input type="password" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none flex-grow" name="password" placeholder="비밀번호" />
+            </div>
+
+            <div class="text-center mb-10">
+                <button type="submit" class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">로그인</button>
+            </div>
+
+        </form>
+
+        <div class="info_user">
+            <ul class="list_user flex justify-center">
+                <li><a th:href="@{/mail/send}" class="block mr-3">비밀번호 찾기</a></li>
+                <li> | </li>
+                <li><a href="#" class="block ml-3">아이디 찾기</a></li>
+            </ul>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">사용자ID</label>
-            <input type="text" name="username" class="form-control">
+        <div class="flex items-center justify-between pb-6 pt-[20px] flex">
+            <p class="mb-0 mr-2">아직 계정이 없으신가요?</p>
+            <a class="px-6 py-2 border-2 border-red-600 text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out inline-block" th:href="@{|/member/signup|}">회원가입</a>
         </div>
-
-        <div class="mb-3">
-            <label class="form-label">비밀번호</label>
-            <input type="password" name="password" class="form-control">
-        </div>
-
-        <button type="submit" class="btn btn-primary">로그인</button>
-    </form>
-    <a class="btn btn-primary my-3" th:href="@{|/member/signup|}">회원가입</a>
+    </div>
 </div>
 </html>
