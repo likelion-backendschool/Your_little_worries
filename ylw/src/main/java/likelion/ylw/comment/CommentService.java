@@ -23,13 +23,24 @@ public class CommentService {
     }
 
     /**
-     *  댓글 등록
+     *  회원 댓글 등록
      */
     public void create(Article article, String content, Member author) {
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setArticle(article);
         comment.setAuthor(author);
+        this.commentRepository.save(comment);
+    }
+    /**
+     *  비회원 댓글 등록
+     */
+    public void create(Article article, CommentForm commentForm) {
+        Comment comment = new Comment();
+        comment.setArticle(article);
+        comment.setContent(commentForm.getContent());
+        comment.setTempNickname(commentForm.getTempNickname());
+        comment.setTempPassword(commentForm.getTempPassword());
         this.commentRepository.save(comment);
     }
 
