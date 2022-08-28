@@ -6,11 +6,10 @@
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
   <div class="card card-small mb-3">
     <div class="card-body">
-      <form th:object="${noticeForm}" class="add-new-post" method="post" id="identifier">
+      <form th:object="${noticeForm}" class="add-new-post" id="identifier" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <input th:field="*{title}" class="form-control form-control-lg mb-3" type="text" placeholder="제목을 입력해주세요">
-        <div id="quillArea"></div>
-        <textarea name="text" style="display: none" id="hiddenArea"></textarea>
+        <textarea th:field="*{content}" name="text" style="display: none" id="hiddenArea"></textarea>
         <div id="editor-container" class="add-new-post__editor mb-1"></div>
         <input class="btn btn-primary float-right" type="submit" value="Save"/>
       </form>
