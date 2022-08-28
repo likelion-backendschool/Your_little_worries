@@ -7,6 +7,7 @@ import likelion.ylw.comment.CommentForm;
 import likelion.ylw.comment.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -54,6 +55,7 @@ public class ArticleController {
         return "category_list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String createArticle(ArticleForm articleForm, @RequestParam("category") Integer category_id, Model model) {
         List<Category> categoryList = categoryService.getList();
@@ -75,6 +77,7 @@ public class ArticleController {
         return String.format("redirect:/article/vote/%d", id);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String deleteArticle(@PathVariable("id") Integer id) {
         articleService.delete(id);
@@ -82,6 +85,7 @@ public class ArticleController {
         return String.format("redirect:/");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("modify/{id}")
     public String modifyArticle(ArticleForm articleForm, @PathVariable("id") Integer id) {
         Article article = articleService.findById(id);

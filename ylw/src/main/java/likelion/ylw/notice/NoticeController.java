@@ -37,6 +37,7 @@ public class NoticeController {
         return "notice_detail";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String noticeCreate(NoticeForm noticeForm) {
         return "notice_form";
@@ -52,6 +53,7 @@ public class NoticeController {
         return "redirect:/notice/list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String questionModify(NoticeForm noticeForm, @PathVariable("id") Integer id, Principal principal) {
         Notice notice = this.noticeService.getNotice(id);
@@ -62,6 +64,7 @@ public class NoticeController {
         noticeForm.setContent(notice.getContent());
         return "notice_form";
     }
+
 
     @PostMapping("/modify/{id}")
     public String questionModify(@Valid NoticeForm noticeForm, BindingResult bindingResult,
@@ -77,6 +80,7 @@ public class NoticeController {
         return String.format("redirect:/question/detail/%s", id);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String questionDelete(Principal principal, @PathVariable("id") Integer id) {
         Notice notice = this.noticeService.getNotice(id);
