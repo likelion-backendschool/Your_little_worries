@@ -4,14 +4,14 @@
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         layout:decorate="~{layout}">
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <!--<div>-->
+    <!--/*<div>*/-->
     <h1>결과 페이지</h1>
     <hr>
     <h3 th:text="${article.title}"></h3>
     <h5 th:text="${article.content}"></h5>
     <hr>
 
-    <!--    댓글 form-->
+    <!--/*    댓글 form*/-->
     <h2>댓글</h2>
 
     <form th:action="@{|/comment/create/${article.getId()}|}" th:object="${commentForm}" method="post">
@@ -19,13 +19,13 @@
             <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
         </div>
 
-        <div>
+        <div sec:authorize="isAnonymous()">
             임시 닉네임 :
-            <input type="text" name="tempNickname" sec:authorize="isAnonymous()"required/>
+            <input type="text" name="tempNickname" required/>
         </div>
-        <div>
+        <div sec:authorize="isAnonymous()">
             임시 비밀번호 :
-            <input type="password" name="tempPassword" sec:authorize="isAnonymous()" required/>
+            <input type="password" name="tempPassword"  required/>
         </div>
 
         <div class="mb-3">
@@ -34,8 +34,8 @@
         </div>
         <input type="submit" value="저장하기" class="btn btn-primary my-2">
     </form>
-    <!--https://dev-coco.tistory.com/134-->
-    <!--    댓글 목록-->
+    <!--/*https://dev-coco.tistory.com/134*/-->
+    <!--/*    댓글 목록*/-->
     <table>
         <thead>
         <tr>
@@ -46,17 +46,19 @@
         </tr>
         </thead>
         <tbody>
+
         <tr th:each="comment : ${commentList}">
-            <td th:text="${comment.author.getNickname()}"></td>
+            <td th:if="${comment.author != null}" th:text="${comment.author.getNickname()}"></td>
+            <td th:if="${comment.tempNickname != null}" th:text="${comment.getTempNickname()}"></td>
             <td th:text="${comment.content}">
             </td>
             <td th:text="${comment.getCreatedDate()}"></td>
             <td th:text="${comment.getModifiedDate()}"></td>
 
-            <!--
+            <!--/*
                 댓글 수정 버튼 누르면 기존의 수정,삭제 버튼 없어지고
                 수정완료 버튼,취소 버튼, textarea가 나옴
-            -->
+            */-->
             <td>
                 <form th:action="@{|/comment/modify/${comment.id}|}"  method="post">
                     <div class="form-group d-none">
@@ -64,13 +66,38 @@
                         <input type="submit" class="btn btn-info" value="수정완료"></input>
                         <button type="button" class="btn btn-info comment-modify-cancel" >취소</button>
                     </div>
-                    <!--댓글 수정 버튼-->
-                    <button type="button" class="btn btn-sm btn-outline-secondary comment-modify-toggle" th:text="수정"></button>
-                    <!--댓글 삭제 버튼-->
-                    <a href="javascript:void(0);" th:href="@{|/comment/delete/${comment.id}|}"
-                       class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></a>
-                </form>
 
+                    <!--/*
+                        회원이 쓴 댓글인 경우
+                        본인이 쓴 댓글     | 수정O | 삭제O | 신고X
+                        다른 회원이 쓴 댓글 | 수정X | 삭제X | 신고O
+                    */-->
+                    <th:block th:if="${comment.author != null}">
+                        <!--/*댓글 수정 버튼*/-->
+                        <button th:if="${#authentication.name == comment.author.getMemberId()}" type="button" class="btn btn-sm btn-outline-secondary comment-modify-toggle" th:text="수정"></button>
+                        <!--/*댓글 삭제 버튼*/-->
+                        <a th:if="${#authentication.name == comment.author.getMemberId()}" href="javascript:void(0);"
+                           th:href="@{|/comment/delete/${comment.id}|}" class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></a>
+
+                        <button th:if="${#authentication.name != comment.author.getMemberId()}" type="button" class="btn btn-sm btn-outline-secondary" th:text="신고"></button>
+                    </th:block>
+
+                    <!--/*
+                        비회원이 쓴 댓글인 경우
+                        본인이 쓴 댓글       | 수정O | 삭제O | 신고X
+                        다른 비회원이 쓴 댓글 | 수정O | 삭제O | 신고X
+                    */-->
+                    <th:block th:unless="${comment.author != null}">
+                        <!--/*댓글 수정 버튼*/-->
+                        <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="btn btn-sm btn-outline-secondary comment-modify-toggle" th:text="수정"></button>
+                        <!--/*댓글 삭제 버튼*/-->
+                        <a  th:if="${#authentication.name == 'anonymousUser'}" href="javascript:void(0);" th:href="@{|/comment/delete/${comment.id}|}" class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></a>
+
+                        <button  type="button" class="btn btn-sm btn-outline-secondary" th:text="신고"></button>
+                    </th:block>
+
+
+                </form>
             </td>
         </tr>
         </tbody>
@@ -78,7 +105,7 @@
 </div>
 </html>
 
-<!--script은 html에 밖에서 써줘야 동작합니다-->
+<!--/*script은 html에 밖에서 써줘야 동작합니다*/-->
 <script>
     document.querySelectorAll(".comment-modify-toggle").forEach((item) => {
         item.addEventListener('click', () => {
