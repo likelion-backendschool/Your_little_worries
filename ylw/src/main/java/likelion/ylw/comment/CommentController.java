@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,16 +41,34 @@ public class CommentController {
                                 @Valid CommentForm commentForm, BindingResult bindingResult, Principal principal) {
 
         Article article = this.articleService.findById(id);
-        Member member = this.memberService.getMemberId(principal.getName());
-        // form 검증
-        if (bindingResult.hasErrors()) {
-            List<Comment> commentList = commentService.getCommentByArticleId(article);
-            model.addAttribute("article", article);
-            model.addAttribute("commentList",commentList);
-            return "article_result";
+
+        // 비회원일 경우
+        if (principal == null) {
+            // 임시 닉네임,비밀번호 유효성 체크
+            if (commentForm.getTempNickname().trim().length() == 0 ||
+                    commentForm.getTempPassword().trim().length() == 0) {
+                bindingResult.addError(new FieldError("commentForm", "tempNickname", "닉네임과 비밀번호는 필수입니다."));
+            }
+
+            if (bindingResult.hasErrors()) {
+                List<Comment> commentList = commentService.getCommentByArticleId(article);
+                model.addAttribute("article", article);
+                model.addAttribute("commentList",commentList);
+                return "article_result";
+            }
+            this.commentService.create(article, commentForm);
+        } else {
+            // form 검증
+            if (bindingResult.hasErrors()) {
+                List<Comment> commentList = commentService.getCommentByArticleId(article);
+                model.addAttribute("article", article);
+                model.addAttribute("commentList",commentList);
+                return "article_result";
+            }
+            // 답변 등록
+            Member member = this.memberService.getMemberId(principal.getName());
+            this.commentService.create(article, commentForm.getContent(), member);
         }
-        // 답변 등록
-        this.commentService.create(article, commentForm.getContent(), member);
         return String.format("redirect:/article/result/%s", id);
     }
 

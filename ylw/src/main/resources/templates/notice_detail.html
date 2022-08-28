@@ -1,0 +1,10 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+        layout:decorate="~{layout}">
+
+<div layout:fragment="content" class="main-content-container container-fluid px-4">
+    <h1 th:text="${notice.title}"></h1>
+    <div th:text="${notice.content}"></div>
+</div>
+</html>
