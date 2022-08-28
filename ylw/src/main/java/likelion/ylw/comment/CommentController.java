@@ -38,6 +38,8 @@ public class CommentController {
     public String commentCreate(Model model, @PathVariable("id") Integer id,
                                 @Valid CommentForm commentForm, BindingResult bindingResult, Principal principal) {
 
+        System.out.printf("=====");
+        System.out.println(principal);
         Article article = this.articleService.findById(id);
         Member member = this.memberService.getMemberId(principal.getName());
         // form 검증
