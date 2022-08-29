@@ -7,7 +7,7 @@
     <div class="container mx-auto w-[700px] mt-5 p-10 bg-gray-200">
         <form th:action="@{/member/login}" method="post" class="flex flex-col">
 
-            <h4 class="text-center text-xl font-semibold mt-1 mb-12 pb-1">너의 자질구레한 고민들</h4>
+            <h2 class="text-center text-2xl font-semibold mt-1 mb-12 pb-1">너의 자질구레한 고민들</h2>
 
             <div class="mb-3 flex">
                 <label class="form-label w-[100px]">로그인ID</label>
@@ -26,9 +26,9 @@
 
         <div class="info_user">
             <ul class="list_user flex justify-center">
-                <li><a th:href="@{/mail/send}" class="block mr-3">비밀번호 찾기</a></li>
+                <li><a th:href="@{/mail/reset}" class="block mr-3">비밀번호 찾기</a></li>
                 <li> | </li>
-                <li><a href="#" class="block ml-3">아이디 찾기</a></li>
+                <li><a th:href="@{/member/findID}" class="block ml-3">아이디 찾기</a></li>
             </ul>
         </div>
 

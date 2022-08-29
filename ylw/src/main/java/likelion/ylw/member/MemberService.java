@@ -46,4 +46,13 @@ public class MemberService {
             throw new DataNotFoundException("memberId not found");
         }
     }
+
+    public Member findByEmail(String email) {
+        Optional<Member> om = this.memberRepository.findByEmail(email);
+        if(!om.isPresent()) {
+            System.out.println("찾으려는 email: " + email);
+        }
+        Member member = om.get();
+        return member;
+    }
 }

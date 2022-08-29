@@ -1,7 +1,7 @@
 package likelion.ylw.member;
 
+import likelion.ylw.member.Mail.MailForm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,5 +51,19 @@ public class MemberController {
     @GetMapping("/login")
     public String login() {
         return "login_form";
+    }
+
+    @GetMapping("/findID")
+    public String find_id() {
+
+        return "findID_form";
+    }
+
+    @PostMapping("/findID")
+    public String find_id_post(Model model, @Valid MailForm mailForm, BindingResult bindingResult) {
+        Member member = memberService.findByEmail(mailForm.getEmail());
+        model.addAttribute("member", member);
+
+        return "findID_result";
     }
 }
