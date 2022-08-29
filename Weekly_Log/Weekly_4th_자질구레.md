@@ -83,4 +83,4 @@
 - **Git 협업 규칙**
 - **API 명세서**
 - **WBS** [https://docs.google.com/spreadsheets/d/1xdRSq5bEFmFCpgP3jNxeu2BFxAPii4a3hssLnRH_FuE/edit#gid=0](https://docs.google.com/spreadsheets/d/1xdRSq5bEFmFCpgP3jNxeu2BFxAPii4a3hssLnRH_FuE/edit#gid=0)
-![img](https://www.notion.so/4-b92eeebaccfc48dc8a53ea84457b96ce#692e84be96b34aa384a373054a81dc3d)
+![image](https://user-images.githubusercontent.com/100131148/187163253-84d7f6af-1f91-434a-a921-5f36a580fa7c.png)
