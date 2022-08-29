@@ -37,7 +37,7 @@ dependencies {
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'org.springframework.session:spring-session-core'
 	implementation group: 'com.sendgrid', name: 'sendgrid-java', version: '4.9.3'
-
+	implementation 'org.commonmark:commonmark:0.18.2'
 
 }
 

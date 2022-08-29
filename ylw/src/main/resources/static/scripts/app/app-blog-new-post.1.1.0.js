@@ -20,19 +20,12 @@
         ];
 
         // Init the Quill RTE
-        var quill = new Quill('#editor-container', {
-            modules: {
-                toolbar: toolbarOptions
-            },
-            placeholder: '내용을 입력해주세요',
-            theme: 'snow'
-        });
-
-        $("#identifier").on("submit", function () {
-            // const { ops } = quill.getContents();
-            // $("#hiddenArea").val(JSON.stringify(ops));
-            $("#hiddenArea").val(quill.root.innerHTML);
-        })
-
+        // var quill = new Quill('#editor-container', {
+        //     modules: {
+        //         toolbar: toolbarOptions
+        //     },
+        //     placeholder: '내용을 입력해주세요',
+        //     theme: 'snow'
+        // });
     });
 })(jQuery);
