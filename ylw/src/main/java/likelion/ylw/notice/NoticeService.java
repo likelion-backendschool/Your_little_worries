@@ -23,7 +23,7 @@ public class NoticeService {
 
     public Page<Notice> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
+        sorts.add(Sort.Order.desc("createdDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return this.noticeRepository.findAll(pageable);
     }
