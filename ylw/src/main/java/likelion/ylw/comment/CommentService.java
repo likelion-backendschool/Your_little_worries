@@ -71,5 +71,14 @@ public class CommentService {
         this.commentRepository.delete(answer);
     }
 
-
+    /**
+     * 임시비번과 임시닉네임으로 댓글찾기
+     */
+    public boolean getResultByTempNicknameAndTempPassword(String tempNickname, String tempPassword) {
+        int result = this.commentRepository.countByTempNicknameAndTempPassword(tempNickname,tempPassword);
+        if (result >= 1) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -97,7 +97,7 @@ public class CommentController {
     }
 
     /**
-     * 댓글 삭제하기
+     * 회원 댓글 삭제하기
      */
     @GetMapping("/delete/{id}")
     public String deleteComment(@PathVariable("id") Integer id, Principal principal) {
@@ -110,5 +110,18 @@ public class CommentController {
 
         this.commentService.delete(comment);
         return String.format("redirect:/article/result/%s", comment.getArticle().getId());
+    }
+    /**
+     * 비회원 댓글 삭제하기
+     */
+    @GetMapping("/non-delete/{id}")
+    public String deleteComment(@PathVariable("id") Integer id, @Valid NonMemberCommentForm nonMemberCommentForm) {
+        Comment comment = this.commentService.getComment(id);
+        if (commentService.getResultByTempNicknameAndTempPassword(nonMemberCommentForm.getTempNickname(), nonMemberCommentForm.getTempPassword())) {
+            this.commentService.delete(comment);
+            return String.format("redirect:/article/result/%s", comment.getArticle().getId());
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+
     }
 }

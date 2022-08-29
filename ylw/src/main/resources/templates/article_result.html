@@ -91,17 +91,27 @@
                         <!--/*댓글 수정 버튼*/-->
                         <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="btn btn-sm btn-outline-secondary non-comment-modify-toggle" th:text="수정"></button>
                         <!--/*댓글 수정을 체크용 비밀번호 toast*/-->
-                        <div id="toast-undo" class="d-none relative  flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-                            <div id="toast-input" class="text-sm flex-auto">
+                        <div class="toast-undo d-none relative  flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+                            <form class="toast-form text-sm flex-auto">
                                 <input type="password" placeholder="비밀번호를 입력해주세요" class="block p-2 text-sm text-gray-900 bg-gray-50 rounded-lg  bg-gray-300 ">
-                            </div>
-                            <div id="toast-btn" class="flex items-center ml-auto space-x-2">
+                            </form>
+                            <div class="toast-btn flex items-center ml-auto space-x-2">
                                 <button type="button" class="text-sm font-medium text-blue-600 p-1.5 rounded-lg dark:hover:bg-gray-100" >확인</button>
                                 <button type="button" class="text-sm font-medium text-blue-600 p-1.5 hover:bg-blue-100 rounded-lg dark:text-blue-500 dark:hover:bg-gray-100 comment-pwd-cancel"  >취소</button>
                             </div>
                         </div>
                         <!--/*댓글 삭제 버튼*/-->
-                        <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></button>
+                        <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="delete btn btn-sm btn-outline-secondary non-comment-modify-toggle" th:text="삭제"></button>
+                        <div class="toast-undo d-none relative  flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+                            <form th:action="@{|/comment/non-delete/${comment.id}|}" method="post" class="toast-form text-sm flex-auto">
+                                <input type="hidden" name="tempNickname" value="${comment.tempNickname}" />
+                                <input type="password" placeholder="비밀번호를 입력해주세요" class="block p-2 text-sm text-gray-900 bg-gray-50 rounded-lg  bg-gray-300" required>
+                            </form>
+                            <div class="toast-btn flex items-center ml-auto space-x-2">
+                                <input type="submit" class="text-sm font-medium text-blue-600 p-1.5 rounded-lg dark:hover:bg-gray-100" >확인</input>
+                                <button type="button" class="text-sm font-medium text-blue-600 p-1.5 hover:bg-blue-100 rounded-lg dark:text-blue-500 dark:hover:bg-gray-100 comment-pwd-cancel"  >취소</button>
+                            </div>
+                        </div>
                         <!--                        <button  th:if="${#authentication.name == 'anonymousUser'}" href="javascript:void(0);" th:href="@{|/comment/delete/${comment.id}|}" class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></button>-->
 
                         <button type="button" class="btn btn-sm btn-outline-secondary" th:text="신고"></button>
@@ -157,11 +167,11 @@
             const toast = item.nextElementSibling; // 다음 요소 toast
 
             // 클릭 위치가 toast이면 취소
-            if (e.target.closest('#toast-undo')) {
+            if (e.target.closest('.toast-undo')) {
                 return ;
-            } else if (e.target.closest('#toast-input')) {
+            } else if (e.target.closest('.toast-form')) {
                 return ;
-            } else if (e.target.closest('#toast-btn')) {
+            } else if (e.target.closest('.toast-btn')) {
                 return ;
             }
             // 다른 toast 안 보이게 none처리함
@@ -177,7 +187,7 @@
     // 비번 클릭 창 취소
     document.querySelectorAll(".comment-pwd-cancel").forEach((item) => {
         item.addEventListener('click', () => {
-            const div = item.closest('#toast-undo') // 두 번째 조상
+            const div = item.closest('.toast-undo') // 두 번째 조상
             div.classList.toggle("d-none"); // toast 숨겨줌
         })
     })
