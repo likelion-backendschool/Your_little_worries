@@ -5,6 +5,7 @@ import likelion.ylw.category.CategoryService;
 import likelion.ylw.comment.Comment;
 import likelion.ylw.comment.CommentForm;
 import likelion.ylw.comment.CommentService;
+import likelion.ylw.comment.NonMemberCommentForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -114,7 +115,7 @@ public class ArticleController {
      * [임시] 투표 결과 페이지
      */
     @GetMapping("/result/{id}")
-    public String resultArticle(Model model, @PathVariable("id") Integer id, CommentForm commentForm) {
+    public String resultArticle(Model model, @PathVariable("id") Integer id, CommentForm commentForm, NonMemberCommentForm nonMemberCommentForm) {
         Article article = articleService.findById(id);
         List<Comment> commentList = commentService.getCommentByArticleId(article);
 

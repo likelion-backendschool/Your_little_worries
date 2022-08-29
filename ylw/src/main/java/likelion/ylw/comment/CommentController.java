@@ -34,44 +34,49 @@ public class CommentController {
     private final MemberService memberService;
 
     /**
-     * 댓글 생성하기
+     * 회원 댓글 생성하기
+     * {id} = 게시글 id
      */
     @PostMapping("/create/{id}")
-    public String commentCreate(Model model, @PathVariable("id") Integer id,
+    public String createComment(Model model, @PathVariable("id") Integer id,
                                 @Valid CommentForm commentForm, BindingResult bindingResult, Principal principal) {
 
         Article article = this.articleService.findById(id);
 
-        // 비회원일 경우
-        if (principal == null) {
-            // 임시 닉네임,비밀번호 유효성 체크
-            if (commentForm.getTempNickname().trim().length() == 0 ||
-                    commentForm.getTempPassword().trim().length() == 0) {
-                bindingResult.addError(new FieldError("commentForm", "tempNickname", "닉네임과 비밀번호는 필수입니다."));
-            }
-
-            if (bindingResult.hasErrors()) {
-                List<Comment> commentList = commentService.getCommentByArticleId(article);
-                model.addAttribute("article", article);
-                model.addAttribute("commentList",commentList);
-                return "article_result";
-            }
-            this.commentService.create(article, commentForm);
-        } else {
-            // form 검증
-            if (bindingResult.hasErrors()) {
-                List<Comment> commentList = commentService.getCommentByArticleId(article);
-                model.addAttribute("article", article);
-                model.addAttribute("commentList",commentList);
-                return "article_result";
-            }
-            // 답변 등록
-            Member member = this.memberService.getMemberId(principal.getName());
-            this.commentService.create(article, commentForm.getContent(), member);
+        // form 검증
+        if (bindingResult.hasErrors()) {
+            List<Comment> commentList = commentService.getCommentByArticleId(article);
+            model.addAttribute("article", article);
+            model.addAttribute("commentList",commentList);
+            return "article_result";
         }
+        // 댓글 등록
+        Member member = this.memberService.getMemberId(principal.getName());
+        this.commentService.create(article, commentForm.getContent(), member);
+
         return String.format("redirect:/article/result/%s", id);
     }
+    /**
+     * 비회원 댓글 생성하기
+     */
+    @PostMapping("/non-create/{id}")
+    public String createComment(Model model, @PathVariable("id") Integer id,
+                                @Valid NonMemberCommentForm nonMemberCommentForm, BindingResult bindingResult) {
 
+        Article article = this.articleService.findById(id);
+
+        // form 검증
+        if (bindingResult.hasErrors()) {
+            List<Comment> commentList = commentService.getCommentByArticleId(article);
+            model.addAttribute("article", article);
+            model.addAttribute("commentList",commentList);
+            return "article_result";
+        }
+        // 댓글 등록
+        this.commentService.create(article, nonMemberCommentForm);
+
+        return String.format("redirect:/article/result/%s", id);
+    }
     /**
      * 댓글 수정하기
      */
