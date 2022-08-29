@@ -83,4 +83,5 @@
 - **Git 협업 규칙**
 - **API 명세서**
 - **WBS** [https://docs.google.com/spreadsheets/d/1xdRSq5bEFmFCpgP3jNxeu2BFxAPii4a3hssLnRH_FuE/edit#gid=0](https://docs.google.com/spreadsheets/d/1xdRSq5bEFmFCpgP3jNxeu2BFxAPii4a3hssLnRH_FuE/edit#gid=0)
+- 필수) 팀원들과 함께 찍은 인증샷(온라인 만남시 스크린 캡쳐)도 함께 업로드 해주세요 🙂
 ![image](https://user-images.githubusercontent.com/100131148/187163253-84d7f6af-1f91-434a-a921-5f36a580fa7c.png)
