@@ -61,7 +61,7 @@
             */-->
             <td>
                 <form th:action="@{|/comment/modify/${comment.id}|}"  method="post">
-                    <div class="form-group d-none">
+                    <div class="form-group hidden">
                         <textarea class="form-control" name="content" rows="3" required>[[${comment.content}]]</textarea>
                         <input type="submit" class="btn btn-info" value="수정완료"></input>
                         <button type="button" class="btn btn-info comment-modify-cancel" >취소</button>
@@ -91,17 +91,17 @@
                         <!--/*댓글 수정 버튼*/-->
                         <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="btn btn-sm btn-outline-secondary non-comment-modify-toggle" th:text="수정"></button>
                         <!--/*댓글 수정을 체크용 비밀번호 toast*/-->
-                        <div id="toast-undo" class="d-none absolute right-[100px] flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-                            <div class="text-sm flex-auto">
+                        <div id="toast-undo" class="d-none relative  flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+                            <div id="toast-input" class="text-sm flex-auto">
                                 <input type="password" placeholder="비밀번호를 입력해주세요" class="block p-2 text-sm text-gray-900 bg-gray-50 rounded-lg  bg-gray-300 ">
                             </div>
-                            <div class="flex items-center ml-auto space-x-2">
-                                <button type="button" class="text-sm font-medium text-blue-600 p-1.5 hover:bg-blue-100 rounded-lg dark:text-blue-500 dark:hover:bg-gray-100 comment-pwd-cancel"  >취소</button>
+                            <div id="toast-btn" class="flex items-center ml-auto space-x-2">
                                 <button type="button" class="text-sm font-medium text-blue-600 p-1.5 rounded-lg dark:hover:bg-gray-100" >확인</button>
+                                <button type="button" class="text-sm font-medium text-blue-600 p-1.5 hover:bg-blue-100 rounded-lg dark:text-blue-500 dark:hover:bg-gray-100 comment-pwd-cancel"  >취소</button>
                             </div>
                         </div>
                         <!--/*댓글 삭제 버튼*/-->
-                        <button  th:if="${#authentication.name == 'anonymousUser'}"  class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></button>
+                        <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></button>
                         <!--                        <button  th:if="${#authentication.name == 'anonymousUser'}" href="javascript:void(0);" th:href="@{|/comment/delete/${comment.id}|}" class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></button>-->
 
                         <button type="button" class="btn btn-sm btn-outline-secondary" th:text="신고"></button>
@@ -141,21 +141,34 @@
      */
     const nonCommentModifyBtnList = document.querySelectorAll(".non-comment-modify-toggle");
 
+    // 일단 없어도 잘돼서 주석처리
     // 수정 버튼 클릭시 toggle 형식으로 toast를 화면에 보이게 함
-    nonCommentModifyBtnList.forEach((item) => {
-        item.addEventListener('click', () => {
-            const toast = item.nextElementSibling;
-            toast.classList.toggle("d-none"); // 수정 form 숨겨줌
-        });
-    });
+    // nonCommentModifyBtnList.forEach((item) => {
+    //     item.addEventListener('click', () => {
+    //         const toast = item.nextElementSibling;
+    //         toast.classList.toggle("d-none"); // 수정 form 숨겨줌
+    //     });
+    // });
+
+    // 수정 버튼 클릭시 toggle 형식으로 toast를 화면에 보이게 함
     // 다른 수정 폼, 혹은 toast를 제외한 화면 클릭시 toast없앰
     window.addEventListener('click', (e) => {
         nonCommentModifyBtnList.forEach((item) => {
-            const toast = item.nextElementSibling; // 다음 요소
-            console.log(toast);
+            const toast = item.nextElementSibling; // 다음 요소 toast
+
+            // 클릭 위치가 toast이면 취소
+            if (e.target.closest('#toast-undo')) {
+                return ;
+            } else if (e.target.closest('#toast-input')) {
+                return ;
+            } else if (e.target.closest('#toast-btn')) {
+                return ;
+            }
+            // 다른 toast 안 보이게 none처리함
             if (!toast.classList.contains("d-none")){
                 toast.classList.add("d-none");
             }
+            // 클릭 위치가 버튼이면 toast 화면에 보이게 함
             if(e.target == item) {
                 toast.classList.remove("d-none");
             }
