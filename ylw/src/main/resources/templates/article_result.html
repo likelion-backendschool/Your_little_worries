@@ -90,20 +90,21 @@
                     <th:block th:unless="${comment.author != null}">
                         <!--/*댓글 수정 버튼*/-->
                         <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="btn btn-sm btn-outline-secondary non-comment-modify-toggle" th:text="수정"></button>
-                        <div id="toast-undo" class="d-none absolute flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+                        <!--/*댓글 수정을 체크용 비밀번호 toast*/-->
+                        <div id="toast-undo" class="d-none absolute right-[100px] flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
                             <div class="text-sm flex-auto">
                                 <input type="password" placeholder="비밀번호를 입력해주세요" class="block p-2 text-sm text-gray-900 bg-gray-50 rounded-lg  bg-gray-300 ">
                             </div>
                             <div class="flex items-center ml-auto space-x-2">
-                                <button class="text-sm font-medium text-blue-600 p-1.5 hover:bg-blue-100 rounded-lg dark:text-blue-500 dark:hover:bg-gray-100" href="#">취소</button>
-                                <button class="text-sm font-medium text-blue-600 p-1.5 rounded-lg dark:hover:bg-gray-100" href="#">확인</button>
+                                <button type="button" class="text-sm font-medium text-blue-600 p-1.5 hover:bg-blue-100 rounded-lg dark:text-blue-500 dark:hover:bg-gray-100 comment-pwd-cancel"  >취소</button>
+                                <button type="button" class="text-sm font-medium text-blue-600 p-1.5 rounded-lg dark:hover:bg-gray-100" >확인</button>
                             </div>
                         </div>
                         <!--/*댓글 삭제 버튼*/-->
-                        <button  th:if="${#authentication.name == 'anonymousUser'}" href="javascript:void(0);" th:href="@{|/comment/delete/${comment.id}|}" class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></button>
+                        <button  th:if="${#authentication.name == 'anonymousUser'}"  class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></button>
                         <!--                        <button  th:if="${#authentication.name == 'anonymousUser'}" href="javascript:void(0);" th:href="@{|/comment/delete/${comment.id}|}" class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></button>-->
 
-                        <button  type="button" class="btn btn-sm btn-outline-secondary" th:text="신고"></button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" th:text="신고"></button>
                     </th:block>
                 </form>
             </td>
@@ -116,6 +117,9 @@
 
 <!--/*script은 html에 밖에서 써줘야 동작합니다*/-->
 <script>
+    /**
+     *  회원 수정 폼 클릭시 이벤트
+     */
     document.querySelectorAll(".comment-modify-toggle").forEach((item) => {
         item.addEventListener('click', () => {
             const formDiv = item.closest('form').children[1]; // 첫 조상은 form의 두번째 자식 (첫번째는 crsf토큰임)
@@ -140,14 +144,14 @@
     // 수정 버튼 클릭시 toggle 형식으로 toast를 화면에 보이게 함
     nonCommentModifyBtnList.forEach((item) => {
         item.addEventListener('click', () => {
-            const toast = item.closest('form').children[3];
+            const toast = item.nextElementSibling;
             toast.classList.toggle("d-none"); // 수정 form 숨겨줌
         });
     });
     // 다른 수정 폼, 혹은 toast를 제외한 화면 클릭시 toast없앰
     window.addEventListener('click', (e) => {
         nonCommentModifyBtnList.forEach((item) => {
-            const toast = item.closest('form').children[3]
+            const toast = item.nextElementSibling; // 다음 요소
             console.log(toast);
             if (!toast.classList.contains("d-none")){
                 toast.classList.add("d-none");
@@ -157,4 +161,11 @@
             }
         })
     });
+    // 비번 클릭 창 취소
+    document.querySelectorAll(".comment-pwd-cancel").forEach((item) => {
+        item.addEventListener('click', () => {
+            const div = item.closest('#toast-undo') // 두 번째 조상
+            div.classList.toggle("d-none"); // toast 숨겨줌
+        })
+    })
 </script>
