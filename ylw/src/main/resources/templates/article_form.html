@@ -25,7 +25,28 @@
             <textarea th:field="*{content}" class="form-control" rows="10"></textarea>
         </div>
 
-        <input type="submit" value="저장하기" class="btn btn-primary my-2">
+        <div class="mb-3">
+            <label class="form-label">항목</label>
+            <div id="append_column" class="btn btn-outline-info float-right">+</div>
+        </div>
+
+        <div id="itemContainer" class="flex-column d-flex">
+            <input class="my-2" type="text" name="item[]"  placeholder="1번"/>
+            <input class="my-2" type="text" name="item[]"  placeholder="2번"/>
+        </div>
+
+        <input type="submit" value="저장하기" class="btn btn-primary my-2 float-right">
     </form>
 </div>
 </html>
+<script>
+    $("#append_column").on("click", function () {
+        const numOfChild = document.getElementById("itemContainer").childElementCount
+        const column = document.createElement('input')
+        column.classList.add('my-2')
+        column.setAttribute('type', 'text')
+        column.setAttribute('name', 'item[]')
+        column.setAttribute('placeholder', `${numOfChild}번`)
+        document.getElementById("itemContainer").appendChild(column)
+    })
+</script>
