@@ -2,19 +2,29 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
-<div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <h5>질문등록</h5>
+<div layout:fragment="content" class="main-content-container container-fluid px-4 mt-3">
+    <h5>투표등록</h5>
     <form th:object="${articleForm}" method="post">
-        <input type="hidden" th:name="category" th:value="${category_id}"/>
+<!--        <input type="hidden" th:name="category_id" th:value="${category_id}"/>-->
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div class="mb-3">
             <label for="subject" class="form-label">제목</label>
             <input type="text" th:field="*{title}" class="form-control">
         </div>
         <div class="mb-3">
+            <label for="category" class="form-label">카테고리</label>
+            <select class="form-select" th:name="category_id">
+                <option th:text="|==카테고리 선택==|" th:selected="${category_id}==0"></option>
+                <option th:each="category : ${categoryList}" th:value="${category.id}" th:text="${category.name}"
+                        th:selected="${category.id} == ${category_id}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
             <label for="content" class="form-label">내용</label>
             <textarea th:field="*{content}" class="form-control" rows="10"></textarea>
         </div>
+
         <input type="submit" value="저장하기" class="btn btn-primary my-2">
     </form>
 </div>
