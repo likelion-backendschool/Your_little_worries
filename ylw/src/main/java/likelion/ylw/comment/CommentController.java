@@ -77,7 +77,7 @@ public class CommentController {
         return String.format("redirect:/article/result/%s", id);
     }
     /**
-     * 댓글 수정하기
+     * 회원 댓글 수정하기
      */
     @PostMapping("/modify/{id}")
     public String modifyComment(@Valid CommentForm commentForm, BindingResult bindingResult,
@@ -92,6 +92,25 @@ public class CommentController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         this.commentService.modify(comment, commentForm.getContent());
+        return String.format("redirect:/article/result/%s", comment.getArticle().getId());
+    }
+    /**
+     * 비회원 댓글 수정하기
+     */
+    @PostMapping("/non-modify/{id}")
+    public String modifyComment(@Valid NonMemberCommentForm nonMemberCommentForm, BindingResult bindingResult,
+                                @PathVariable("id") Integer id) {
+//        if (bindingResult.hasErrors()) {
+//            return String.format("redirect:/article/result/%s", id);
+//        }
+        Comment comment = this.commentService.getComment(id);
+
+        //수정 권한 체크
+        boolean isTempMember = commentService.getResultByTempMember(nonMemberCommentForm.getTempNickname(), nonMemberCommentForm.getTempPassword());
+        if (!isTempMember) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        this.commentService.modify(comment, nonMemberCommentForm.getContent());
         return String.format("redirect:/article/result/%s", comment.getArticle().getId());
     }
 
@@ -120,10 +139,28 @@ public class CommentController {
         Comment comment = this.commentService.getComment(id);
 
         Map<String,String> result = new HashMap<>();
+        boolean isTempMember = commentService.getResultByTempMember(nonMemberCommentForm.getTempNickname(), nonMemberCommentForm.getTempPassword());
+        if (isTempMember) {
+            this.commentService.delete(comment);
+            result.put("result","success");
+            return result;
+        }
+        result.put("result","failure");
+        return result;
+    }
+    /**
+     * 비회원 댓글 임시 비번 체크
+     * json 데이터를 반환해줌
+     */
+    @ResponseBody
+    @PostMapping("/non-check/{id}")
+    public Map<String, String> checkComment(@PathVariable("id") Integer id, @RequestBody NonMemberCommentForm nonMemberCommentForm) {
+        Comment comment = this.commentService.getComment(id);
+
+        Map<String,String> result = new HashMap<>();
         boolean isTempMember =commentService.getResultByTempMember(nonMemberCommentForm.getTempNickname(), nonMemberCommentForm.getTempPassword());
         if (isTempMember) {
             result.put("result","success");
-            this.commentService.delete(comment);
             return result;
         }
         result.put("result","failure");
