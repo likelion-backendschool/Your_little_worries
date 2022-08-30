@@ -25,7 +25,6 @@ public class MailController {
          return "new_password";
     }
 
-
     @PostMapping("/send")
     public String send_newPW(Model model, @Valid MailForm mailForm, BindingResult bindingResult) throws IOException {
         String email = mailForm.getEmail();

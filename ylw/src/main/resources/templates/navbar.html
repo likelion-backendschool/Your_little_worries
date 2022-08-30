@@ -13,7 +13,7 @@
             </div>
             <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
     </form>
-    <ul class="navbar-nav border-left flex-row ">
+    <ul class="navbar-nav border-left flex-row flex">
         <li class="nav-item border-right dropdown notifications">
             <a class="nav-link nav-link-icon text-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="nav-link-icon__wrapper">
@@ -50,7 +50,7 @@
             </div>
         </li>
         <!-- 로그인 시 프로필 표시 -->
-        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/member/login}">로그인</a>
+        <a class="nav-link w-[130px] text-center pt-6" sec:authorize="isAnonymous()" th:href="@{/member/login}"><i class="fa-solid fa-circle-user"></i> 로그인</a>
         <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <img class="user-avatar rounded-circle mr-2" src="/images/avatars/0.jpg" alt="User Avatar">
@@ -58,14 +58,14 @@
             </a>
             <div class="dropdown-menu dropdown-menu-small">
                 <a class="dropdown-item" href="user-profile-lite.html">
-                    <i class="material-icons">&#xE7FD;</i> Profile</a>
+                    <i class="material-icons">&#xE7FD;</i> 마이페이지</a>
                 <a class="dropdown-item" href="components-blog-posts.html">
                     <i class="material-icons">vertical_split</i> Blog Posts</a>
                 <a class="dropdown-item" href="add-new-post.html">
                     <i class="material-icons">note_add</i> Add New Post</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item text-danger" th:href="@{|/member/logout|}">
-                    <i class="material-icons text-danger">&#xE879;</i> Logout </a>
+                    <i class="material-icons text-danger">&#xE879;</i> 로그아웃 </a>
             </div>
         </li>
     </ul>

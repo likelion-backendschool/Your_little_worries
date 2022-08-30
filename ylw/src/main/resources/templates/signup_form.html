@@ -5,15 +5,22 @@
 <!--<html layout:decorate="~{layout}">-->
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <div class="my-3 border-bottom">
-        <div>
-            <h4>회원가입</h4>
-        </div>
-    </div>
-    <signform>
-         <form th:action="@{|/member/signup|}" th:object="${memberCreateForm}" method="post">
-            <div th:replace="form_errors :: formErrorsFragment"></div>
+    <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white shadow-lg">
 
+        <div class="my-3 border-bottom">
+
+            <div>
+                <div class="text-center text-2xl font-semibold mt-1 mb-2 pb-5">회원가입</div>
+                <div class="text-center">YLW 홈페이지에 오신 것을 환영합니다.</div>
+            </div>
+            <div>
+                <div>회원 정보를 입력해주세요.</div>
+            </div>
+        </div>
+
+
+        <form th:action="@{|/member/signup|}" th:object="${memberCreateForm}" method="post">
+            <div th:replace="form_errors :: formErrorsFragment"></div>
             <div class="mb-3">
                 <label class="form-label">사용자ID</label>
                 <input type="text" th:field="*{memberId}" class="form-control">
@@ -34,8 +41,14 @@
                 <label class="form-label">이메일</label>
                 <input type="email" th:field="*{email}" class="form-control">
             </div>
-            <button type="submit" class="btn btn-primary">회원가입</button>
+
+            <div class="text-center">
+                <button type="submit"
+                        class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
+                    가입하기
+                </button>
+            </div>
         </form>
-    </signform>
+    </div>
 </div>
 </html>
