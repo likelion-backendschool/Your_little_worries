@@ -98,34 +98,41 @@
                 <!--/*
                     비회원이 보는 댓글 view
                 */-->
-                <form th:unless="${comment.author != null}" th:action="@{|/comment/non-modify/${comment.id}|}"  method="post" >
-                        <!--/*댓글 수정 버튼*/-->
-                        <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="btn btn-sm btn-outline-secondary non-comment-modify-toggle" th:text="수정"></button>
-                        <!--/*댓글 수정 체크용 비밀번호 toast*/-->
-                        <div class="toast-undo d-none relative  flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-<!--                            <form class="toast-form text-sm flex-auto">-->
-                                <input type="password" placeholder="비밀번호를 입력해주세요" class="block p-2 text-sm text-gray-900 bg-gray-50 rounded-lg  bg-gray-300 ">
-
-                            <div class="toast-btn flex items-center ml-auto space-x-2">
-                                <button type="button" class="text-sm font-medium text-blue-600 p-1.5 rounded-lg dark:hover:bg-gray-100" >확인</button>
-                                <button type="button" class="text-sm font-medium text-blue-600 p-1.5 hover:bg-blue-100 rounded-lg dark:text-blue-500 dark:hover:bg-gray-100 comment-pwd-cancel"  >취소</button>
-                            </div>
+                <form th:unless="${comment.author != null}" th:action="@{|/comment/non-modify/${comment.id}|}"  method="post" novalidate>
+                    <div class="form-group d-none">
+                        <textarea class="form-control" name="content" rows="3" required>[[${comment.content}]]</textarea>
+                        <input type="submit" class="btn btn-info" value="수정완료"></input>
+                        <button type="button" class="btn btn-info comment-modify-cancel" >취소</button>
+                    </div>
+                    <!--/*댓글 수정 버튼*/-->
+                    <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="btn btn-sm btn-outline-secondary non-comment-modify-toggle" th:text="수정"></button>
+                    <!--/*댓글 수정 체크용 비밀번호 toast*/-->
+                    <div class="toast-undo d-none relative  flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+                        <div class="toast-form text-sm flex-auto">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" disabled/>
+                            <input type="hidden" name="tempNickname" th:value="${comment.tempNickname}"/>
+                            <input type="password" name="tempPassword" value="" placeholder="비밀번호를 입력해주세요" class="block p-2 text-sm text-gray-900 bg-gray-50 rounded-lg  bg-gray-300" required>
                         </div>
-                        <!--/*댓글 삭제 버튼*/-->
-                        <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="delete btn btn-sm btn-outline-secondary non-comment-modify-toggle" th:text="삭제" ></button>
-
-                        <!--/*댓글 삭제 체크용 비밀번호 toast*/-->
-                        <div class="toast-undo d-none relative  flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-                            <div class="toast-form text-sm flex-auto">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                                <input type="hidden" name="tempNickname" th:value="${comment.tempNickname}"/>
-                                <input type="password" name="tempPassword" value="" placeholder="비밀번호를 입력해주세요" class="tempPassword block p-2 text-sm text-gray-900 bg-gray-50 rounded-lg  bg-gray-300" required>
-                            </div>
-                            <div class="toast-btn flex items-center ml-auto space-x-2">
-                                <a th:id="${comment.id}" class="text-sm font-medium text-blue-600 p-1.5 rounded-lg dark:hover:bg-gray-100 check-comment-owner" >확인</a>
-                                <a type="button" class="text-sm font-medium text-blue-600 p-1.5 hover:bg-blue-100 rounded-lg dark:text-blue-500 dark:hover:bg-gray-100 comment-pwd-cancel"  >취소</a>
-                            </div>
+                        <div class="toast-btn flex items-center ml-auto space-x-2">
+                            <a th:id="check-+${comment.id}" class="text-sm font-medium text-blue-600 p-1.5 rounded-lg dark:hover:bg-gray-100 check-comment-owner" >확인</a>
+                            <a type="button" class="text-sm font-medium text-blue-600 p-1.5 hover:bg-blue-100 rounded-lg dark:text-blue-500 dark:hover:bg-gray-100 comment-pwd-cancel"  >취소</a>
                         </div>
+                    </div>
+                    <!--/*댓글 삭제 버튼*/-->
+                    <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="delete btn btn-sm btn-outline-secondary non-comment-modify-toggle" th:text="삭제" ></button>
+
+                    <!--/*댓글 삭제 체크용 비밀번호 toast*/-->
+                    <div class="toast-undo d-none relative  flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+                        <div class="toast-form text-sm flex-auto">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" disabled/>
+                            <input type="hidden" name="tempNickname" th:value="${comment.tempNickname}" disabled/>
+                            <input type="password" name="tempPassword" value="" placeholder="비밀번호를 입력해주세요" class="block p-2 text-sm text-gray-900 bg-gray-50 rounded-lg  bg-gray-300"disabled required>
+                        </div>
+                        <div class="toast-btn flex items-center ml-auto space-x-2">
+                            <a th:id="delete-+${comment.id}" class="text-sm font-medium text-blue-600 p-1.5 rounded-lg dark:hover:bg-gray-100 check-comment-owner" >확인</a>
+                            <a type="button" class="text-sm font-medium text-blue-600 p-1.5 hover:bg-blue-100 rounded-lg dark:text-blue-500 dark:hover:bg-gray-100 comment-pwd-cancel"  >취소</a>
+                        </div>
+                    </div>
                 </form>
 
                 <!--/* 신고 버튼 */-->
@@ -146,7 +153,6 @@
     document.querySelectorAll(".comment-modify-toggle").forEach((item) => {
         item.addEventListener('click', () => {
             const formDiv = item.closest('form').children[1]; // 첫 조상은 form의 두번째 자식 (첫번째는 crsf토큰임)
-            console.log(formDiv);
             formDiv.classList.toggle("d-none"); // 수정 form 보여줌
             item.classList.toggle("d-none")     // 수정 버튼 숨겨줌
         })
@@ -155,8 +161,8 @@
         item.addEventListener('click', () => {
             const div = item.closest('div'); // 첫 조상
             div.classList.toggle("d-none"); // 수정 form 숨겨줌
-            const a = item.closest('form').children[2];
-            a.classList.toggle("d-none"); // 수정 버튼 보여줌
+            const modifyBtn = item.closest('form').children[2];
+            modifyBtn.classList.toggle("d-none"); // 수정 버튼 보여줌
         })
     })
     /**
@@ -165,12 +171,15 @@
     document.querySelectorAll(".check-comment-owner").forEach((item) => {
 
         item.addEventListener('click', () => {
-            const commnetId = item.getAttribute('id');
+            const methodAndCommentId = item.getAttribute('id').split('-');
+            const method = methodAndCommentId[0];
+            const commentId = methodAndCommentId[1];
+
             const tempNickname = item.closest('div').previousElementSibling.children[1].value;
             const tempPassword = item.closest('div').previousElementSibling.children[2].value;
 
             const token = item.closest('div').previousElementSibling.children[0].value;
-            fetch(`/comment/non-delete/${commnetId}`, {
+            fetch(`/comment/non-${method}/${commentId}`, {
                 // credentials: 'include',
                 method: "POST",
                 body : JSON.stringify({
@@ -185,8 +194,19 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.result === "success") {
-                        alert("댓글이 삭제되었습니다.");
-                        location.reload();
+                        switch (method) {
+                            case "check":
+                                item.closest('form').children[2].classList.toggle("d-none"); // 수정버튼 숨김
+                                item.closest('.toast-undo').classList.toggle("d-none");      // toast 숨김
+                                item.closest('form').children[1].classList.toggle("d-none"); // 수정form 활성화
+                                break;
+                            case "delete":
+                                alert("댓글이 삭제되었습니다.");
+                                location.reload();
+                                break;
+                            default :
+                                alert("잘못된 접근입니다.")
+                        }
                     } else if (data.result === "failure") {
                         alert("비밀번호가 틀렸습니다.");
                         item.closest('div').previousElementSibling.children[2].value = "";
