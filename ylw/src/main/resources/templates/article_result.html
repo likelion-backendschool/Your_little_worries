@@ -91,8 +91,10 @@
                     <a th:if="${#authentication.name == comment.author.getMemberId()}" href="javascript:void(0);"
                        th:href="@{|/comment/delete/${comment.id}|}" class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></a>
 
+                    <!--/* 본인 댓글 외의 신고 버튼*/-->
                     <button th:if="${#authentication.name != comment.author.getMemberId()}" type="button" class="btn btn-sm btn-outline-secondary" th:text="신고"></button>
                 </form>
+
                 <!--/*
                     비회원이 보는 댓글 view
                 */-->
@@ -111,19 +113,22 @@
                         </div>
                         <!--/*댓글 삭제 버튼*/-->
                         <button th:if="${#authentication.name == 'anonymousUser'}" type="button" class="delete btn btn-sm btn-outline-secondary non-comment-modify-toggle" th:text="삭제" ></button>
+
                         <!--/*댓글 삭제 체크용 비밀번호 toast*/-->
                         <div class="toast-undo d-none relative  flex items-center p-4 w-full max-w-xs text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
                             <div class="toast-form text-sm flex-auto">
-                                <input type="hidden" name="tempNickname" th:value="${comment.tempNickname}" class="tempNickname" />
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <input type="hidden" name="tempNickname" th:value="${comment.tempNickname}"/>
                                 <input type="password" name="tempPassword" value="" placeholder="비밀번호를 입력해주세요" class="tempPassword block p-2 text-sm text-gray-900 bg-gray-50 rounded-lg  bg-gray-300" required>
                             </div>
                             <div class="toast-btn flex items-center ml-auto space-x-2">
-                                <button th:id="${comment.id}" class="text-sm font-medium text-blue-600 p-1.5 rounded-lg dark:hover:bg-gray-100 check-comment-owner" >확인</button>
+                                <a th:id="${comment.id}" class="text-sm font-medium text-blue-600 p-1.5 rounded-lg dark:hover:bg-gray-100 check-comment-owner" >확인</a>
                                 <a type="button" class="text-sm font-medium text-blue-600 p-1.5 hover:bg-blue-100 rounded-lg dark:text-blue-500 dark:hover:bg-gray-100 comment-pwd-cancel"  >취소</a>
                             </div>
                         </div>
-                        <!--                        <button  th:if="${#authentication.name == 'anonymousUser'}" href="javascript:void(0);" th:href="@{|/comment/delete/${comment.id}|}" class="delete btn btn-sm btn-outline-secondary" th:text="삭제"></button>-->
                 </form>
+
+                <!--/* 신고 버튼 */-->
                 <button th:if="${comment.author == null}" type="button" class="btn btn-sm btn-outline-secondary" th:text="신고"></button>
             </td>
         </tr>
@@ -158,27 +163,34 @@
      * 비회원 삭제 유효성 체크
      */
     document.querySelectorAll(".check-comment-owner").forEach((item) => {
+
         item.addEventListener('click', () => {
             const commnetId = item.getAttribute('id');
-            const tempNickname = item.closest('div').previousElementSibling.children[0].value;
-            const tempPassword = item.closest('div').previousElementSibling.children[1].value
+            const tempNickname = item.closest('div').previousElementSibling.children[1].value;
+            const tempPassword = item.closest('div').previousElementSibling.children[2].value;
 
-            const a = {"tempNickname" : tempNickname, "tempPassword":tempPassword};
-            console.log(a)
+            const token = item.closest('div').previousElementSibling.children[0].value;
             fetch(`/comment/non-delete/${commnetId}`, {
                 // credentials: 'include',
-                method: "GET",
+                method: "POST",
                 body : JSON.stringify({
                     tempNickname : tempNickname,
                     tempPassword : tempPassword
                 }),
                 headers: {
                     "Content-Type": "application/json",
+                    'X-CSRF-Token': token  // 필수! 안 해주면 "403 forbidden" 오류
                 }
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
+                    if (data.result === "success") {
+                        alert("댓글이 삭제되었습니다.");
+                        location.reload();
+                    } else if (data.result === "failure") {
+                        alert("비밀번호가 틀렸습니다.");
+                        item.closest('div').previousElementSibling.children[2].value = "";
+                    }
                 })
                 .catch(err => {
                     alert(err);
