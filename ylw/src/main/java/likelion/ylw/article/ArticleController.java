@@ -57,7 +57,7 @@ public class ArticleController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
-    public String createArticle(ArticleForm articleForm, @RequestParam("category") Integer category_id, Model model) {
+    public String createArticle(ArticleForm articleForm, @RequestParam(value = "category", defaultValue = "0") Integer category_id, Model model) {
         List<Category> categoryList = categoryService.getList();
 
         model.addAttribute("category_id", category_id);
@@ -66,14 +66,12 @@ public class ArticleController {
     }
 
     @PostMapping("/create")
-    public String createArticle(@Valid ArticleForm articleForm, BindingResult bindingResult,
-                                @RequestParam("category") Integer category_id) {
+    public String createArticle(@Valid ArticleForm articleForm, BindingResult bindingResult, @RequestParam Integer category_id) {
         if (bindingResult.hasErrors()) {
             return "article_form";
         }
 
         Integer id = articleService.create(articleForm.getTitle(), articleForm.getContent(), category_id);
-
         return String.format("redirect:/article/vote/%d", id);
     }
 

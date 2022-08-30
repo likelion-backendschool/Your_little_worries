@@ -13,6 +13,7 @@
        class="delete btn btn-sm btn-outline-secondary"
        th:text="삭제"></a>
     <a th:href="@{|/article/result/${article.id}|}" class="btn btn-sm btn-outline-secondary" th:text="결과페이지"></a>
+    <a th:href="@{|/article/list/}"
 </div>
 <script layout:fragment="script" type='text/javascript'>
     const delete_elements = document.getElementsByClassName("delete");

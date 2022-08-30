@@ -13,7 +13,8 @@ public class ArticleForm {
     @Size(max = 200)
     private String title;
 
-
     @NotEmpty(message = "내용은 공백일 수 없습니다.")
     private String content;
+
+//    private Integer categoryId;
 }
