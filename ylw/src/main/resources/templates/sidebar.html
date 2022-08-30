@@ -31,7 +31,7 @@
     <div class="nav-wrapper">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link " th:with="link='/article/categoryList'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">
+                <a class="nav-link " th:with="link='/article/create'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">
                     <i class="material-icons">edit</i>
                     <span>투표등록</span>
                 </a>
