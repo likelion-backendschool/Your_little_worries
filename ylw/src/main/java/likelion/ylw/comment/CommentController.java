@@ -11,15 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller와 Service에 멤버를 적용하지 않은 상태입니다.
@@ -34,44 +33,49 @@ public class CommentController {
     private final MemberService memberService;
 
     /**
-     * 댓글 생성하기
+     * 회원 댓글 생성하기
+     * {id} = 게시글 id
      */
     @PostMapping("/create/{id}")
-    public String commentCreate(Model model, @PathVariable("id") Integer id,
+    public String createComment(Model model, @PathVariable("id") Integer id,
                                 @Valid CommentForm commentForm, BindingResult bindingResult, Principal principal) {
 
         Article article = this.articleService.findById(id);
 
-        // 비회원일 경우
-        if (principal == null) {
-            // 임시 닉네임,비밀번호 유효성 체크
-            if (commentForm.getTempNickname().trim().length() == 0 ||
-                    commentForm.getTempPassword().trim().length() == 0) {
-                bindingResult.addError(new FieldError("commentForm", "tempNickname", "닉네임과 비밀번호는 필수입니다."));
-            }
-
-            if (bindingResult.hasErrors()) {
-                List<Comment> commentList = commentService.getCommentByArticleId(article);
-                model.addAttribute("article", article);
-                model.addAttribute("commentList",commentList);
-                return "article_result";
-            }
-            this.commentService.create(article, commentForm);
-        } else {
-            // form 검증
-            if (bindingResult.hasErrors()) {
-                List<Comment> commentList = commentService.getCommentByArticleId(article);
-                model.addAttribute("article", article);
-                model.addAttribute("commentList",commentList);
-                return "article_result";
-            }
-            // 답변 등록
-            Member member = this.memberService.getMemberId(principal.getName());
-            this.commentService.create(article, commentForm.getContent(), member);
+        // form 검증
+        if (bindingResult.hasErrors()) {
+            List<Comment> commentList = commentService.getCommentByArticleId(article);
+            model.addAttribute("article", article);
+            model.addAttribute("commentList",commentList);
+            return "article_result";
         }
+        // 댓글 등록
+        Member member = this.memberService.getMemberId(principal.getName());
+        this.commentService.create(article, commentForm.getContent(), member);
+
         return String.format("redirect:/article/result/%s", id);
     }
+    /**
+     * 비회원 댓글 생성하기
+     */
+    @PostMapping("/non-create/{id}")
+    public String createComment(Model model, @PathVariable("id") Integer id,
+                                @Valid NonMemberCommentForm nonMemberCommentForm, BindingResult bindingResult) {
 
+        Article article = this.articleService.findById(id);
+
+        // form 검증
+        if (bindingResult.hasErrors()) {
+            List<Comment> commentList = commentService.getCommentByArticleId(article);
+            model.addAttribute("article", article);
+            model.addAttribute("commentList",commentList);
+            return "article_result";
+        }
+        // 댓글 등록
+        this.commentService.create(article, nonMemberCommentForm);
+
+        return String.format("redirect:/article/result/%s", id);
+    }
     /**
      * 댓글 수정하기
      */
@@ -92,7 +96,7 @@ public class CommentController {
     }
 
     /**
-     * 댓글 삭제하기
+     * 회원 댓글 삭제하기
      */
     @GetMapping("/delete/{id}")
     public String deleteComment(@PathVariable("id") Integer id, Principal principal) {
@@ -105,5 +109,24 @@ public class CommentController {
 
         this.commentService.delete(comment);
         return String.format("redirect:/article/result/%s", comment.getArticle().getId());
+    }
+    /**
+     * 비회원 댓글 삭제하기
+     * json 데이터를 반환해줌
+     */
+    @ResponseBody
+    @PostMapping("/non-delete/{id}")
+    public Map<String, String> deleteComment(@PathVariable("id") Integer id, @RequestBody NonMemberCommentForm nonMemberCommentForm) {
+        Comment comment = this.commentService.getComment(id);
+
+        Map<String,String> result = new HashMap<>();
+        boolean isTempMember =commentService.getResultByTempMember(nonMemberCommentForm.getTempNickname(), nonMemberCommentForm.getTempPassword());
+        if (isTempMember) {
+            result.put("result","success");
+            this.commentService.delete(comment);
+            return result;
+        }
+        result.put("result","failure");
+        return result;
     }
 }

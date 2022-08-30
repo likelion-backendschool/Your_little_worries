@@ -35,12 +35,12 @@ public class CommentService {
     /**
      *  비회원 댓글 등록
      */
-    public void create(Article article, CommentForm commentForm) {
+    public void create(Article article, NonMemberCommentForm nonMemberCommentForm) {
         Comment comment = new Comment();
         comment.setArticle(article);
-        comment.setContent(commentForm.getContent());
-        comment.setTempNickname(commentForm.getTempNickname());
-        comment.setTempPassword(commentForm.getTempPassword());
+        comment.setContent(nonMemberCommentForm.getContent());
+        comment.setTempNickname(nonMemberCommentForm.getTempNickname());
+        comment.setTempPassword(nonMemberCommentForm.getTempPassword());
         this.commentRepository.save(comment);
     }
 
@@ -71,5 +71,14 @@ public class CommentService {
         this.commentRepository.delete(answer);
     }
 
-
+    /**
+     * 임시비번과 임시닉네임으로 댓글찾기
+     */
+    public boolean getResultByTempMember(String tempNickname, String tempPassword) {
+        int result = this.commentRepository.countByTempNicknameAndTempPassword(tempNickname,tempPassword);
+        if (result >= 1) {
+            return true;
+        }
+        return false;
+    }
 }

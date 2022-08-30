@@ -8,4 +8,6 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     List<Comment> findByArticle(Article article);
+
+    Integer countByTempNicknameAndTempPassword(String tempNickname, String tempPassword);
 }
