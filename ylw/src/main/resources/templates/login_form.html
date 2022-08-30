@@ -4,10 +4,10 @@
         layout:decorate="~{layout}">
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <div class="container mx-auto w-[700px] mt-5 p-10 bg-gray-200">
+    <div class="container mx-auto w-[700px] mt-5 p-10 bg-white shadow-lg">
         <form th:action="@{/member/login}" method="post" class="flex flex-col">
 
-            <h2 class="text-center text-2xl font-semibold mt-1 mb-12 pb-1">너의 자질구레한 고민들</h2>
+            <div class="text-center text-2xl font-semibold mt-1 mb-12 pb-1">너의 자질구레한 고민들</div>
 
             <div class="mb-3 flex">
                 <label class="form-label w-[100px]">로그인ID</label>

@@ -5,7 +5,12 @@
 >
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <div>가입한 아이디</div>
-    <div th:text="${member.memberId}"></div>
+    <div class="container mx-auto w-[700px] p-10 mt-5 flex flex-col bg-white shadow-lg">
+        <div class="text-center text-2xl font-semibold mt-1 mb-2 pb-5">가입한 아이디</div>
+        <div class="text-center mb-9">회원가입 시 사용한 아이디는 <span class="font-bold" th:text="${member.memberId}"></span> 입니다</div>
+        <div class="text-center">
+            <button type="submit" class="mt-4 rounded-md p-3 w-[450px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg justify-center"><a th:href="@{/member/login}" class="no-underline text-white font-bold">로그인 화면으로 돌아가기</a></button>
+        </div>
+    </div>
 </div>
 </html>
