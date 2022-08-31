@@ -8,7 +8,7 @@ public class HomeController {
 
     @RequestMapping("/")
     public String homeController() {
-        return "redirect:/article/categoryList";
+        return "index";
     }
 
     @RequestMapping("/layout")

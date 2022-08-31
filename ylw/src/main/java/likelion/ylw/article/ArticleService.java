@@ -44,7 +44,7 @@ public class ArticleService {
     }
 
 
-    public Integer create(String title, String content, Integer category_id) {
+    public Article create(String title, String content, Integer category_id) {
         Category category = categoryService.findById(category_id);
         Article article = new Article();
         article.setTitle(title);
@@ -52,7 +52,7 @@ public class ArticleService {
         article.setCategory(category);
 
         articleRepository.save(article);
-        return article.getId();
+        return article;
     }
 
     public void delete(Integer id) {

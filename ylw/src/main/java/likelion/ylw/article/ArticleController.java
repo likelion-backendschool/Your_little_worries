@@ -15,7 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final CommentService commentService;
+    private final ArticleItemService articleItemService;
 
     private final CategoryService categoryService;
 
@@ -68,12 +71,15 @@ public class ArticleController {
 
     @PostMapping("/create")
     public String createArticle(@Valid ArticleForm articleForm, BindingResult bindingResult, @RequestParam Integer category_id) {
+
         if (bindingResult.hasErrors()) {
             return "article_form";
         }
 
-        Integer id = articleService.create(articleForm.getTitle(), articleForm.getContent(), category_id);
-        return String.format("redirect:/article/vote/%d", id);
+        Article article = articleService.create(articleForm.getTitle(), articleForm.getContent(), category_id);
+        Stream.of(articleForm.getItems())
+                .forEach(item -> articleItemService.create(article, item));
+        return String.format("redirect:/article/vote/%d", article.getId());
     }
 
     @PreAuthorize("isAuthenticated()")
