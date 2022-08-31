@@ -10,6 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,4 +40,7 @@ public class Article extends BaseTimeEntity {
 
     @ManyToOne
     private Category category;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
+    private List<ArticleItem> articleItemList;
 }

@@ -31,22 +31,22 @@
         </div>
 
         <div id="itemContainer" class="flex-column d-flex">
-            <input class="my-2" type="text" name="item[]"  placeholder="1번"/>
-            <input class="my-2" type="text" name="item[]"  placeholder="2번"/>
+            <input class="my-2" type="text" name="items[]"  placeholder="1번"/>
+            <input class="my-2" type="text" name="items[]"  placeholder="2번"/>
         </div>
 
         <input type="submit" value="저장하기" class="btn btn-primary my-2 float-right">
     </form>
 </div>
-</html>
-<script>
+<script layout:fragment="script" type='text/javascript'>
     $("#append_column").on("click", function () {
         const numOfChild = document.getElementById("itemContainer").childElementCount
         const column = document.createElement('input')
         column.classList.add('my-2')
         column.setAttribute('type', 'text')
-        column.setAttribute('name', 'item[]')
-        column.setAttribute('placeholder', `${numOfChild}번`)
+        column.setAttribute('name', 'items[]')
+        column.setAttribute('placeholder', `${numOfChild+1}번`)
         document.getElementById("itemContainer").appendChild(column)
     })
 </script>
+</html>
