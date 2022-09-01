@@ -55,11 +55,6 @@
         =======================
         댓글 목록
         아래 공사중
-        https://www.thewordcracker.com/jquery-examples/how-to-add-specific-content-to-html-using-jquery/
-        https://wangtak.tistory.com/27 제이쿼리에 태그추가에 변수넣는법
-        일반 버튼들 보이는거 구성
-        태그 추가가능여부
-        form애들도 꾸며줘
         =======================
         =======================
     */-->
@@ -75,17 +70,16 @@
                 <div class="blog-comments__item  p-3">
                     <div class="blog-comments__avatar d-flex justify-content-between mr-3">
                         <div class="item d-flex">
+                            <!--/*회원 비회원 공통 부분 start*/-->
                             <div th:if="${comment.author != null}" th:text="${comment.author.getNickname()}" class="font-weight-bold">익명</div>
                             <div th:if="${comment.tempNickname != null}" th:text="${comment.getTempNickname()}" class="font-weight-bold">익명</div>
                             <div th:text="${#temporals.format(comment.getCreatedDate, 'yyyy-MM-dd HH:mm:ss')}" class="small text-muted ml-2 mt-1">1 분전</div>
                             <div th:text="${comment.getModifiedDate()}" class="d-none"></div>
-                            <!--/*
-                                    ==========================
-                                       회원이 보는 댓글 view
-                                    ==========================
-                            */-->
+                            <!--/*회원 비회원 공통 부분 end*/-->
+
+                            <!--/*회원이 보는 댓글 버튼 start*/-->
                             <div th:if="${comment.author != null}" class="d-inline">
-                                <a th:if="${#authentication.name == comment.author.getMemberId()}" href="javascript:void(0);" th:myContent="${comment.content}" th:onclick="createCommentModifyForm(event, this.getAttribute('myContent'))"  type="button" class="btn-link pl-1 comment-modify-toggle">
+                                <a th:if="${#authentication.name == comment.author.getMemberId()}" href="javascript:void(0);" th:myContent="${comment.content}" th:onclick="createCommentModifyForm(event, this.getAttribute('myContent'))"  type="button" class="btn-link pl-1">
                                     <span class="text-success">
                                         <i class="material-icons">edit</i>
                                     </span>
@@ -98,44 +92,62 @@
                                     삭제
                                 </a>
                             </div>
-                            <!--/*
-                                    ==========================
-                                       비회원이 보는 댓글 view
-                                    ==========================
-                            */-->
+                            <!--/*회원이 보는 댓글 버튼 end*/-->
+
+                            <!--/*비회원이 보는 댓글 버튼 start*/-->
                             <div th:if="${#authentication.name == 'anonymousUser'}"  class="d-inline">
-                                <a href="javascript:void(0);" class="btn-link pl-1 non-comment-modify-toggle">
+                                <a href="javascript:void(0);" th:onclick="createCommentValidForm(event, 'check')" class="btn-link pl-1" >
                                     <span class="text-success">
                                         <i class="material-icons">edit</i>
                                     </span>
                                     수정
                                 </a>
-                                <a type="button" class="btn-link non-comment-modify-toggle">
+                                <a href="javascript:void(0);" type="button" th:onclick="createCommentValidForm(event, 'delete')" class="btn-link"  >
                                     <span class="text-light">
                                         <i class="material-icons">delete</i>
                                     </span>
                                     삭제
                                 </a>
-                                <div class="d-none">
+
+                                <!--/*-->
+                                        ==========================
+                                               toast layout
+                                        ==========================
+                                <!--*/-->
+<!--                                position: absolute; inset: 0px; overflow: hidden;-->
+<!--                                pointer-events: none;-->
+<!--                                visibility: hidden; z-index: -1;-->
+
+                                <div class="toast-valid d-none bg-success position-absolute p-1 rounded shadow-sm">
                                     <div>
                                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" disabled/>
                                         <input type="hidden" name="tempNickname" th:value="${comment.tempNickname}" disabled/>
-                                        <input type="password" name="tempPassword" value="" placeholder="비밀번호를 입력해주세요"  required>
+                                        <input type="password" name="tempPassword" value="" placeholder="비밀번호를 입력해주세요" class="form-control-sm input-sm" required>
                                     </div>
-                                    <div>
-                                        <a th:id="check-+${comment.id}">확인</a>
-                                        <a typse="button">취소</a>
+                                    <div class="btn-group-sm mt-1  float-right">
+                                        <button type="button" class="btn btn-secondary border-0" th:myContent="${comment.content}" th:myId="${comment.id}" th:onclick="sendCommentValidForm(event, this.getAttribute('myContent'),this.getAttribute('myId'))">
+                                            확인
+                                        </button>
+                                        <button type="button" onclick="nonClearCommentModifyForm()" class="btn btn-secondary border-0 text-center">취소</button>
                                     </div>
                                 </div>
                             </div>
+                            <!--/*비회원이 보는 댓글 버튼 end*/-->
                         </div>
+                        <!--/*-->
+                                ==========================
+                                           신고
+                                ==========================
+                        <!--*/-->
                         <div class="item">
+                            <!--/*비회원 댓글 모두 신고 표시*/-->
                             <button th:if="${comment.author == null}" type="button" class="btn btn-white btn-sm">
                                     <span class="text-danger">
                                         <i class="material-icons">report</i>
                                     </span>
-                                신고
+                                    신고
                             </button>
+                            <!--/*회원 댓글 중 본인 제외하고 모두 신고 표시*/-->
                             <th:block th:unless="${comment.author == null}">
                                 <button th:if="${#authentication.name != comment.author.getMemberId()}" type="button" class="btn btn-white btn-sm">
                                     <span class="text-danger">
@@ -144,22 +156,25 @@
                                     신고
                                 </button>
                             </th:block>
-
                         </div>
                     </div>
+                    <!--/*-->
+                            ==========================
+                                    댓글 수정 폼
+                            ==========================
+                    <!--*/-->
                     <div class="blog-comments__content ml-3">
-                        <!--/*회원*/-->
-                        <form th:if="${#authentication.name != 'anonymousUser'}" th:action="@{|/comment/modify/${comment.id}|}"  method="post">
+                        <!--/*회원 댓글 수정폼*/-->
+                        <form th:if="${#authentication.name != 'anonymousUser'}" th:action="@{|/comment/modify/${comment.id}|}" method="post">
                             <p class="m-0 my-1 mb-2 font-weight-light" >[[${comment.content}]]</p>
                         </form>
-                        <!--/*비회원*/-->
-                        <form th:if="${#authentication.name == 'anonymousUser'}" th:action="@{|/comment/non-modify/${comment.id}|}"  method="post" novalidate>
+                        <!--/*비회원 댓글 수정폼*/-->
+                        <form th:if="${#authentication.name == 'anonymousUser'}" th:action="@{|/comment/non-modify/${comment.id}|}" method="post" novalidate>
                             <p class="m-0 my-1 mb-2 font-weight-light" >[[${comment.content}]]</p>
                         </form>
                     </div>
                 </div>
             </div>
-
 
             <div class="card-footer border-top">
                 <div class="row">
@@ -180,9 +195,9 @@
 
 <script>
     /**
-     *  회원 수정 폼 클릭시 이벤트
+     *  [회원] 관련 이벤트 코드
      */
-    // 태그 생성을 위한 섧정
+    // 수정 form 내용물
     const commentModifyLayout = `<div id='modify-from-group' class='form-group p-absolute'>
                                 <textarea class='form-control' name='content' rows='3' required></textarea>
                                 <input type='submit' class='mb-2 btn btn-sm btn-primary mr-1 mt-1' value='수정완료'/>
@@ -190,118 +205,130 @@
                               </div>`;
     const commentModifyTag = document.createElement('div');
     commentModifyTag.innerHTML = commentModifyLayout;
-    let commentModifyBtn = '';
-    // 수정 폼 생성
+
+    let commentModifyBtn = '';  // 댓글 수정 버튼 태그
+
+    // 댓글 수정 버튼 이벤트
     function createCommentModifyForm(event, content) {
-        commentModifyBtn = event.target // 수정 버튼
-        commentModifyBtn.classList.toggle('d-none');
 
-        commentModifyTag.querySelector('.form-control').innerHTML = content;
-        const commentModifyForm = event.target.closest('.blog-comments__item').children[1].children[0]; //form 위치
-        commentModifyForm.children[1].classList.toggle("d-none"); //기존 내용 안 보이게
-        commentModifyForm.append(commentModifyTag); // form 위치에 textarea 추가
+        if (commentModifyBtn !== '') {
+            // 이전 수정 버튼 보이게 설정
+            commentModifyBtn.classList.remove('d-none');
+        }
+        commentModifyBtn = event.target                 // 수정 버튼
+        commentModifyBtn.classList.toggle('d-none');    // 수정 버튼 숨김
 
+        commentModifyTag.querySelector('.form-control').innerHTML = content;                                // textarea에 내용 넣어줌
+        const commentModifyForm = commentModifyBtn.closest('.blog-comments__item').children[1].children[0]; // form 태그 가져오기
+        commentModifyForm.children[1].classList.add("d-none");                                              // p태그 내용 안 보이게 설정
+        commentModifyForm.append(commentModifyTag);                                                         // form 위치에 form 내용물 추가
     }
-    // 수정 폼 취소 버튼 이벤트
+    // 댓글 수정폼 취소 버튼 이벤트
     function clearCommentModifyForm() {
-        commentModifyBtn.classList.toggle('d-none'); // 수정 버튼 다시 보이게
-        commentModifyTag.previousElementSibling.classList.toggle('d-none'); //p태그 다시 보이게
-        commentModifyTag.remove(); // form 제거
+        commentModifyBtn.classList.remove('d-none');                        // 수정 버튼 다시 보이게
+        commentModifyTag.previousElementSibling.classList.toggle('d-none'); // p태그 다시 보이게
+        commentModifyTag.remove();                                          // form 제거
     }
 
     /**
-     * 비회원 수정, 삭제 유효성 체크
+     * [비회원] 관련 이벤트 코드
      */
+    let commentValidToast = ''; // toast 태그
+    let commentValidMethod =''; // 수정 or 삭제 변수
 
-    function createCommentValidForm(event, commentId, method) {
+    // 댓글 수정 버튼 이벤트
+    function createCommentValidForm(event, method) {
 
+        commentValidMethod = method;
 
+        if (commentValidToast !== '') {
+            // 이전 toast창 안 보이게 설정
+            commentValidToast.classList.add('d-none');
+        }
+
+        commentValidToast = event.target.closest('div').lastElementChild  // toast창 가져옴
+        commentValidToast.classList.toggle('d-none')                      // toast창 보이게 설정
+
+        // 버튼 위치 조절
+        if (method === 'delete') {
+            commentValidToast.classList.add('ml-5')
+        } else {
+            commentValidToast.classList.remove('ml-5')
+        }
     }
-    document.querySelectorAll(".check-comment-owner").forEach((item) => {
 
-        item.addEventListener('click', () => {
-            const methodAndCommentId = item.getAttribute('id').split('-');
-            const method = methodAndCommentId[0];
-            const commentId = methodAndCommentId[1];
+    // 비회원 수정 폼 생성
+    function nonCreateCommentModifyForm(event, content) {
 
-            const tempNickname = item.closest('div').previousElementSibling.children[1].value;
-            const tempPassword = item.closest('div').previousElementSibling.children[2].value;
+        if (commentModifyBtn !== '') {
+            // 이전 수정버튼 보이게 설정
+            commentModifyBtn.classList.remove('d-none');
+        }
 
-            const token = item.closest('div').previousElementSibling.children[0].value;
-            fetch(`/comment/non-${method}/${commentId}`, {
-                // credentials: 'include',
-                method: "POST",
-                body : JSON.stringify({
-                    tempNickname : tempNickname,
-                    tempPassword : tempPassword
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                    'X-CSRF-Token': token  // 필수! 안 해주면 "403 forbidden" 오류
+        commentModifyBtn = event.target.closest('.d-inline').firstElementChild  // 수정 버튼 가져옴
+        commentModifyBtn.classList.toggle('d-none');                            // 수정 버튼 안 보이게 설정
+
+        // createCommentModifyForm메서드와 동일
+        commentModifyTag.querySelector('.form-control').innerHTML = content;
+        const commentModifyForm = commentModifyBtn.closest('.blog-comments__item').children[1].children[0];
+        commentModifyForm.children[1].classList.add("d-none");
+        commentModifyForm.append(commentModifyTag);
+    }
+    // toast 창 취소 버튼 이벤트
+    function nonClearCommentModifyForm() {
+        commentValidToast.classList.add('d-none');
+    }
+    // toast 창 확인 버튼 이벤트
+    function sendCommentValidForm(event, content, commentId) {
+        if (commentValidMethod === ''){
+            return;
+        }
+        const validForm = event.target.closest('.toast-valid').firstElementChild;  // toast form 가져옴
+        const token = validForm.children[0].value;                                 // token 값 가져옴
+        const tempNickname = validForm.children[1].value;                          // tempNickname 값 가져옴
+        const tempPassword = validForm.children[2].value;                          // tempPassword 값 가져옴
+
+        if (tempPassword == '') {
+            alert('비밀번호를 입력세주세요');
+            return;
+        }
+        // method 여부에 따라서 check 또는 delete 요청을 보낸다.
+        fetch(`/comment/non-${commentValidMethod}/${commentId}`, {
+            // credentials: 'include',
+            method: "POST",
+            body : JSON.stringify({
+                tempNickname : tempNickname,
+                tempPassword : tempPassword
+            }),
+            headers: {
+                "Content-Type": "application/json",
+                'X-CSRF-Token': token  // 필수! 안 해주면 "403 forbidden" 오류
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.result === "success") {
+                    switch (commentValidMethod) {
+                        case "check":
+                            // 유효성 체크만
+                            nonCreateCommentModifyForm(event, content); // 수정 form 보이게 설정
+                            nonClearCommentModifyForm();                // toast 창 숨겨줌
+                            break;
+                        case "delete":
+                            // 유효성 체크 후 삭제
+                            alert("댓글이 삭제되었습니다.");
+                            location.reload();
+                            break;
+                        default :
+                            alert("잘못된 접근입니다.");
+                    }
+                } else if (data.result === "failure") {
+                    alert("비밀번호가 틀렸습니다.");
+                    return;
                 }
             })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.result === "success") {
-                        switch (method) {
-                            case "check":
-                                item.closest('form').children[2].classList.toggle("d-none"); // 수정버튼 숨김
-                                item.closest('.toast-undo').classList.toggle("d-none");      // toast 숨김
-                                item.closest('form').children[1].classList.toggle("d-none"); // 수정form 활성화
-                                break;
-                            case "delete":
-                                alert("댓글이 삭제되었습니다.");
-                                location.reload();
-                                break;
-                            default :
-                                alert("잘못된 접근입니다.")
-                        }
-                    } else if (data.result === "failure") {
-                        alert("비밀번호가 틀렸습니다.");
-                        item.closest('div').previousElementSibling.children[2].value = "";
-                    }
-                })
-                .catch(err => {
-                    alert(err);
-                });
-        })
-    })
-
-    /**
-     *  비회원 수정 폼 클릭시 이벤트
-     */
-    const nonCommentModifyBtnList = document.querySelectorAll(".non-comment-modify-toggle");
-
-
-    // 수정 버튼 클릭시 toggle 형식으로 toast를 화면에 보이게 함
-    // 다른 수정 폼, 혹은 toast를 제외한 화면 클릭시 toast없앰
-    window.addEventListener('click', (e) => {
-        nonCommentModifyBtnList.forEach((item) => {
-            const toast = item.nextElementSibling; // 다음 요소 toast
-
-            // 클릭 위치가 toast이면 취소
-            if (e.target.closest('.toast-undo')) {
-                return ;
-            } else if (e.target.closest('.toast-form')) {
-                return ;
-            } else if (e.target.closest('.toast-btn')) {
-                return ;
-            }
-            // 다른 toast 안 보이게 none처리함
-            if (!toast.classList.contains("d-none")){
-                toast.classList.add("d-none");
-            }
-            // 클릭 위치가 버튼이면 toast 화면에 보이게 함
-            if(e.target == item) {
-                toast.classList.remove("d-none");
-            }
-        })
-    });
-    // 비번 클릭 창 취소
-    document.querySelectorAll(".comment-pwd-cancel").forEach((item) => {
-        item.addEventListener('click', () => {
-            const div = item.closest('.toast-undo') // 두 번째 조상
-            div.classList.toggle("d-none"); // toast 숨겨줌
-        })
-    })
+            .catch(err => {
+                alert(err);
+            });
+    }
 </script>
