@@ -4,8 +4,13 @@ import likelion.ylw.article.Article;
 import likelion.ylw.member.Member;
 import likelion.ylw.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +23,11 @@ public class CommentService {
     /**
      * 투표지id에 해당하는 댓글 목록 가져오기
      */
-    public List<Comment> getCommentByArticleId(Article article) {
-        return commentRepository.findByArticle(article);
+    public Page<Comment> getCommentByArticleId(Article article, int page) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("id"));
+        Pageable pageable = PageRequest.of(page, 20, Sort.by(sorts));
+        return commentRepository.findByArticle(article, pageable);
     }
 
     /**

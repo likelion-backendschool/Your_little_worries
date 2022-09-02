@@ -5,6 +5,7 @@ import likelion.ylw.article.ArticleService;
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,14 +38,14 @@ public class CommentController {
      * {id} = 게시글 id
      */
     @PostMapping("/create/{id}")
-    public String createComment(Model model, @PathVariable("id") Integer id,
-                                @Valid CommentForm commentForm, BindingResult bindingResult, Principal principal) {
+    public String createComment(Model model, @PathVariable("id") Integer id, @Valid CommentForm commentForm, BindingResult bindingResult,
+                                Principal principal, @RequestParam(value="page", defaultValue="0") int page) {
 
         Article article = this.articleService.findById(id);
 
         // form 검증
         if (bindingResult.hasErrors()) {
-            List<Comment> commentList = commentService.getCommentByArticleId(article);
+            Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
             model.addAttribute("article", article);
             model.addAttribute("commentList",commentList);
             return "article_result";
@@ -59,14 +60,14 @@ public class CommentController {
      * 비회원 댓글 생성하기
      */
     @PostMapping("/non-create/{id}")
-    public String createComment(Model model, @PathVariable("id") Integer id,
-                                @Valid NonMemberCommentForm nonMemberCommentForm, BindingResult bindingResult) {
+    public String createComment(Model model, @PathVariable("id") Integer id, @Valid NonMemberCommentForm nonMemberCommentForm,
+                                BindingResult bindingResult, @RequestParam(value="page", defaultValue="0") int page) {
 
         Article article = this.articleService.findById(id);
 
         // form 검증
         if (bindingResult.hasErrors()) {
-            List<Comment> commentList = commentService.getCommentByArticleId(article);
+            Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
             model.addAttribute("article", article);
             model.addAttribute("commentList",commentList);
             return "article_result";
