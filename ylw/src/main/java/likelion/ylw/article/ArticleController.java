@@ -119,9 +119,10 @@ public class ArticleController {
      * [임시] 투표 결과 페이지
      */
     @GetMapping("/result/{id}")
-    public String resultArticle(Model model, @PathVariable("id") Integer id, CommentForm commentForm, NonMemberCommentForm nonMemberCommentForm) {
+    public String resultArticle(Model model, @PathVariable("id") Integer id, CommentForm commentForm, NonMemberCommentForm nonMemberCommentForm,
+                                @RequestParam(value="page", defaultValue="0") int page) {
         Article article = articleService.findById(id);
-        List<Comment> commentList = commentService.getCommentByArticleId(article);
+        Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
 
         model.addAttribute("article", article);
         model.addAttribute("commentList",commentList);

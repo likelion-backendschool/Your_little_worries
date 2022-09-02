@@ -179,7 +179,49 @@
             <div class="card-footer border-top">
                 <div class="row">
                     <div class="col text-center view-report">
-                        <button type="submit" class="btn btn-white">여기에 페이징</button>
+                        <!-- 페이징처리 시작 -->
+                        <div th:if="${!commentList.isEmpty()}">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" th:classappend="${!commentList.hasPrevious} ? 'disabled'" >
+                                    <a class="page-link"
+                                       th:href="@{|?page=0|}">
+                                        <span class="text-primary">
+                                            <i class="material-icons">first_page</i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="page-item" th:classappend="${!commentList.hasPrevious} ? 'disabled'">
+                                    <a class="page-link"
+                                       th:href="@{|?page=${commentList.number-1}|}">
+                                        <span class="text-primary" >
+                                            <i class="material-icons">keyboard_arrow_left</i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li th:each="page: ${#numbers.sequence(0, commentList.totalPages-1)}"
+                                    th:if="${page >= commentList.number-5 and page <= commentList.number+5}"
+                                    th:classappend="${page == commentList.number} ? 'active'"
+                                    class="page-item">
+                                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                </li>
+                                <li class="page-item" th:classappend="${!commentList.hasNext} ? 'disabled'">
+                                    <a class="page-link" th:href="@{|?page=${commentList.number+1}|}">
+                                        <span class="text-primary" >
+                                            <i class="material-icons">keyboard_arrow_right</i>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="page-item" th:classappend="${!commentList.hasNext} ? 'disabled'" >
+                                    <a class="page-link"
+                                       th:href="@{|?page=${commentList.totalPages-1}|}">
+                                        <span class="text-primary" >
+                                            <i class="material-icons">last_page</i>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- 페이징처리 끝 -->
                     </div>
                 </div>
             </div>
