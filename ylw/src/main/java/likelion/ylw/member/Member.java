@@ -4,6 +4,7 @@ import likelion.ylw.util.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@DynamicInsert
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +33,18 @@ public class Member extends BaseTimeEntity {
     @Column
     @ColumnDefault("0")
     private Integer score;
+
+    @Column
+    @ColumnDefault("0")
+    private Integer enrollCount;
+
+    @Column
+    @ColumnDefault("0")
+    private Integer participateCount;
+
+    @Column
+    @ColumnDefault("0")
+    private Integer popularVoteCount;
 
 //    private LocalDateTime createdDate;
 

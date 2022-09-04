@@ -3,9 +3,12 @@
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}"
 >
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white shadow-lg">
+    <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white rounded-2xl shadow-lg">
         <form th:action="@{/mail/send}" method="post">
 
             <div th:if="${param.error}">
@@ -13,7 +16,7 @@
                     이메일을 형식에 맞게 작성해주세요.
                 </div>
             </div>
-            <div class="text-xl text-2xl font-semibold mt-1 mb-12 pb-1">이메일 발송</div>
+            <div class="text-center text-xl text-2xl font-semibold mt-1 mb-12 pb-1">이메일 발송</div>
 
             <div class="mb-3">
                 <label class="form-label">가입 시 등록하신 이메일 주소를 입력해 주세요.</label>
@@ -25,12 +28,19 @@
                 />
             </div>
             <div class="text-center">
-            <button type="submit"
-                    class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
-                발송
-            </button>
+                <button id="btn-popup" type="submit"
+                        class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
+                    발송하기
+                </button>
             </div>
         </form>
     </div>
 </div>
 </html>
+
+<script>
+var btn = document.querySelector("#btn-popup")
+btn.addEventListener('click', function(event) {
+    alert('비밀번호 재설정을 위한 메일이 성공적으로 발송되었습니다.\n\t 이메일 인증을 통해 비밀번호를 새로 설정해주시기 바랍니다.');
+});
+</script>

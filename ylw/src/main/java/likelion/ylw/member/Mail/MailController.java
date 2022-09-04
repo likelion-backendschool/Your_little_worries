@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 @RequestMapping(value = "/mail", method = RequestMethod.GET)
 @Controller
@@ -18,10 +19,10 @@ public class MailController {
     private final MailService mailService;
     private final MemberService memberService;
     private String email;
+    private boolean isExist = false;
 
     @GetMapping("/auth/2377655")
     public String send() throws IOException {
-
          return "new_password";
     }
 
@@ -31,10 +32,17 @@ public class MailController {
         Example.sendEmail(email);
         this.email = email;
         return "mail_send";
+        //return "login_form";
     }
 
     @GetMapping("/reset")
-    public String send_form() {
+    public String send_form(@Valid MailForm mailForm, BindingResult bindingResult) {
+        try {
+            List<Member> members = memberService.findAll();
+        } catch(NotFoundEmailException e) {
+            bindingResult.reject("notFoundEmail", e.getMessage());
+            return "sendEmail_form";
+        }
 
         return "sendEmail_form";
     }

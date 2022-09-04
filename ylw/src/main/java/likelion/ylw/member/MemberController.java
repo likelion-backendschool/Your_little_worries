@@ -2,14 +2,14 @@ package likelion.ylw.member;
 
 import likelion.ylw.member.Mail.MailForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RequiredArgsConstructor
 @Controller
@@ -65,5 +65,32 @@ public class MemberController {
         model.addAttribute("member", member);
 
         return "findID_result";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/myPage")
+    public String my_page(Principal principal, Model model) {
+        System.out.println("principal getName(): " + principal.getName());
+        Member member = memberService.getMemberId(principal.getName());
+        model.addAttribute("member", member);
+        return "myPage_form";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/profile/edit")
+    public String my_page_edit(Principal principal, Model model) {
+        Member member = memberService.getMemberId(principal.getName());
+        model.addAttribute("member", member);
+        return "editProfile_form";
+    }
+
+    @PutMapping("/profile/edit")
+    public String my_page_edit() {
+        return "redirect:/";
+    }
+
+    @GetMapping("/delete") //delete_form 추가하기
+    public String delete() {
+        return "delete_form";
     }
 }

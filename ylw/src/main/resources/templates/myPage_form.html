@@ -1,0 +1,245 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+        layout:decorate="~{layout}"
+>
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+.picture {
+  border-radius: 50%;
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.con {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.con {
+  max-width: 1200px;
+}
+
+.popup.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup__content {
+  min-width: 200px;
+  min-height: 200px;
+  background-color: white;
+  border: 2px solid black;
+  transform: translateY(-100%);
+  transition: transform 0.3s;
+}
+
+.popup__body {
+  padding: 0 10px;
+}
+
+.popup__head {
+  padding: 10px;
+}
+
+.popup__btn-close {
+  width: 30px;
+  height: 30px;
+  margin-left: auto;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.popup__btn-close:hover {
+  transform: rotate(185deg);
+}
+
+.popup__btn-close::before,
+.popup__btn-close::after {
+  content: "";
+  background-color: black;
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  transform: rotate(45deg);
+  transition: box-shadow 0.3s;
+}
+
+.popup__btn-close::after {
+  transform: rotate(-45deg);
+}
+
+.popup__btn-close:hover::before,
+.popup__btn-close:hover::after {
+  box-shadow: 0 0 3px black;
+}
+    </style>
+</head>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<div layout:fragment="content" class="main-content-container container-fluid px-4">
+
+    <div class="container mx-auto w-[1100px] p-10 my-10 flex flex-col bg-white rounded-2xl shadow-lg">
+        <section>
+            <div>
+                <div class="mt-0 mb-2 text-center text-4xl font-bold">My Page</div>
+            </div>
+
+            <div class="flex my-20">
+                <div class="flex flex-col my-auto items-center pt-1 mr-1">
+                    <div class="mx-9">
+                        <img class="picture" src="https://picsum.photos/id/233/300/300"></img>
+                    </div>
+                    <div class="text-center w-[50px] rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black mt-3 pt-1">
+                        <button type="submit">변경</button>
+                    </div>
+                </div>
+                <div class="w-[60%] pl-7">
+                    <div class="text-gray-900 text-center font-bold text-lg my-4"> 나의 정보</div>
+                    <ul class="bg-gray-100 text-gray-700 hover:text-gray-900 hover:shadow py-3 px-10 mt-3 divide-y rounded shadow-sm">
+                        <li class="flex items-center py-3">
+                            <span>계정상태</span>
+                            <span class="ml-auto"><span class="bg-green-500 py-1 px-2 rounded text-white text-sm">Active</span></span>
+                        </li>
+
+                        <li class="flex items-center py-3">
+                            <span>닉네임</span>
+                            <span class="ml-auto" th:text="${member.nickname}"></span>
+                        </li>
+
+                        <li class="flex items-center py-3">
+                            <span>아이디</span>
+                            <span class="ml-auto" th:text="${member.memberId}"></span>
+                        </li>
+                        <li class="flex items-center py-3">
+                            <span>이메일 주소</span>
+                            <span class="ml-auto" th:text="${member.email}"></span>
+                        </li>
+                        <li class="flex items-center py-3">
+                            <span>가입일자</span>
+                            <span class="ml-auto" th:text="${#temporals.format(member.createdDate, 'yy-MM-dd HH:mm')}"></span>
+                        </li>
+                    </ul>
+                    <div class="grid place-items-center">
+                        <a th:href="@{/member/profile/edit}" class="text-center w-[180px] h-9 rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black mt-6 pt-2.5">회원정보수정</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div>
+                <div class="text-gray-900 text-center font-bold text-lg my-4"> 나의 랭킹</div>
+            </div>
+            <div class="bg-gray-100 flex flex-col p-5 mb-20">
+                <div class="flex">
+                    <span class="flex-grow">랭킹점수</span>
+                    <div class="con mr-2 font-bold text-blue-500 underline">
+                        <a class="btn-popup" type="submit">
+                            내 랭킹 확인하기
+                        </a>
+                    </div>
+                    <div class="text-center w-[15%] mb-2 bg-yellow-400 font-bold text-white px-5" th:text="${member.score}"></div>
+                </div>
+                <div class="flex">
+                    <span class="flex-grow">투표등록</span>
+                    <span class="mr-2 text-red-500 font-bold" th:text="|${member.enrollCount}회|"></span>
+                    <div class="text-center w-[15%] mb-2 bg-indigo-900 font-bold text-white px-5">20</div>
+                </div>
+                <div class="flex">
+                    <span class="flex-grow">투표횟수</span>
+                    <span class="mr-2 text-red-500 font-bold" th:text="|${member.participateCount}회|"> </span>
+                    <div class="text-center w-[15%] mb-2 bg-indigo-900 font-bold text-white px-5">30</div>
+                </div>
+                <div class="flex">
+                    <span class="flex-grow">인기투표지 선정횟수</span>
+                    <span class="mr-2 text-red-500 font-bold" th:text="|${member.popularVoteCount}회|"></span>
+                    <div class="text-center w-[15%] mb-2 bg-indigo-900 font-bold text-white px-5">30</div>
+                </div>
+            </div>
+
+            <div class="popup">
+                <div class="popup__content">
+                    <div class="popup__head">
+                        <div class="popup__btn-close"></div>
+                    </div>
+                    <div class="popup__body">
+                        <div class="con">
+                            1등 가나다
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="text-gray-900 text-center font-bold text-lg my-4"> 내가 등록한 투표지 조회</div>
+            <div class="bg-gray-100 p-5 mb-20">
+                <table class="vote-record-table w-[100%]">
+                    <colgroup>
+                        <col width="20%" />
+                        <col width="35%" />
+                        <col width="45%" />
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th> id</th>
+                        <th> 투표지제목</th>
+                        <th> 투표지 결과</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td> 8973</td>
+                        <td> 투표지제목1</td>
+                        <td> 항목들 간에는 의견차이가 없습니다</td>
+                    </tr>
+                    <tr>
+                        <td> 1029</td>
+                        <td> 투표지제목2</td>
+                        <td> 1번항목이 (53%)로 우세합니다</td>
+                    </tr>
+                    <tr>
+                        <td> 0053</td>
+                        <td> 투표지제목3</td>
+                        <td> 1번항목이 (79%)로 우세합니다</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+</div>
+</html>
+
+<script>
+$('.btn-popup').click(function() {
+  $('.popup').addClass('active');
+});
+
+$('.popup__btn-close').click(function() {
+  $('.popup').removeClass('active');
+});
+</script>
+
+
+
+

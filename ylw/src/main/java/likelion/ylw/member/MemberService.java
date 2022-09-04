@@ -1,11 +1,13 @@
 package likelion.ylw.member;
 
+import likelion.ylw.member.Mail.NotFoundEmailException;
 import likelion.ylw.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -20,7 +22,6 @@ public class MemberService {
         member.setPassword(passwordEncoder.encode(password));
         member.setEmail(email);
         member.setNickname(nickname);
-//        member.setScore(score);
 
         try {
             memberRepository.save(member);
@@ -49,10 +50,18 @@ public class MemberService {
 
     public Member findByEmail(String email) {
         Optional<Member> om = this.memberRepository.findByEmail(email);
-        if(!om.isPresent()) {
+        if (!om.isPresent()) {
             System.out.println("찾으려는 email: " + email);
         }
         Member member = om.get();
         return member;
+    }
+
+    public List<Member> findAll() {
+        List<Member> members = this.memberRepository.findAll();
+        if(members.isEmpty()) {
+            throw new NotFoundEmailException("입력하신 이메일로 가입된 정보가 없습니다.");
+        }
+        return members;
     }
 }
