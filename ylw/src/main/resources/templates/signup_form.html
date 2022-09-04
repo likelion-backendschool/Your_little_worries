@@ -3,21 +3,23 @@
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
 <!--<html layout:decorate="~{layout}">-->
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white shadow-lg">
+    <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white rounded-2xl shadow-lg">
 
         <div class="my-3 border-bottom">
 
             <div>
-                <div class="text-center text-2xl font-semibold mt-1 mb-2 pb-5">회원가입</div>
-                <div class="text-center">YLW 홈페이지에 오신 것을 환영합니다.</div>
+                <div class="text-center text-2xl font-semibold mt-1 mb-2 pb-3">회원가입</div>
+                <div class="text-center pb-5">YLW 홈페이지에 오신 것을 환영합니다.</div>
             </div>
             <div>
                 <div>회원 정보를 입력해주세요.</div>
             </div>
         </div>
-
 
         <form th:action="@{|/member/signup|}" th:object="${memberCreateForm}" method="post">
             <div th:replace="form_errors :: formErrorsFragment"></div>

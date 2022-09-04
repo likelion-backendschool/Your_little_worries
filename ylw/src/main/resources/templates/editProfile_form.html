@@ -1,0 +1,57 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+        layout:decorate="~{layout}">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<div layout:fragment="content" class="main-content-container container-fluid px-4 rounded-2xl">
+<div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white shadow-lg rounded-2xl">
+
+    <div class="my-3 border-bottom">
+
+        <div>
+            <div class="text-center text-2xl font-semibold mt-1 mb-2 pb-5">회원 정보 수정</div>
+        </div>
+        <div>
+            <div>수정하실 회원 정보를 입력해주세요.</div>
+        </div>
+    </div>
+
+
+    <form th:action="@{/member/profile/edit}" method="post">
+<!--        <div th:replace="form_errors :: formErrorsFragment"></div>-->
+        <div class="mb-3">
+            <label class="form-label">사용자ID</label>
+            <input type="text" th:value = ${member.memberId} class="form-control" th:readonly="readonly" >
+        </div>
+        <div class="mb-3">
+            <label class="form-label">닉네임</label>
+            <input type="text" th:value="${member.nickname}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">비밀번호</label>
+            <input type="password" class="form-control" placeholder="비밀번호를 입력해주세요."/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">비밀번호 확인</label>
+            <input type="password" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">이메일</label>
+            <input type="email" th:value="${member.email}" class="form-control">
+        </div>
+        <div class="text-center">
+            <button type="submit"
+                    class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
+                수정하기
+            </button>
+        </div>
+        <div class="flex items-center justify-between pb-6 pt-[20px] flex">
+            <a class="flex px-4 pt-5 text-gray-400 text-center hover:text-gray-600 focus:text-gray-700 transition duration-200 ease-in-out inline-block" th:href="@{|/member/delete|}">회원 탈퇴 하기</a>
+        </div>
+    </form>
+</div>
+</div>
+</html>
