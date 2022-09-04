@@ -8,35 +8,38 @@
         <div class="card-body">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <h4 th:text="${notice.title}" class="border-bottom mb-3"></h4>
+            <div style="display: none" id="hiddenContent" th:text="${notice.content}"></div>
             <div id="viewer"></div>
         </div>
         <div class="my-3">
-            <a> wow </a>
-            <a th:href="@{|/notice/modify/${notice.id}|}" class="btn btn-sm btn-outline-secondary"
-               sec:authorize="isAuthenticated()"
-               th:if="${notice.author != null and #authentication.getPrincipal().getMemberId() == notice.author.memberId}"
-               th:text="수정"></a>
             <a href="javascript:void(0);" th:data-uri="@{|/notice/delete/${notice.id}|}"
-               class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-               th:if="${notice.author != null and #authentication.getPrincipal().getMemberId() == notice.author.memberId}"
+               class="delete mb-2 btn btn-primary mr-2 float-right" sec:authorize="isAuthenticated()"
+               th:if="${notice.author != null and #authentication.getPrincipal().getUsername() == notice.author.memberId}"
                th:text="삭제"></a>
+            <a th:href="@{|/notice/modify/${notice.id}|}" class="mb-2 btn btn-primary mr-2 float-right"
+               sec:authorize="isAuthenticated()"
+               th:if="${notice.author != null and #authentication.getPrincipal().getUsername() == notice.author.memberId}"
+               th:text="수정"></a>
         </div>
     </div>
 </div>
 <script layout:fragment="script" type='text/javascript' th:inline="javascript">
-    /*<![CDATA[*/
-    const content = /*[[${notice.content}]]*/;
-    const debugg = /*[[${authentication.getPrincipal().getMemberId()}]]*/;
-    console.log(debugg);
-    /*]]>*/
     const Editor = toastui.Editor;
-
     const viewer = Editor.factory({
         el: document.querySelector('#viewer'),
         viewer: true,
         height: 'auto',
         initialEditType: 'markdown',
-        initialValue: content
+        initialValue: document.getElementById("hiddenContent").innerText
+    });
+
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
     });
 
 </script>
