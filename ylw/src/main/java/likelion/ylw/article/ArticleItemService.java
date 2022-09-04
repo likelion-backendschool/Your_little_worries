@@ -3,6 +3,8 @@ package likelion.ylw.article;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ArticleItemService {
@@ -14,7 +16,13 @@ public class ArticleItemService {
         ArticleItem articleItem = new ArticleItem();
         articleItem.setArticle(article);
         articleItem.setContent(content);
-        this.articleItemRepository.save(articleItem);
+        articleItemRepository.save(articleItem);
         return articleItem;
+    }
+
+    public List<ArticleItem> findArticleItemByArticleId(Integer ArticleId) {
+        List<ArticleItem> articleItems = articleItemRepository.findArticleItemByArticleId(ArticleId);
+
+        return articleItems;
     }
 }

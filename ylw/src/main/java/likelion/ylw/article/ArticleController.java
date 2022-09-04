@@ -44,8 +44,10 @@ public class ArticleController {
     @GetMapping("/vote/{id}")
     public String vote(Model model, @PathVariable("id") Integer id) {
         Article article = articleService.findById(id);
+        List<ArticleItem> articleItems = articleItemService.findArticleItemByArticleId(id);
 
         model.addAttribute("article", article);
+        model.addAttribute("articleItems", articleItems);
 
         return "article_vote";
     }

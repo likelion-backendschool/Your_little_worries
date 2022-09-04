@@ -2,20 +2,41 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
-<div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <h1 th:text="${article.title}"></h1>
-    <div th:text="${article.content}"></div>
-    <a th:href="@{|/article/modify/${article.id}|}" class="btn btn-sm btn-outline-secondary" th:text="수정"></a>
-    <!--       sec:authorize="isAuthenticated()"-->
-    <!--       th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"-->
+<div layout:fragment="content" class="main-content-container container-fluid px-4 my-3">
+    <div class="card card-small mb-3">
+        <div class="card-body">
+            <h1 th:text="${article.title}"></h1>
+            <div th:text="${article.content}"></div>
+            <form>
+                <input class="form-control" type="text" placeholder="이름을 입력해주세요">
+                <input class="form-control" type="number" placeholder="나이를 입력해주세요">
 
-    <a href="javascript:void(0);" th:data-uri="@{|/article/delete/${article.id}|}"
-       class="delete btn btn-sm btn-outline-secondary"
-       th:text="삭제"></a>
-    <a th:href="@{|/article/result/${article.id}|}" class="btn btn-sm btn-outline-secondary" th:text="결과페이지"></a>
-    <a th:href="@{|/article/list/}"
+                <div th:each="articleItem : ${articleItems}" class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="radio" name="articleItem"
+                                   value="${articleItem.content}" onclick="getItem()"/>
+                        </div>
+                    </div>
+                    <div class="form-control" th:text="${articleItem.content}"/>
+                </div>
+                <div id='result'></div>
+            </form>
+            <div class="my-3">
+                <a th:href="@{|/article/modify/${article.id}|}" class="btn btn-sm btn-outline-secondary" th:text="수정"></a>
+                <!--       sec:authorize="isAuthenticated()"-->
+                <!--       th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"-->
+                <a href="javascript:void(0);" th:data-uri="@{|/article/delete/${article.id}|}"
+                   class="delete btn btn-sm btn-outline-secondary"
+                   th:text="삭제"></a>
+                <a th:href="@{|/article/result/${article.id}|}" class="btn btn-sm btn-outline-secondary" th:text="결과페이지"></a>
+                <a th:href="@{|/article/list/}"></a>
+            </div>
+        </div>
+    </div>
 </div>
 <script layout:fragment="script" type='text/javascript'>
+
     const delete_elements = document.getElementsByClassName("delete");
     Array.from(delete_elements).forEach(function (element) {
         element.addEventListener('click', function () {
@@ -25,6 +46,7 @@
             ;
         });
     });
+
     const recommend_elements = document.getElementsByClassName("recommend");
     Array.from(recommend_elements).forEach(function (element) {
         element.addEventListener('click', function () {
@@ -34,5 +56,10 @@
             ;
         });
     });
+
+    function getItem() {
+        // document.getElementById('result').innerText = event.target.value;
+        console.log(this.value);
+    }
 </script>
 </html>
