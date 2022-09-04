@@ -6,6 +6,8 @@ import likelion.ylw.comment.Comment;
 import likelion.ylw.comment.CommentForm;
 import likelion.ylw.comment.CommentService;
 import likelion.ylw.comment.NonMemberCommentForm;
+import likelion.ylw.stats.StatsCollectionForm;
+import likelion.ylw.stats.StatsCollectionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -27,8 +28,9 @@ public class ArticleController {
     private final ArticleService articleService;
     private final CommentService commentService;
     private final ArticleItemService articleItemService;
-
     private final CategoryService categoryService;
+
+    private final StatsCollectionService statsCollectionService;
 
     @GetMapping("/list")
     public String list(Model model, @RequestParam("category") Integer category_id) {
@@ -42,7 +44,7 @@ public class ArticleController {
     }
 
     @GetMapping("/vote/{id}")
-    public String vote(Model model, @PathVariable("id") Integer id) {
+    public String vote(Model model, @PathVariable("id") Integer id, StatsCollectionForm statsCollectionForm) {
         Article article = articleService.findById(id);
         List<ArticleItem> articleItems = articleItemService.findArticleItemByArticleId(id);
 
@@ -50,6 +52,16 @@ public class ArticleController {
         model.addAttribute("articleItems", articleItems);
 
         return "article_vote";
+    }
+
+    @PostMapping("/vote/{id}")
+    public String vote(@Valid StatsCollectionForm statsCollectionForm, BindingResult bindingResult, @PathVariable("id") Integer id, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "article_vote";
+        }
+        statsCollectionService.createStatsCollection(statsCollectionForm.getArticleItemId(), statsCollectionForm.getAge(), statsCollectionForm.getGender());
+
+        return String.format("redirect:/article/result/%d", id);
     }
 
     @RequestMapping("/categoryList")
@@ -122,12 +134,12 @@ public class ArticleController {
      */
     @GetMapping("/result/{id}")
     public String resultArticle(Model model, @PathVariable("id") Integer id, CommentForm commentForm, NonMemberCommentForm nonMemberCommentForm,
-                                @RequestParam(value="page", defaultValue="0") int page) {
+                                @RequestParam(value = "page", defaultValue = "0") int page) {
         Article article = articleService.findById(id);
         Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
 
         model.addAttribute("article", article);
-        model.addAttribute("commentList",commentList);
+        model.addAttribute("commentList", commentList);
 
         // 댓글 전달
 
