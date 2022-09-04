@@ -3,12 +3,12 @@
         xmlns:th="http://thymeleaf.org/"
         layout:decorate="~{layout}">
 
-<div layout:fragment="content" class="main-content-container container-fluid px-4 mt-3 h-100">
-    <div class="card card-small mb-3 h-100">
-        <div class="card-body h-100">
+<div layout:fragment="content" class="main-content-container container-fluid px-4 my-5 h-75">
+    <div class="card card-small mt-5 mb-3 h-100">
+        <div class="card-body">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-            <h1 th:text="${notice.title}" class="border-bottom mb-3 container-fluid "></h1>
-            <div id="viewer" style="font-size: 20px"></div>
+            <h4 th:text="${notice.title}" class="border-bottom mb-3"></h4>
+            <div id="viewer"></div>
         </div>
     </div>
 </div>
@@ -26,6 +26,6 @@
         initialEditType: 'markdown',
         initialValue: content
     });
-    console.log(content);
+
 </script>
 </html>

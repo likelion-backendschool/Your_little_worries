@@ -24,6 +24,8 @@
     </tr>
     </tbody>
   </table>
+  <!-- 공지사항 등록 버튼 -->
+  <a th:href="@{|/notice/create|}" type="button" class="mb-2 btn btn-primary mr-2 float-right">작성하기</a>
   <!-- 페이징처리 시작 -->
   <div th:if="${!paging.isEmpty()}">
     <ul class="pagination justify-content-center">
