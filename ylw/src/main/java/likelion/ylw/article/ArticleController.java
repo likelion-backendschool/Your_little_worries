@@ -6,10 +6,11 @@ import likelion.ylw.comment.Comment;
 import likelion.ylw.comment.CommentForm;
 import likelion.ylw.comment.CommentService;
 import likelion.ylw.comment.NonMemberCommentForm;
-import likelion.ylw.comment.vote.CommentVote;
 import likelion.ylw.comment.vote.CommentVoteService;
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
+import likelion.ylw.stats.StatsCollectionForm;
+import likelion.ylw.stats.StatsCollectionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -37,6 +37,8 @@ public class ArticleController {
     private final MemberService memberService;
     private final CommentVoteService commentVoteService;
 
+    private final StatsCollectionService statsCollectionService;
+
     @GetMapping("/list")
     public String list(Model model, @RequestParam("category") Integer category_id) {
         Category category = categoryService.findById(category_id);
@@ -49,7 +51,7 @@ public class ArticleController {
     }
 
     @GetMapping("/vote/{id}")
-    public String vote(Model model, @PathVariable("id") Integer id) {
+    public String vote(Model model, @PathVariable("id") Integer id, StatsCollectionForm statsCollectionForm) {
         Article article = articleService.findById(id);
         List<ArticleItem> articleItems = articleItemService.findArticleItemByArticleId(id);
 
@@ -57,6 +59,16 @@ public class ArticleController {
         model.addAttribute("articleItems", articleItems);
 
         return "article_vote";
+    }
+
+    @PostMapping("/vote/{id}")
+    public String vote(@Valid StatsCollectionForm statsCollectionForm, BindingResult bindingResult, @PathVariable("id") Integer id, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "article_vote";
+        }
+        statsCollectionService.createStatsCollection(statsCollectionForm.getArticleItemId(), statsCollectionForm.getAge(), statsCollectionForm.getGender());
+
+        return String.format("redirect:/article/result/%d", id);
     }
 
     @RequestMapping("/categoryList")
@@ -137,11 +149,12 @@ public class ArticleController {
             Set<Comment> votedComments = commentVoteService.getCommentsByMemberId(member);
             model.addAttribute("votedComments", votedComments);
         }
+
         Article article = articleService.findById(id);
         Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
 
         model.addAttribute("article", article);
-        model.addAttribute("commentList",commentList);
+        model.addAttribute("commentList", commentList);
 
         // 댓글 전달
 

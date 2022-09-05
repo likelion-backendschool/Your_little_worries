@@ -3,11 +3,13 @@ package likelion.ylw.stats;
 import likelion.ylw.article.ArticleItem;
 import likelion.ylw.member.Member;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 
 @Getter
+@Setter
 @Entity
 public class StatsCollection {
     @Id
@@ -19,7 +21,7 @@ public class StatsCollection {
 
     private Integer age;
 
-    private Boolean gender;
+    private String gender;
 
     @ManyToOne
 //    @Column(nullable = true)
