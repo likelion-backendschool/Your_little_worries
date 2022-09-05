@@ -50,18 +50,11 @@ public class MemberService {
 
     public Member findByEmail(String email) {
         Optional<Member> om = this.memberRepository.findByEmail(email);
-        if (!om.isPresent()) {
-            System.out.println("찾으려는 email: " + email);
+        if (om.isPresent()) {
+            return om.get();
         }
-        Member member = om.get();
-        return member;
-    }
 
-    public List<Member> findAll() {
-        List<Member> members = this.memberRepository.findAll();
-        if(members.isEmpty()) {
-            throw new NotFoundEmailException("입력하신 이메일로 가입된 정보가 없습니다.");
-        }
-        return members;
+        System.out.println("찾으려는 email: " + email);
+        throw new NotFoundEmailException("해당 이메일에 가입된 정보가 없습니다.");
     }
 }
