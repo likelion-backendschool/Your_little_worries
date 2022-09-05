@@ -28,21 +28,25 @@ public class MailController {
 
     @PostMapping("/send")
     public String send_newPW(Model model, @Valid MailForm mailForm, BindingResult bindingResult) throws IOException {
+        if(bindingResult.hasErrors()) {
+            return "sendEmail_form";
+        }
         String email = mailForm.getEmail();
-        Example.sendEmail(email);
-        this.email = email;
-        return "mail_send";
-        //return "login_form";
+        try {
+            Member member = memberService.findByEmail(email);
+            Example.sendEmail(email);
+            this.email = email;
+            return "mail_send";
+            //return "login_form";
+        } catch(NotFoundEmailException e) {
+            bindingResult.reject("notFoundEmail", e.getMessage());
+            System.out.println(e.getMessage());
+            return "sendEmail_form";
+        }
     }
 
     @GetMapping("/reset")
-    public String send_form(@Valid MailForm mailForm, BindingResult bindingResult) {
-        try {
-            List<Member> members = memberService.findAll();
-        } catch(NotFoundEmailException e) {
-            bindingResult.reject("notFoundEmail", e.getMessage());
-            return "sendEmail_form";
-        }
+    public String send_form(MailForm mailForm) {
 
         return "sendEmail_form";
     }
