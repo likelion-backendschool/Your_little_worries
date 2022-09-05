@@ -1,15 +1,15 @@
 package likelion.ylw.comment;
 
 import likelion.ylw.article.Article;
+import likelion.ylw.comment.vote.CommentVote;
 import likelion.ylw.member.Member;
 import likelion.ylw.util.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -31,16 +31,15 @@ public class Comment extends BaseTimeEntity {
 
     private String tempPassword;
 
-    @ManyToMany
-    Set<Member> voter;
-
     @ManyToOne
     private Article article;
 
     @ManyToOne
-//    @Column
     @JoinColumn(name = "member_id", nullable = true)
     private Member author;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    Set<CommentVote> votes = new HashSet<>();
 
     @ColumnDefault("false")
     private boolean isBlind;

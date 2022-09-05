@@ -6,6 +6,9 @@ import likelion.ylw.comment.Comment;
 import likelion.ylw.comment.CommentForm;
 import likelion.ylw.comment.CommentService;
 import likelion.ylw.comment.NonMemberCommentForm;
+import likelion.ylw.comment.vote.CommentVoteService;
+import likelion.ylw.member.Member;
+import likelion.ylw.member.MemberService;
 import likelion.ylw.stats.StatsCollectionForm;
 import likelion.ylw.stats.StatsCollectionService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +20,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Controller
@@ -29,6 +34,8 @@ public class ArticleController {
     private final CommentService commentService;
     private final ArticleItemService articleItemService;
     private final CategoryService categoryService;
+    private final MemberService memberService;
+    private final CommentVoteService commentVoteService;
 
     private final StatsCollectionService statsCollectionService;
 
@@ -134,7 +141,15 @@ public class ArticleController {
      */
     @GetMapping("/result/{id}")
     public String resultArticle(Model model, @PathVariable("id") Integer id, CommentForm commentForm, NonMemberCommentForm nonMemberCommentForm,
-                                @RequestParam(value = "page", defaultValue = "0") int page) {
+                                @RequestParam(value="page", defaultValue="0") int page, Principal principal) {
+
+        if (principal != null) {
+            // 로그인 회원의 댓글 좋아요 목록
+            Member member = memberService.getMemberId(principal.getName());
+            Set<Comment> votedComments = commentVoteService.getCommentsByMemberId(member);
+            model.addAttribute("votedComments", votedComments);
+        }
+
         Article article = articleService.findById(id);
         Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
 
