@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class NoticeService {
         notice.setTitle(title);
         notice.setContent(content);
         notice.setAuthor(member);
+        notice.setViewCount(0);
         this.noticeRepository.save(notice);
     }
 
@@ -53,5 +55,10 @@ public class NoticeService {
 
     public void delete(Notice Notice) {
         this.noticeRepository.delete(Notice);
+    }
+
+    @Transactional
+    public void updateCount(Notice notice) {
+        this.noticeRepository.updateCount(notice.getId());
     }
 }

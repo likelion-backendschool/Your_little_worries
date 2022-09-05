@@ -21,6 +21,7 @@
       </td>
       <td><span th:if="${notice.author != null}" th:text="${notice.author.nickname}"></span></td>
       <td th:text="${#temporals.format(notice.createdDate, 'yyyy-MM-dd HH:mm')}"></td>
+      <td th:text="${notice.viewCount}"></td>
     </tr>
     </tbody>
   </table>

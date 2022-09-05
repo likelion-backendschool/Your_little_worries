@@ -33,6 +33,7 @@ public class NoticeController {
     @RequestMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
         Notice notice = this.noticeService.getNotice(id);
+        this.noticeService.updateCount(notice);
         model.addAttribute("notice", notice);
         return "notice_detail";
     }
@@ -56,7 +57,7 @@ public class NoticeController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String questionModify(NoticeForm noticeForm, @PathVariable("id") Integer id, Principal principal) {
+    public String noticeModify(NoticeForm noticeForm, @PathVariable("id") Integer id, Principal principal) {
         Notice notice = this.noticeService.getNotice(id);
         if(!notice.getAuthor().getMemberId().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
@@ -68,7 +69,7 @@ public class NoticeController {
 
 
     @PostMapping("/modify/{id}")
-    public String questionModify(@Valid NoticeForm noticeForm, BindingResult bindingResult,
+    public String noticeModify(@Valid NoticeForm noticeForm, BindingResult bindingResult,
                                  Principal principal, @PathVariable("id") Integer id) {
         if (bindingResult.hasErrors()) {
             return "notice_form";
@@ -78,12 +79,12 @@ public class NoticeController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         this.noticeService.modify(notice, noticeForm.getTitle(), noticeForm.getContent());
-        return String.format("redirect:/question/detail/%s", id);
+        return String.format("redirect:/notice/detail/%s", id);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
-    public String questionDelete(Principal principal, @PathVariable("id") Integer id) {
+    public String noticeDelete(Principal principal, @PathVariable("id") Integer id) {
         Notice notice = this.noticeService.getNotice(id);
         if (!notice.getAuthor().getMemberId().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
