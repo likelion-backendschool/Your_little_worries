@@ -5,18 +5,24 @@
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4 my-5 h-75">
     <div class="card card-small mt-5 mb-3 h-100">
-        <div class="card-body">
+        <div class="card-header border-bottom d-flex justify-content-between align-items-center">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-            <h4 th:text="${notice.title}" class="border-bottom mb-3"></h4>
+            <h4 th:text="${notice.title}" class="m-0"></h4>
+            <div class="font-weight-light">
+                <div th:text="${#temporals.format(notice.createdDate, 'yyyy-MM-dd HH:mm')}" class="m-0"></div>
+                <div th:text="${notice.author.nickname}" class="m-0 text-right"></div>
+            </div>
+        </div>
+        <div class="card-body">
             <div style="display: none" id="hiddenContent" th:text="${notice.content}"></div>
             <div id="viewer"></div>
         </div>
-        <div class="my-3">
+        <div class="my-3 mr-2">
             <a href="javascript:void(0);" th:data-uri="@{|/notice/delete/${notice.id}|}"
-               class="delete mb-2 btn btn-primary mr-2 float-right" sec:authorize="isAuthenticated()"
+               class="delete btn btn-primary mr-2 float-right" sec:authorize="isAuthenticated()"
                th:if="${notice.author != null and #authentication.getPrincipal().getUsername() == notice.author.memberId}"
                th:text="삭제"></a>
-            <a th:href="@{|/notice/modify/${notice.id}|}" class="mb-2 btn btn-primary mr-2 float-right"
+            <a th:href="@{|/notice/modify/${notice.id}|}" class="btn btn-primary mr-2 float-right"
                sec:authorize="isAuthenticated()"
                th:if="${notice.author != null and #authentication.getPrincipal().getUsername() == notice.author.memberId}"
                th:text="수정"></a>

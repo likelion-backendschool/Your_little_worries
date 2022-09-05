@@ -23,5 +23,6 @@ public class Notice extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(columnDefinition = "integer default 0", nullable = false)
     private Integer viewCount;
 }
