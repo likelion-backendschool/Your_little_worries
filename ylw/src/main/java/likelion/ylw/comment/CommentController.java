@@ -2,23 +2,22 @@ package likelion.ylw.comment;
 
 import likelion.ylw.article.Article;
 import likelion.ylw.article.ArticleService;
+import likelion.ylw.comment.vote.CommentVoteService;
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +31,7 @@ public class CommentController {
     private final CommentService commentService;
     private final ArticleService articleService;
     private final MemberService memberService;
+    private final CommentVoteService commentVoteService;
 
     /**
      * 회원 댓글 생성하기
@@ -165,6 +165,29 @@ public class CommentController {
             return result;
         }
         result.put("result","failure");
+        return result;
+    }
+
+    /**
+     *  댓글 좋아요
+     */
+    @PreAuthorize("isAuthenticated()")
+    @ResponseBody
+    @GetMapping("/vote/{id}")
+    public Map<String, String> pushVoteBtn(@PathVariable Integer id, Principal principal) {
+        Map<String,String> result = new HashMap<>();
+        Member member = this.memberService.getMemberId(principal.getName());
+        Comment comment = this.commentService.getComment(id);
+
+        // 본인 글에 추천하는 경우
+        if (comment.getAuthor() != null) {
+            if (comment.getAuthor().getMemberId().equals(principal.getName())) {
+                result.put("result","failure");
+                return result;
+            }
+        }
+        commentVoteService.pushVoteBtn(comment, member);
+        result.put("result","success");
         return result;
     }
 }

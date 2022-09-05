@@ -14,7 +14,6 @@
     게시글 내용 : [[${article.content}]]
     <hr>
 
-
     <!--/*    댓글 start   */-->
     <div class="col-lg-8 col-md-12 col-sm-12 mb-4">
         <div th:text="|댓글(${commentList.totalElements})|" class="p-1 text-large" style="font-size:1.25rem">0</div>
@@ -62,6 +61,27 @@
                             <div th:if="${comment.tempNickname != null}" th:text="${comment.getTempNickname()}" class="font-weight-bold">익명</div>
                             <div th:text="${#temporals.format(comment.getCreatedDate, 'yyyy-MM-dd HH:mm:ss')}" class="small text-muted ml-2 mt-1">1 분전</div>
                             <div th:text="${comment.getModifiedDate()}" class="d-none"></div>
+
+                            <!--/*  추천 start*/-->
+                            <th:block th:if="${#authentication.name != 'anonymousUser'}">
+                                <th:block th:if="${#sets.contains(votedComments, comment)}">
+                                    <a href="javascript:void(0);" th:myId="${comment.id}" th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button" class="material-icons text-dark  ml-2 px-1 float-right">
+                                        thumb_up_alt
+                                    </a>
+                                </th:block>
+                                <th:block th:unless="${#sets.contains(votedComments, comment)}">
+                                    <a href="javascript:void(0);" th:myId="${comment.id}" th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button" class="material-icons text-dark  ml-2 px-1 float-right">
+                                        thumb_up_off_alt
+                                    </a>
+                                </th:block>
+                            </th:block>
+                            <th:block th:if="${#authentication.name == 'anonymousUser'}">
+                                <a href="javascript:void(0);" th:myId="${comment.id}" th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button" class="material-icons text-dark  ml-2 px-1 float-right">
+                                    thumb_up_off_alt
+                                </a>
+                            </th:block>
+                            <!--/*  추천 End*/-->
+                            <span th:text="${#sets.size(comment.votes)}">0</span>
                             <!--/*회원 비회원 공통 부분 end*/-->
                             <!--/*회원이 보는 댓글 버튼 start*/-->
                             <div th:if="${comment.author != null}" class="d-inline">
@@ -216,7 +236,50 @@
 </html>
 
 <!--/*script은 html에 밖에서 써줘야 동작합니다*/-->
-<script>
+<script th:inline="javascript">
+
+    /**
+     *  댓글 좋아요
+     */
+    function pushVoteBtn(event, commentId) {
+
+        if(![[${#authentication.name != 'anonymousUser'}]]) {
+            alert("로그인 후 이용해주세요");
+            return false;
+        }
+
+        fetch(`/comment/vote/${commentId}`, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+            })
+            .then(res => {
+                if (res.url === "http://localhost:8080/member/login"){
+                    location.href = "http://localhost:8080/member/login";
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.result === "success") {
+                    const voteBtn = event.target;
+                    if(voteBtn.innerText === "thumb_up_alt") {
+                        // 좋아요 된 상태라면 취소
+                        voteBtn.innerText = "thumb_up_off_alt";
+                        voteBtn.nextElementSibling.innerText--;
+                    } else {
+                        // 좋아요가 안 된 상태라면 추가
+                        voteBtn.innerText = "thumb_up_alt";
+                        voteBtn.nextElementSibling.innerText++;
+                    }
+                } else if (data.result === "failure") {
+                    alert("자신의 댓글에는 추천할 수 없습니다.");
+                    return;
+                }
+            })
+            .catch(err => {
+                alert(err);
+            });
+    }
     /**
      *  [회원] 관련 이벤트 코드
      */
@@ -245,7 +308,7 @@
             commentContentElement.classList.remove('d-none');
         }
 
-        commentModifyBtn = event.target                 // 수정 버튼
+        commentModifyBtn = event.target.closest('a');   // 수정 버튼
         commentModifyBtn.classList.toggle('d-none');    // 수정 버튼 숨김
 
         commentModifyTag.querySelector('.form-control').innerHTML = content;                                // textarea에 내용 넣어줌
