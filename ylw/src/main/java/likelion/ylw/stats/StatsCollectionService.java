@@ -16,7 +16,7 @@ public class StatsCollectionService {
     private final ArticleItemRepository articleItemRepository;
     private final MemberRepository memberRepository;
 
-    public void createStatsCollection(Integer articleItemId, Integer age, String gender, String userName) {
+    public void createStatsCollection(Integer articleItemId, Integer age, String gender, String userName, String IP) {
         StatsCollection statsCollection = new StatsCollection();
         statsCollection.setArticleItem(articleItemRepository.findById(articleItemId).get());
         statsCollection.setAge(age);
@@ -26,6 +26,7 @@ public class StatsCollectionService {
         } else {
             statsCollection.setMember(memberRepository.findByMemberId(userName).get());
         }
+        statsCollection.setIP(IP);
 
         statsCollectionRepository.save(statsCollection);
     }

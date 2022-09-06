@@ -12,6 +12,8 @@ import likelion.ylw.member.MemberService;
 import likelion.ylw.stats.StatsCollection;
 import likelion.ylw.stats.StatsCollectionForm;
 import likelion.ylw.stats.StatsCollectionService;
+import likelion.ylw.util.ClientUtils;
+import likelion.ylw.util.requestservice.RequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,7 +26,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -44,6 +49,7 @@ public class ArticleController {
     private final MemberService memberService;
     private final CommentVoteService commentVoteService;
     private final StatsCollectionService statsCollectionService;
+    private final RequestService requestService;
 
     @GetMapping("/list")
     public String list(Model model, @RequestParam("category") Integer category_id) {
@@ -69,11 +75,15 @@ public class ArticleController {
     }
 
     @PostMapping("/vote/{id}")
-    public String vote(@Valid StatsCollectionForm statsCollectionForm, BindingResult bindingResult, @PathVariable("id") Integer id, Model model, @AuthenticationPrincipal User user) {
+    public String vote(@Valid StatsCollectionForm statsCollectionForm, BindingResult bindingResult,
+                       @PathVariable("id") Integer id, Model model, @AuthenticationPrincipal User user,
+                       HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "article_vote";
         }
-
+        // Client IP
+        String clientIp = requestService.getClientIp(request);
+        System.out.println(clientIp);
         if (user == null) {
             // 비로그인의 경우
         } else {
@@ -88,7 +98,8 @@ public class ArticleController {
         }
 
         statsCollectionService.createStatsCollection(statsCollectionForm.getArticleItemId(),
-                statsCollectionForm.getAge(), statsCollectionForm.getGender(), statsCollectionForm.getUserName());
+                statsCollectionForm.getAge(), statsCollectionForm.getGender(), statsCollectionForm.getUserName(),
+                clientIp);
 
         return String.format("redirect:/article/result/%d", id);
     }
