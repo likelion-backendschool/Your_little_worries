@@ -12,4 +12,6 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     Optional<Article> findByTitle(String title);
 
     List<Article> findByCategory(Category category);
+
+    List<Article> findTop10ByCategoryOrderByIdDesc(Category category);
 }

@@ -46,6 +46,10 @@ public class ArticleService {
         return articleList;
     }
 
+    public List<Article> findByCategoryTop10(Category category) {
+        return articleRepository.findTop10ByCategoryOrderByIdDesc(category);
+    }
+
 
     public Article create(String title, String content, String author,Integer category_id) {
         Category category = categoryService.findById(category_id);
