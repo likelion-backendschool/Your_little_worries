@@ -17,4 +17,6 @@ public class StatsCollectionForm {
 
     @NotEmpty(message = "성별을 입력해주세요.")
     private String gender;
+
+    private String userName;
 }

@@ -66,7 +66,8 @@ public class ArticleController {
         if (bindingResult.hasErrors()) {
             return "article_vote";
         }
-        statsCollectionService.createStatsCollection(statsCollectionForm.getArticleItemId(), statsCollectionForm.getAge(), statsCollectionForm.getGender());
+        statsCollectionService.createStatsCollection(statsCollectionForm.getArticleItemId(),
+                statsCollectionForm.getAge(), statsCollectionForm.getGender(), statsCollectionForm.getUserName());
 
         return String.format("redirect:/article/result/%d", id);
     }
