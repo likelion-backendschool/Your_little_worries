@@ -53,6 +53,7 @@ public class ArticleService {
 
     public Article create(String title, String content, String author,Integer category_id) {
         Category category = categoryService.findById(category_id);
+
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
