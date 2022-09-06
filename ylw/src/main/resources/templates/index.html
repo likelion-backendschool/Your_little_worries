@@ -22,7 +22,7 @@
                             <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('images/avatars/1.jpg');">Written by James Khan</a>
                             <div class="d-flex flex-column justify-content-center ml-3">
                                 <span class="card-post__author-name" th:text="${article.author.nickname}"></span>
-                                <small class="text-muted" th:text="${#temporals.format(article.createdDate, 'yy-mm-dd')}">21 March 2011</small>
+                                <small class="text-muted" th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd')}"></small>
                             </div>
                         </div>
                         <div class="my-auto ml-auto">

@@ -12,28 +12,21 @@ import likelion.ylw.member.MemberService;
 import likelion.ylw.stats.StatsCollection;
 import likelion.ylw.stats.StatsCollectionForm;
 import likelion.ylw.stats.StatsCollectionService;
-import likelion.ylw.util.ClientUtils;
 import likelion.ylw.util.requestservice.RequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -124,14 +117,14 @@ public class ArticleController {
     }
 
     @PostMapping("/create")
-    public String createArticle(@Valid ArticleForm articleForm, BindingResult bindingResult, @RequestParam Integer category_id) {
+    public String createArticle(@Valid ArticleForm articleForm, BindingResult bindingResult, @RequestParam Integer category_id, Principal principal) {
 
         if (bindingResult.hasErrors()) {
             return "article_form";
         }
 
         Article article = articleService.create(articleForm.getTitle(), articleForm.getContent(),
-                articleForm.getAuthor(),category_id);
+                principal.getName(), category_id);
         Stream.of(articleForm.getItems())
                 .forEach(item -> articleItemService.create(article, item));
         return String.format("redirect:/article/vote/%d", article.getId());
