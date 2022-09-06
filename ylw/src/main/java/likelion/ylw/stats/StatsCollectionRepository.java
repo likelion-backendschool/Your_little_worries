@@ -1,7 +1,11 @@
 package likelion.ylw.stats;
 
+import likelion.ylw.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StatsCollectionRepository extends JpaRepository<StatsCollection, Integer> {
+import java.util.List;
+import java.util.Optional;
 
+public interface StatsCollectionRepository extends JpaRepository<StatsCollection, Integer> {
+    List<StatsCollection> findByMember(Member member);
 }
