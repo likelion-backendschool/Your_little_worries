@@ -9,11 +9,17 @@ import likelion.ylw.comment.NonMemberCommentForm;
 import likelion.ylw.comment.vote.CommentVoteService;
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
+import likelion.ylw.stats.StatsCollection;
 import likelion.ylw.stats.StatsCollectionForm;
 import likelion.ylw.stats.StatsCollectionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -36,7 +43,6 @@ public class ArticleController {
     private final CategoryService categoryService;
     private final MemberService memberService;
     private final CommentVoteService commentVoteService;
-
     private final StatsCollectionService statsCollectionService;
 
     @GetMapping("/list")
@@ -50,6 +56,7 @@ public class ArticleController {
         return "article_list";
     }
 
+
     @GetMapping("/vote/{id}")
     public String vote(Model model, @PathVariable("id") Integer id, StatsCollectionForm statsCollectionForm) {
         Article article = articleService.findById(id);
@@ -62,10 +69,24 @@ public class ArticleController {
     }
 
     @PostMapping("/vote/{id}")
-    public String vote(@Valid StatsCollectionForm statsCollectionForm, BindingResult bindingResult, @PathVariable("id") Integer id, Model model) {
+    public String vote(@Valid StatsCollectionForm statsCollectionForm, BindingResult bindingResult, @PathVariable("id") Integer id, Model model, @AuthenticationPrincipal User user) {
         if (bindingResult.hasErrors()) {
             return "article_vote";
         }
+
+        if (user == null) {
+            // 비로그인의 경우
+        } else {
+            // 로그인의 경우
+            Member member = memberService.getMemberId(user.getUsername());
+            List<StatsCollection> statsCollectionList = statsCollectionService.findByMember(member);
+            int count = (int)statsCollectionList.stream().filter(statsCollection -> statsCollection.getArticleItem().getArticle().getId() == id).count();
+
+            if (count != 0) {
+                return "article_vote";
+            }
+        }
+
         statsCollectionService.createStatsCollection(statsCollectionForm.getArticleItemId(),
                 statsCollectionForm.getAge(), statsCollectionForm.getGender(), statsCollectionForm.getUserName());
 
