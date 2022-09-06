@@ -1,6 +1,7 @@
 <html
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         layout:decorate="~{layout}">
 <div layout:fragment="content" class="main-content-container container-fluid px-4 my-3">
     <div class="card card-small mb-3">
@@ -10,6 +11,7 @@
 
             <form id="voteForm" th:object="${statsCollectionForm}" method="post">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <input type="hidden" name="userName" sec:authorize="isAuthenticated()" th:value="${#authentication.name}">
 
                 <input id="ageInput" th:field="*{age}" class="form-control" type="number" placeholder="나이를 입력해주세요"/>
 
