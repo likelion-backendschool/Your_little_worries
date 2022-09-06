@@ -2,6 +2,7 @@ package likelion.ylw.article;
 
 import likelion.ylw.category.Category;
 import likelion.ylw.category.CategoryService;
+import likelion.ylw.member.MemberRepository;
 import likelion.ylw.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     private final CategoryService categoryService;
+
+    private final MemberRepository memberRepository;
 
     public List<Article> getList() {
         return articleRepository.findAll();
@@ -44,11 +47,12 @@ public class ArticleService {
     }
 
 
-    public Article create(String title, String content, Integer category_id) {
+    public Article create(String title, String content, String author,Integer category_id) {
         Category category = categoryService.findById(category_id);
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
+        article.setAuthor(memberRepository.findByMemberId(author).get());
         article.setCategory(category);
 
         articleRepository.save(article);

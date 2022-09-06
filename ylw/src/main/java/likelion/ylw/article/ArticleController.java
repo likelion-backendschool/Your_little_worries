@@ -98,7 +98,8 @@ public class ArticleController {
             return "article_form";
         }
 
-        Article article = articleService.create(articleForm.getTitle(), articleForm.getContent(), category_id);
+        Article article = articleService.create(articleForm.getTitle(), articleForm.getContent(),
+                articleForm.getAuthor(),category_id);
         Stream.of(articleForm.getItems())
                 .forEach(item -> articleItemService.create(article, item));
         return String.format("redirect:/article/vote/%d", article.getId());
