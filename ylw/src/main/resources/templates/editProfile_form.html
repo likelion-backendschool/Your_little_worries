@@ -4,54 +4,98 @@
         layout:decorate="~{layout}">
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .input-readOnly {
+            pointer-events: none;
+            background-color: #F3F3F3;
+        }
+
+        .input-none {
+            display: none;
+        }
+
+    </style>
 </head>
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4 rounded-2xl">
-<div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white shadow-lg rounded-2xl">
+    <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white shadow-lg rounded-2xl">
 
-    <div class="my-3 border-bottom">
+        <div class="my-3 border-bottom">
 
-        <div>
-            <div class="text-center text-2xl font-semibold mt-1 mb-2 pb-5">회원 정보 수정</div>
+            <div>
+                <div class="text-center text-2xl font-semibold mt-1 mb-2 pb-5">회원 정보 수정</div>
+            </div>
+            <div>
+                <div>수정하실 회원 정보를 입력해주세요.</div>
+            </div>
         </div>
-        <div>
-            <div>수정하실 회원 정보를 입력해주세요.</div>
-        </div>
+
+        <form th:action="@{/member/profile/edit}" th:object="${memberUpdateForm}" method="post">
+            <!--        <div th:replace="form_errors :: formErrorsFragment"></div>-->
+            <div class="mb-3">
+                <label class="form-label">사용자ID</label>
+                <input type="text" th:value="${member.memberId}" class="form-control" th:readonly="readonly">
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label">닉네임</label>
+                <div class="flex gap-1 h-[35px]">
+                    <input type="text" th:value="${member.nickname}" class="form-control" th:readonly="readonly">
+                    <input id="modify-nickname" type="text" th:field="*{nickname}" class="input-none form-control">
+                    <div id="btn-nickname"
+                         class="text-center w-[50px] pt-1.5 rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black">
+                        변경
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">비밀번호</label>
+                <div class="flex gap-1">
+                    <input id="modify-pw" type="password" th:field="*{password1}" class="input-readOnly form-control"/>
+                    <div id="btn-pw"
+                         class="text-center w-[50px] rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black pt-1.5">
+                        변경
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">비밀번호 확인</label>
+                <input id="modify-pw-check" type="password" th:field="*{password2}" class="input-readOnly form-control" th:readonly="readonly">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">이메일</label>
+                <input type="email" th:value="${member.email}" class="form-control" th:readonly="readonly">
+            </div>
+            <div class="text-center">
+                <button type="submit"
+                        class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
+                    저장하기
+                </button>
+            </div>
+            <div class="flex items-center justify-between pb-6 pt-[20px] flex">
+                <a class="flex pt-5 text-gray-400 text-center hover:text-gray-600 focus:text-gray-700 transition duration-200 ease-in-out inline-block"
+                   th:href="@{/member/delete}">회원 탈퇴 하기</a>
+            </div>
+        </form>
     </div>
-
-
-    <form th:action="@{/member/profile/edit}" method="post">
-<!--        <div th:replace="form_errors :: formErrorsFragment"></div>-->
-        <div class="mb-3">
-            <label class="form-label">사용자ID</label>
-            <input type="text" th:value = ${member.memberId} class="form-control" th:readonly="readonly" >
-        </div>
-        <div class="mb-3">
-            <label class="form-label">닉네임</label>
-            <input type="text" th:value="${member.nickname}" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">비밀번호</label>
-            <input type="password" class="form-control" placeholder="비밀번호를 입력해주세요."/>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">비밀번호 확인</label>
-            <input type="password" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">이메일</label>
-            <input type="email" th:value="${member.email}" class="form-control">
-        </div>
-        <div class="text-center">
-            <button type="submit"
-                    class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
-                수정하기
-            </button>
-        </div>
-        <div class="flex items-center justify-between pb-6 pt-[20px] flex">
-            <a class="flex px-4 pt-5 text-gray-400 text-center hover:text-gray-600 focus:text-gray-700 transition duration-200 ease-in-out inline-block" th:href="@{|/member/delete|}">회원 탈퇴 하기</a>
-        </div>
-    </form>
-</div>
 </div>
 </html>
+
+<script>
+    $("#btn-nickname").click(function () {
+        if ($("#modify-nickname").hasClass("input-none")) {
+            $("#modify-nickname").removeClass("input-none");
+        }
+    });
+
+
+    $("#btn-pw").click(function () {
+        if ($("#modify-pw").hasClass("input-readOnly")) {
+            $("#modify-pw").removeClass("input-readOnly");
+            $("#modify-pw-check").removeClass("input-readOnly");
+        }
+    });
+</script>
