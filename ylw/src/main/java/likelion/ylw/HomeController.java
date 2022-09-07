@@ -34,6 +34,7 @@ public class HomeController {
         model.addAttribute("articleListArray", articleLists);
 
         model.addAttribute("categoryList", categoryList);
+
         return "index";
     }
 

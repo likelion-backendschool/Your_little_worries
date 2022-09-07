@@ -52,7 +52,7 @@ public class ArticleController {
         model.addAttribute("articleList", articleList);
         model.addAttribute("category", category);
 
-        return "article_list";
+        return "article/article_list";
     }
 
 
@@ -64,7 +64,7 @@ public class ArticleController {
         model.addAttribute("article", article);
         model.addAttribute("articleItems", articleItems);
 
-        return "article_vote";
+        return "article/article_vote";
     }
 
     @PostMapping("/vote/{id}")
@@ -72,7 +72,7 @@ public class ArticleController {
                        @PathVariable("id") Integer id, Model model, @AuthenticationPrincipal User user,
                        HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
-            return "article_vote";
+            return "article/article_vote";
         }
         // Client IP
         String clientIp = requestService.getClientIp(request);
@@ -86,7 +86,7 @@ public class ArticleController {
             int count = (int)statsCollectionList.stream().filter(statsCollection -> statsCollection.getArticleItem().getArticle().getId() == id).count();
 
             if (count != 0) {
-                return "article_vote";
+                return "article/article_vote";
             }
         }
 
@@ -103,7 +103,7 @@ public class ArticleController {
 
         model.addAttribute("categoryList", categoryList);
 
-        return "category_list";
+        return "article/category_list";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -113,14 +113,14 @@ public class ArticleController {
 
         model.addAttribute("category_id", category_id);
         model.addAttribute("categoryList", categoryList);
-        return "article_form";
+        return "article/article_form";
     }
 
     @PostMapping("/create")
     public String createArticle(@Valid ArticleForm articleForm, BindingResult bindingResult, @RequestParam Integer category_id, Principal principal) {
 
         if (bindingResult.hasErrors()) {
-            return "article_form";
+            return "article/article_form";
         }
 
         Article article = articleService.create(articleForm.getTitle(), articleForm.getContent(),
@@ -146,14 +146,14 @@ public class ArticleController {
         articleForm.setTitle(article.getTitle());
         articleForm.setContent(article.getContent());
 
-        return "article_form";
+        return "article/article_form";
     }
 
     @PostMapping("modify/{id}")
     public String modifyArticle(@Valid ArticleForm articleForm, BindingResult bindingResult,
                                 @PathVariable("id") Integer id) {
         if (bindingResult.hasErrors()) {
-            return "article_form";
+            return "article/article_form";
         }
 
         Article article = articleService.findById(id);
@@ -185,6 +185,6 @@ public class ArticleController {
 
         // 댓글 전달
 
-        return "article_result";
+        return "article/article_result";
     }
 }

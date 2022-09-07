@@ -48,7 +48,7 @@ public class CommentController {
             Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
             model.addAttribute("article", article);
             model.addAttribute("commentList",commentList);
-            return "article_result";
+            return "article/article_result";
         }
         // 댓글 등록
         Member member = this.memberService.getMemberId(principal.getName());
@@ -70,7 +70,7 @@ public class CommentController {
             Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
             model.addAttribute("article", article);
             model.addAttribute("commentList",commentList);
-            return "article_result";
+            return "article/article_result";
         }
         // 댓글 등록
         this.commentService.create(article, nonMemberCommentForm);
