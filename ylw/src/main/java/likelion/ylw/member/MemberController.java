@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,7 @@ import java.security.Principal;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/signup")
     public String signup(MemberCreateForm memberCreateForm) {
@@ -127,14 +129,36 @@ public class MemberController {
     public String delete_account(@Valid MemberDeleteForm memberDeleteForm, BindingResult bindingResult, Principal principal) {
         String memberId = principal.getName();
         Member member = memberService.getMemberId(memberId);
+        System.out.println("--------------------");
+        System.out.println("memberDeleteForm.getPassword : " + memberDeleteForm.getPassword());
+        System.out.println("--------------------");
 
-        if (!memberDeleteForm.getPassword().equals(member.getPassword())) {
+        System.out.println("--------------------");
+        System.out.println("member.getPassword : " + member.getPassword());
+        System.out.println("--------------------");
+        boolean matches = !passwordEncoder.matches(member.getPassword(), memberDeleteForm.getPassword());
+        System.out.println("--------------------");
+        System.out.println("boolean passwordEncoder.matches : " + matches);
+        System.out.println("--------------------");
+
+        if (!passwordEncoder.matches(memberDeleteForm.getPassword(), member.getPassword())) {
+            System.out.println("--------------------");
+            System.out.println("패스워드가 일치하지 않습니다.");
+            System.out.println("--------------------");
             bindingResult.rejectValue("password", "passwordNotMatched",
                     "패스워드가 일치하지 않습니다.");
             return "deleteAccount_form";
         }
-
+        System.out.println("--------------------");
+        System.out.println("패스워드가 일치합니다.");
+        System.out.println("--------------------");
+        System.out.println("--------------------");
+        System.out.println("delete 하기전");
+        System.out.println("--------------------");
         memberService.delete(memberDeleteForm, memberId);
+        System.out.println("--------------------");
+        System.out.println("delete 하고난 후");
+        System.out.println("--------------------");
         return "delete_account";
     }
 }
