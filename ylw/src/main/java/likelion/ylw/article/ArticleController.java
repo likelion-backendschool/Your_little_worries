@@ -71,6 +71,13 @@ public class ArticleController {
     public String vote(@Valid StatsCollectionForm statsCollectionForm, BindingResult bindingResult,
                        @PathVariable("id") Integer id, Model model, @AuthenticationPrincipal User user,
                        HttpServletRequest request) {
+
+        Article article = articleService.findById(id);
+        List<ArticleItem> articleItems = articleItemService.findArticleItemByArticleId(id);
+
+        model.addAttribute("article", article);
+        model.addAttribute("articleItems", articleItems);
+
         if (bindingResult.hasErrors()) {
             return "article/article_vote";
         }
@@ -140,8 +147,15 @@ public class ArticleController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("modify/{id}")
-    public String modifyArticle(ArticleForm articleForm, @PathVariable("id") Integer id) {
+    public String modifyArticle(ArticleForm articleForm, @PathVariable("id") Integer id, Model model) {
         Article article = articleService.findById(id);
+        Integer category_id = article.getCategory().getId();
+        List<Category> categoryList = categoryService.getList();
+        Integer modifyToken = 1;
+
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("category_id", category_id);
+        model.addAttribute("modifyToken", modifyToken);
 
         articleForm.setTitle(article.getTitle());
         articleForm.setContent(article.getContent());
@@ -151,14 +165,17 @@ public class ArticleController {
 
     @PostMapping("modify/{id}")
     public String modifyArticle(@Valid ArticleForm articleForm, BindingResult bindingResult,
-                                @PathVariable("id") Integer id) {
+                                @PathVariable("id") Integer id, @RequestParam Integer category_id) {
         if (bindingResult.hasErrors()) {
             return "article/article_form";
         }
 
+//        Article article = articleService.create(articleForm.getTitle(), articleForm.getContent(),
+//                principal.getName(), category_id);
+
         Article article = articleService.findById(id);
 
-        articleService.modify(article, articleForm.getTitle(), articleForm.getContent());
+        articleService.modify(article, articleForm.getContent(), category_id);
 
         return String.format("redirect:/article/vote/%d", article.getId());
     }

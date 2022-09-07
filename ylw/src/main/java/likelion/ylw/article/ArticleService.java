@@ -71,9 +71,9 @@ public class ArticleService {
         }
     }
 
-    public void modify(Article article, String title, String content) {
-        article.setTitle(title);
+    public void modify(Article article, String content, Integer category_id) {
         article.setContent(content);
+        article.setCategory(categoryService.findById(category_id));
 
         articleRepository.save(article);
     }

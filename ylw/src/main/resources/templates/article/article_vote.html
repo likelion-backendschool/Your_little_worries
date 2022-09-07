@@ -11,6 +11,10 @@
 
             <form id="voteForm" th:object="${statsCollectionForm}" method="post">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
+                    <div class="toast-body" th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+                </div>
+
                 <input type="hidden" name="userName" sec:authorize="isAuthenticated()"
                        th:value="${#authentication.name}">
                 <input type="hidden" name="userName" sec:authorize="isAnonymous()"
