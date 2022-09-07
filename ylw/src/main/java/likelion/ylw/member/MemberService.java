@@ -99,9 +99,18 @@ public class MemberService {
             Member member = om.get();
             if (!passwordEncoder.matches(member.getPassword(), memberDeleteForm.getPassword())) {
                 memberRepository.deleteById(member.getId());
+                System.out.println("-----------------");
+                System.out.println("회원을 삭제했습니다.");
+                System.out.println("-----------------");
                 return;
             }
+            System.out.println("-----------------");
+            System.out.println("입력하신 비밀번호가 일치하지 않습니다.");
+            System.out.println("-----------------");
         }
+        System.out.println("-----------------");
+        System.out.println("회원정보를 찾지 못했습니다.");
+        System.out.println("-----------------");
     }
 }
 
