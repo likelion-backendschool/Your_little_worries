@@ -97,7 +97,8 @@ public class MemberService {
         Optional<Member> om = memberRepository.findByMemberId(memberId);
         if(om.isPresent()) {
             Member member = om.get();
-            if (!passwordEncoder.matches(member.getPassword(), memberDeleteForm.getPassword())) {
+
+            if (passwordEncoder.matches(memberDeleteForm.getPassword(), member.getPassword())) {
                 memberRepository.deleteById(member.getId());
                 System.out.println("-----------------");
                 System.out.println("회원을 삭제했습니다.");
