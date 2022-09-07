@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface StatsCollectionRepository extends JpaRepository<StatsCollection, Integer> {
     List<StatsCollection> findByMember(Member member);
+
+    List<StatsCollection> findByIP(String Ip);
 }

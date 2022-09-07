@@ -79,13 +79,20 @@ public class ArticleController {
         model.addAttribute("articleItems", articleItems);
 
         if (bindingResult.hasErrors()) {
+
             return "article/article_vote";
         }
         // Client IP
         String clientIp = requestService.getClientIp(request);
-        System.out.println(clientIp);
+
         if (user == null) {
             // 비로그인의 경우
+            List<StatsCollection> findByIPList = statsCollectionService.findByIP(clientIp);
+            int count = (int) findByIPList.stream().filter(statsCollection -> statsCollection.getArticleItem().getArticle().getId() == id).count();
+
+            if (count != 0) {
+                return "article/article_vote";
+            }
         } else {
             // 로그인의 경우
             Member member = memberService.findByMemberId(user.getUsername());
@@ -169,9 +176,6 @@ public class ArticleController {
         if (bindingResult.hasErrors()) {
             return "article/article_form";
         }
-
-//        Article article = articleService.create(articleForm.getTitle(), articleForm.getContent(),
-//                principal.getName(), category_id);
 
         Article article = articleService.findById(id);
 

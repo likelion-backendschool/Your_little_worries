@@ -35,4 +35,10 @@ public class StatsCollectionService {
 
         return statsCollectionList;
     }
+
+    public List<StatsCollection> findByIP(String IP) {
+        List<StatsCollection> statsCollectionList = statsCollectionRepository.findByIP(IP);
+
+        return statsCollectionList;
+    }
 }
