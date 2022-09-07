@@ -1,10 +1,15 @@
+
 <html
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         layout:decorate="~{layout}">
-
+<head>
+    <link rel="stylesheet" type="text/css" href="/styles/snsIcon/snsIcon.css"> <!-- sns공유하기 -->
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>  <!-- 카카오sns 공유하기 -->
+</head>
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
+
 
     <!--/*결과 데이터 그래프가 들어올 자리*/-->
     <h1>결과 페이지</h1>
@@ -14,6 +19,10 @@
     게시글 내용 : [[${article.content}]]
     <hr>
 
+    <button type="button" id="shareTw" class="link-icon twitter"></button>
+    <button type="button" id="shareFb" class="link-icon facebook"></button>
+    <button type="button" id="shareKt" class="link-icon kakao"></button>
+    <button type="button" id="shareKs" class="link-icon kakaoStory"></button>
     <!--/*    댓글 start   */-->
     <div class="col-lg-8 col-md-12 col-sm-12 mb-4">
         <div th:text="|댓글(${commentList.totalElements})|" class="p-1 text-large" style="font-size:1.25rem">0</div>
@@ -27,7 +36,8 @@
                     </div>
                     <div>
                         <label for="content" class="form-label m-0 pl-1">내용</label>
-                        <textarea th:field="*{content}" class="form-control" rows="3" placeholder="내용을 입력하세요." ></textarea>
+                        <textarea th:field="*{content}" class="form-control comment-form" onkeydown='counter()' rows="3" placeholder="내용을 입력하세요." ></textarea>
+                        <span class="float-right text-muted">(0/200)</span>
                     </div>
                     <input type="submit" th:value="저장하기" class="btn btn-primary btn-block font-weight-bold my-1"/>
                 </form>
@@ -46,7 +56,8 @@
                     </div>
                     <div>
                         <label for="content" class="form-label m-0 pl-1">내용</label>
-                        <textarea th:field="*{content}" id="content" class="form-control" rows="3" placeholder="내용을 입력하세요." ></textarea>
+                        <textarea th:field="*{content}" id="content" class="form-control comment-form" onkeydown='counter()' rows="3" placeholder="내용을 입력하세요." ></textarea>
+                        <span class="float-right text-muted">(0/200)</span>
                     </div>
                     <input type="submit" th:value="저장하기" class="btn btn-primary btn-block font-weight-bold my-1"/>
                 </form>
@@ -235,8 +246,60 @@
 </div>
 </html>
 
-<!--/*script은 html에 밖에서 써줘야 동작합니다*/-->
+<script>
+    const btnShareTw = document.querySelector('#shareTw');
+
+    btnShareTw.addEventListener('click', () => {
+        const pageUrl = 'www.daum.net'; // 우리 도메인으로 변경해야 됨
+        window.open(`https://twitter.com/intent/tweet?url=${pageUrl}`);
+    })
+    const btnShareFb = document.querySelector('#shareFb');
+
+    btnShareFb.addEventListener('click', () => {
+        const pageUrl = 'www.daum.net'; // 우리 도메인으로 변경해야 됨
+        window.open(`http://www.facebook.com/sharer/sharer.php?u=${pageUrl}`);
+    })
+
+
+    // 카카오 스토리 공유하기 -
+    Kakao.init('242f01a3af5936797443874ee2bff51c');
+    const btnShareKs = document.querySelector('#shareKs');
+
+    btnShareKs.addEventListener('click', () => {
+        console.log("aa");
+        Kakao.Story.share({
+            url: 'www.daum.net', // 우리 도메인으로 변경해야 됨
+            text: '카카오스토리로 공유 합니다.'
+        });
+    })
+    // 카카오톡 공유하기
+    Kakao.Link.createDefaultButton({
+        container: '#shareKt',
+        objectType: 'feed',
+        content: {
+            title: '나의 자질구레한 고민들',
+            description: '나의 자질구레한 고민들의 투표 결과입니다.',
+            imageUrl: 'http://eomcheon.com/images/main.jpg',
+            link: {
+                mobileWebUrl: 'http://eomcheon.com/index.php',
+                webUrl: 'http://eomcheon.com/index.php'
+            }
+        },
+    });
+</script>
+
 <script th:inline="javascript">
+
+    // 글자 수 체크
+    function counter() {
+        let content = document.querySelector('.comment-form');
+        let value = content.value;
+        if (value.length >200) {
+            value = value.substring(0,199);
+            content.value = value;
+        }
+        content.nextElementSibling.innerHTML =  '(' + value.length +'/200)';
+    }
 
     /**
      *  댓글 좋아요
