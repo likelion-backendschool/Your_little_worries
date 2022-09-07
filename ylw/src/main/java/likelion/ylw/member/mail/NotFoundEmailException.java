@@ -1,4 +1,4 @@
-package likelion.ylw.member.Mail;
+package likelion.ylw.member.mail;
 
 public class NotFoundEmailException extends RuntimeException {
     public NotFoundEmailException(String message) {

@@ -51,7 +51,7 @@ public class CommentController {
             return "article/article_result";
         }
         // 댓글 등록
-        Member member = this.memberService.getMemberId(principal.getName());
+        Member member = this.memberService.findByMemberId(principal.getName());
         this.commentService.create(article, commentForm.getContent(), member);
 
         return String.format("redirect:/article/result/%s", id);
@@ -176,7 +176,7 @@ public class CommentController {
     @GetMapping("/vote/{id}")
     public Map<String, String> pushVoteBtn(@PathVariable Integer id, Principal principal) {
         Map<String,String> result = new HashMap<>();
-        Member member = this.memberService.getMemberId(principal.getName());
+        Member member = this.memberService.findByMemberId(principal.getName());
         Comment comment = this.commentService.getComment(id);
 
         // 본인 글에 추천하는 경우

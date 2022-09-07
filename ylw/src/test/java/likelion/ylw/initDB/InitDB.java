@@ -62,8 +62,8 @@ public class InitDB {
     @Test
     @DisplayName("각 카테고리 별 게시글 100개씩 생성")
     void t3() {
-        Member member1 = memberService.getMemberId("user1");
-        Member member2 = memberService.getMemberId("user2");
+        Member member1 = memberService.findByMemberId("user1");
+        Member member2 = memberService.findByMemberId("user2");
         Article article1;
 
 
@@ -95,8 +95,8 @@ public class InitDB {
     @Test
     @DisplayName("1번 카테고리의 1번 게시글에 댓글 100개 추가")
     void t4() {
-        Member member1 = memberService.getMemberId("user1");
-        Member member2 = memberService.getMemberId("user2");
+        Member member1 = memberService.findByMemberId("user1");
+        Member member2 = memberService.findByMemberId("user2");
         Article article = articleRepository.findById(1).get();
         for (int i = 1; i <= 200; i++) {
             if (i%2==0) {
@@ -112,7 +112,7 @@ public class InitDB {
     @Test
     @DisplayName("공지사항 100개 추가")
     void t5() {
-        Member member = memberService.getMemberId("user1");
+        Member member = memberService.findByMemberId("user1");
         for (int i = 0; i < 100; i++) {
             noticeService.create(i+"번째 공지입니다", "내용입니다",member);
         }

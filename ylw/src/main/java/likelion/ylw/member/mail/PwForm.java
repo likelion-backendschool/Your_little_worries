@@ -1,4 +1,4 @@
-package likelion.ylw.member.Mail;
+package likelion.ylw.member.mail;
 
 import lombok.Getter;
 import lombok.Setter;

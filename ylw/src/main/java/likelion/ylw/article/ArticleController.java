@@ -81,7 +81,7 @@ public class ArticleController {
             // 비로그인의 경우
         } else {
             // 로그인의 경우
-            Member member = memberService.getMemberId(user.getUsername());
+            Member member = memberService.findByMemberId(user.getUsername());
             List<StatsCollection> statsCollectionList = statsCollectionService.findByMember(member);
             int count = (int)statsCollectionList.stream().filter(statsCollection -> statsCollection.getArticleItem().getArticle().getId() == id).count();
 
@@ -172,7 +172,7 @@ public class ArticleController {
 
         if (principal != null) {
             // 로그인 회원의 댓글 좋아요 목록
-            Member member = memberService.getMemberId(principal.getName());
+            Member member = memberService.findByMemberId(principal.getName());
             Set<Comment> votedComments = commentVoteService.getCommentsByMemberId(member);
             model.addAttribute("votedComments", votedComments);
         }

@@ -9,7 +9,8 @@
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
     <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white rounded-2xl shadow-lg">
-        <form th:action="@{/mail/send}" th:object="${mailForm}" method="post">
+        <form onsubmit="MailSend__submitForm(this); return false;" th:action="@{/mail/reset}" th:object="${mailForm}"
+              method="post">
 
             <div th:if="${param.error}">
                 <div class="alert alert-danger">
@@ -27,7 +28,7 @@
                 />
             </div>
             <div class="text-center">
-                <button id="btn-popup" type="submit"
+                <button id="btn-popup" type="submit" onclick="delBtn()"
                         class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
                     발송하기
                 </button>
@@ -38,8 +39,26 @@
 </html>
 
 <script>
-var btn = document.querySelector("#btn-popup")
-btn.addEventListener('click', function(event) {
-    alert('비밀번호 재설정을 위한 메일이 성공적으로 발송되었습니다.\n\t 이메일 인증을 통해 비밀번호를 새로 설정해주시기 바랍니다.');
-});
+<!--var btn = document.querySelector("#btn-popup")-->
+<!--btn.addEventListener('click', function(event) {-->
+<!--    alert('비밀번호를 새로 설정하기 위한 메일을 받으시겠습니까?');-->
+<!--});-->
+
+
+
+
+function delBtn(){
+
+var outcome = confirm("비밀번호를 새로 설정하기 위한 메일을 받으시겠습니까?");
+    if (outcome == true){
+   console.log("완료되었습니다.");
+ }else{
+   console.log("취소되었습니다");
+ }
+}
+
+<!--function MailSend__submitForm(form) {-->
+<!--  alert('비밀번호를 새로 설정하기 위한 메일을 받으시겠습니까?');-->
+<!--  form.submit();-->
+<!--}-->
 </script>

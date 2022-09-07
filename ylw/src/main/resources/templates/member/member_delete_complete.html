@@ -9,11 +9,9 @@
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
     <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white rounded-2xl shadow-lg">
-        <form th:action="@{/mail/send}" method="post">
-
-            <div class="text-center text-xl text-2xl font-semibold mt-1 mb-12 pb-1">이메일 발송 완료</div>
-            <div> 비밀번호 재설정을 위한 메일이 성공적으로 발송되었습니다. </div>
-            <div> 이메일 인증을 통해 비밀번호를 새로 설정해주시기 바랍니다. </div>
+        <form th:action="@{/member/delete}" method="post">
+            <div class="text-center text-xl text-2xl font-semibold mt-1 mb-12 pb-1">탈퇴 완료</div>
+            <div> 회원 탈퇴가 정상적으로 처리되었습니다. </div>
         </form>
     </div>
 </div>

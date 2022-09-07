@@ -1,16 +1,13 @@
 package likelion.ylw.member;
 
-import likelion.ylw.member.Mail.NotFoundEmailException;
+import likelion.ylw.member.mail.NotFoundEmailException;
 import likelion.ylw.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.channels.FileChannel;
-import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
 
 @RequiredArgsConstructor
 @Service
@@ -41,7 +38,7 @@ public class MemberService {
     /**
      * 유저아이디에 해당하는 유저 객체 가져오기
      */
-    public Member getMemberId(String memberId) {
+    public Member findByMemberId(String memberId) {
         Optional<Member> member = this.memberRepository.findByMemberId(memberId);
         if (member.isPresent()) {
             return member.get();
