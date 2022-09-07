@@ -27,7 +27,7 @@ public class NoticeController {
     public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
         Page<Notice> paging = this.noticeService.getList(page);
         model.addAttribute("paging", paging);
-        return "notice_list";
+        return "notice/notice_list";
     }
 
     @RequestMapping(value = "/detail/{id}")
@@ -35,19 +35,19 @@ public class NoticeController {
         Notice notice = this.noticeService.getNotice(id);
         this.noticeService.updateCount(notice);
         model.addAttribute("notice", notice);
-        return "notice_detail";
+        return "notice/notice_detail";
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String noticeCreate(NoticeForm noticeForm) {
-        return "notice_form";
+        return "notice/notice_form";
     }
 
     @PostMapping("/create")
     public String noticeCreate(@Valid NoticeForm noticeForm, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
-            return "notice_form";
+            return "notice/notice_form";
         }
 
         Member member = this.memberService.getMemberId(principal.getName());
@@ -64,7 +64,7 @@ public class NoticeController {
         }
         noticeForm.setTitle(notice.getTitle());
         noticeForm.setContent(notice.getContent());
-        return "notice_form";
+        return "notice/notice_form";
     }
 
 
@@ -72,7 +72,7 @@ public class NoticeController {
     public String noticeModify(@Valid NoticeForm noticeForm, BindingResult bindingResult,
                                  Principal principal, @PathVariable("id") Integer id) {
         if (bindingResult.hasErrors()) {
-            return "notice_form";
+            return "notice/notice_form";
         }
         Notice notice = this.noticeService.getNotice(id);
         if (!notice.getAuthor().getMemberId().equals(principal.getName())) {

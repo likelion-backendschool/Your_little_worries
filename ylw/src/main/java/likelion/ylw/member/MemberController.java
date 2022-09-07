@@ -4,9 +4,6 @@ import likelion.ylw.member.Mail.MailForm;
 import likelion.ylw.member.Mail.NotFoundEmailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,19 +22,19 @@ public class MemberController {
 
     @GetMapping("/signup")
     public String signup(MemberCreateForm memberCreateForm) {
-        return "signup_form";
+        return "member/signup_form";
     }
 
     @PostMapping("/signup")
     public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "signup_form";
+            return "member/signup_form";
         }
 
         if (!memberCreateForm.getPassword1().equals(memberCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordIncorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
-            return "signup_form";
+            return "member/signup_form";
         }
 
         try {
@@ -45,10 +42,10 @@ public class MemberController {
                     memberCreateForm.getPassword1(), memberCreateForm.getEmail(), memberCreateForm.getNickname());
         } catch (SignupEmailDuplicatedException e) {
             bindingResult.reject("signupEmailDuplicated", e.getMessage());
-            return "signup_form";
+            return "member/signup_form";
         } catch (SignupMemberIdDuplicatedException e) {
             bindingResult.reject("signupUsernameDuplicated", e.getMessage());
-            return "signup_form";
+            return "member/signup_form";
         }
 
         return "redirect:/";
@@ -56,13 +53,13 @@ public class MemberController {
 
     @GetMapping("/login")
     public String login() {
-        return "login_form";
+        return "member/login_form";
     }
 
     @GetMapping("/findID")
     public String find_id(MailForm mailForm) {
 
-        return "findID_form";
+        return "member/findID_form";
     }
 
     @PostMapping("/findID")
@@ -70,10 +67,10 @@ public class MemberController {
         try {
             Member member = memberService.findByEmail(mailForm.getEmail());
             model.addAttribute("member", member);
-            return "findID_result";
+            return "member/findID_result";
         } catch(NotFoundEmailException e) {
             bindingResult.reject("notFoundEmail", e.getMessage());
-            return "findID_form";
+            return "member/findID_form";
         }
     }
 
@@ -83,7 +80,7 @@ public class MemberController {
         System.out.println("principal getName(): " + principal.getName());
         Member member = memberService.getMemberId(principal.getName());
         model.addAttribute("member", member);
-        return "myPage_form";
+        return "member/myPage_form";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -93,7 +90,7 @@ public class MemberController {
         Member member = memberService.getMemberId(principal.getName());
 
         model.addAttribute("member", member);
-        return "editProfile_form";
+        return "member/editProfile_form";
     }
 
     @PostMapping("/profile/edit")
@@ -113,7 +110,7 @@ public class MemberController {
                     "2개의 패스워드가 일치하지 않습니다.");
 
             model.addAttribute("member", member);
-            return "editProfile_form";
+            return "member/editProfile_form";
         }
         memberService.update(memberUpdateForm, member);
         return "redirect:/member/myPage";
@@ -122,7 +119,7 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete")
     public String delete_account(MemberDeleteForm memberDeleteForm) {
-        return "deleteAccount_form";
+        return "member/deleteAccount_form";
     }
 
     @PostMapping("/delete")
@@ -147,7 +144,7 @@ public class MemberController {
             System.out.println("--------------------");
             bindingResult.rejectValue("password", "passwordNotMatched",
                     "패스워드가 일치하지 않습니다.");
-            return "deleteAccount_form";
+            return "member/deleteAccount_form";
         }
         System.out.println("--------------------");
         System.out.println("패스워드가 일치합니다.");
@@ -159,7 +156,7 @@ public class MemberController {
         System.out.println("--------------------");
         System.out.println("delete 하고난 후");
         System.out.println("--------------------");
-        return "delete_account";
+        return "member/delete_account";
     }
 }
 
