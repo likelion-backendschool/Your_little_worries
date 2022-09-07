@@ -1,4 +1,4 @@
-package likelion.ylw.member.Mail;
+package likelion.ylw.member.mail;
 
 public class FailedToSendMailError extends RuntimeException {
     public FailedToSendMailError(String message) {

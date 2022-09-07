@@ -1,0 +1,25 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+        layout:decorate="~{layout}"
+>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+
+<div layout:fragment="content" class="main-content-container container-fluid px-4">
+    <div class="container mx-auto w-[700px] p-10 my-10 flex flex-col text-center bg-white rounded-2xl shadow-lg">
+        <form th:action="@{/mail/reset}" method="post">
+            <i class="fa-solid fa-envelope-circle-check fa-5x"></i>
+            <div class="text-center text-xl text-2xl font-semibold mt-1 mb-12 pb-1">이메일 발송 완료</div>
+            <div> 입력하신 이메일 주소로 비밀번호 재설정을 위한 이메일이 성공적으로 발송되었습니다. </div>
+            <div> 이메일 인증을 통해 비밀번호를 설정해주시기 바랍니다. </div>
+        </form>
+    </div>
+</div>
+</html>
+

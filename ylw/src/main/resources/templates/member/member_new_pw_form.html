@@ -10,16 +10,11 @@
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
     <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white rounded-2xl shadow-lg">
-        <form th:action="@{/mail/password/new}" method="post">
+        <form th:action="@{/mail/reset/password}" method="post">
 
-            <div th:if="${param.error}">
-                <div class="alert alert-danger">
-                    새 비밀번호를 확인해 주세요.
-                </div>
-            </div>
 
             <div class="text-xl text-2xl font-semibold mt-1 mb-12 pb-1">비밀번호 재설정</div>
-
+            <div th:replace="form_errors :: formErrorsFragment"></div>
             <div class="mb-3">
                 <label class="form-label">새 비밀번호</label>
                 <input

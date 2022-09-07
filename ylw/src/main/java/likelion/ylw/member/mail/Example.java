@@ -1,4 +1,4 @@
-package likelion.ylw.member.Mail;
+package likelion.ylw.member.mail;
 
 import com.sendgrid.Method;
 import com.sendgrid.Request;

@@ -1,7 +1,7 @@
 package likelion.ylw.member;
 
-import likelion.ylw.member.Mail.MailForm;
-import likelion.ylw.member.Mail.NotFoundEmailException;
+import likelion.ylw.member.mail.MailForm;
+import likelion.ylw.member.mail.NotFoundEmailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,19 +22,19 @@ public class MemberController {
 
     @GetMapping("/signup")
     public String signup(MemberCreateForm memberCreateForm) {
-        return "member/signup_form";
+        return "member/member_signup_form";
     }
 
     @PostMapping("/signup")
     public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "member/signup_form";
+            return "member/member_signup_form";
         }
 
         if (!memberCreateForm.getPassword1().equals(memberCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordIncorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
-            return "member/signup_form";
+            return "member/member_signup_form";
         }
 
         try {
@@ -42,10 +42,10 @@ public class MemberController {
                     memberCreateForm.getPassword1(), memberCreateForm.getEmail(), memberCreateForm.getNickname());
         } catch (SignupEmailDuplicatedException e) {
             bindingResult.reject("signupEmailDuplicated", e.getMessage());
-            return "member/signup_form";
+            return "member/member_signup_form";
         } catch (SignupMemberIdDuplicatedException e) {
             bindingResult.reject("signupUsernameDuplicated", e.getMessage());
-            return "member/signup_form";
+            return "member/member_signup_form";
         }
 
         return "redirect:/";
@@ -53,24 +53,24 @@ public class MemberController {
 
     @GetMapping("/login")
     public String login() {
-        return "member/login_form";
+        return "member/member_login_form";
     }
 
-    @GetMapping("/findID")
+    @GetMapping("/find/id")
     public String find_id(MailForm mailForm) {
 
-        return "member/findID_form";
+        return "member/member_find_id_form";
     }
 
-    @PostMapping("/findID")
-    public String find_id_post(Model model, @Valid MailForm mailForm, BindingResult bindingResult) {
+    @PostMapping("/find/id")   /* /findID*/
+    public String find_id(Model model, @Valid MailForm mailForm, BindingResult bindingResult) {
         try {
             Member member = memberService.findByEmail(mailForm.getEmail());
             model.addAttribute("member", member);
-            return "member/findID_result";
+            return "member/member_find_id_complete";
         } catch(NotFoundEmailException e) {
             bindingResult.reject("notFoundEmail", e.getMessage());
-            return "member/findID_form";
+            return "member/member_find_id_form";
         }
     }
 
@@ -78,28 +78,28 @@ public class MemberController {
     @GetMapping("/myPage")
     public String my_page(Principal principal, Model model) {
         System.out.println("principal getName(): " + principal.getName());
-        Member member = memberService.getMemberId(principal.getName());
+        Member member = memberService.findByMemberId(principal.getName());
         model.addAttribute("member", member);
-        return "member/myPage_form";
+        return "member/member_myPage";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/profile/edit")
+    @GetMapping("/edit/profile")
     public String my_page_edit(MemberUpdateForm memberUpdateForm, Principal principal, Model model) {
 
-        Member member = memberService.getMemberId(principal.getName());
+        Member member = memberService.findByMemberId(principal.getName());
 
         model.addAttribute("member", member);
-        return "member/editProfile_form";
+        return "member/member_edit_form";
     }
 
-    @PostMapping("/profile/edit")
+    @PostMapping("/edit/profile")
     public String my_page_edit(@Valid MemberUpdateForm memberUpdateForm, BindingResult bindingResult, Model model, Principal principal) {
         System.out.println("---------------------");
         System.out.println("principal.getName : " + principal.getName());
         System.out.println("---------------------");
 
-        Member member = memberService.getMemberId(principal.getName());
+        Member member = memberService.findByMemberId(principal.getName());
 
         System.out.println("---------------------");
         System.out.println("member : " + member);
@@ -110,7 +110,7 @@ public class MemberController {
                     "2개의 패스워드가 일치하지 않습니다.");
 
             model.addAttribute("member", member);
-            return "member/editProfile_form";
+            return "member/member_edit_form";
         }
         memberService.update(memberUpdateForm, member);
         return "redirect:/member/myPage";
@@ -119,13 +119,13 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete")
     public String delete_account(MemberDeleteForm memberDeleteForm) {
-        return "member/deleteAccount_form";
+        return "member/member_delete_form";
     }
 
     @PostMapping("/delete")
     public String delete_account(@Valid MemberDeleteForm memberDeleteForm, BindingResult bindingResult, Principal principal) {
         String memberId = principal.getName();
-        Member member = memberService.getMemberId(memberId);
+        Member member = memberService.findByMemberId(memberId);
         System.out.println("--------------------");
         System.out.println("memberDeleteForm.getPassword : " + memberDeleteForm.getPassword());
         System.out.println("--------------------");
@@ -144,7 +144,7 @@ public class MemberController {
             System.out.println("--------------------");
             bindingResult.rejectValue("password", "passwordNotMatched",
                     "패스워드가 일치하지 않습니다.");
-            return "member/deleteAccount_form";
+            return "member/member_delete_form";
         }
         System.out.println("--------------------");
         System.out.println("패스워드가 일치합니다.");
@@ -156,7 +156,7 @@ public class MemberController {
         System.out.println("--------------------");
         System.out.println("delete 하고난 후");
         System.out.println("--------------------");
-        return "member/delete_account";
+        return "member/member_delete_complete";
     }
 }
 

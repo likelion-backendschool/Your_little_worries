@@ -50,7 +50,7 @@ public class NoticeController {
             return "notice/notice_form";
         }
 
-        Member member = this.memberService.getMemberId(principal.getName());
+        Member member = this.memberService.findByMemberId(principal.getName());
         this.noticeService.create(noticeForm.getTitle(), noticeForm.getContent(), member);
         return "redirect:/notice/list";
     }

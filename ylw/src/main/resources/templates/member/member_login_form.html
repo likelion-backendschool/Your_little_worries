@@ -11,7 +11,11 @@
         <form th:action="@{/member/login}" method="post" class="flex flex-col">
 
             <div class="text-center text-2xl font-semibold mt-1 mb-12 pb-1">너의 자질구레한 고민들</div>
-
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">
+                    사용자ID 또는 비밀번호를 확인해 주세요.
+                </div>
+            </div>
             <div class="mb-3 flex">
                 <label class="form-label w-[100px]">로그인ID</label>
                 <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none flex-grow" name="username" placeholder="아이디" />
@@ -29,9 +33,9 @@
 
         <div class="info_user">
             <ul class="list_user flex justify-center">
-                <li><a th:href="@{/mail/reset}" class="block mr-3">비밀번호 찾기</a></li>
+                <li><a th:href="@{/mail/send}" class="block mr-3">비밀번호 찾기</a></li>
                 <li> | </li>
-                <li><a th:href="@{/member/findID}" class="block ml-3">아이디 찾기</a></li>
+                <li><a th:href="@{/member/find/id}" class="block ml-3">아이디 찾기</a></li>
             </ul>
         </div>
 

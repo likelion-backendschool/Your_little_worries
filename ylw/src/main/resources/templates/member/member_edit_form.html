@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <form th:action="@{/member/profile/edit}" th:object="${memberUpdateForm}" method="post">
+        <form th:action="@{/member/edit/profile}" th:object="${memberUpdateForm}" method="post">
             <div th:replace="form_errors :: formErrorsFragment"></div>
             <div class="mb-3">
                 <label class="form-label">사용자ID</label>
