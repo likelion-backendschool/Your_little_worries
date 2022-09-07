@@ -14,6 +14,15 @@
             display: none;
         }
 
+        #btn-pw {
+            cursor: pointer;
+        }
+
+        #btn-nickname {
+            cursor: pointer;
+        }
+
+
     </style>
 </head>
 
@@ -31,7 +40,7 @@
         </div>
 
         <form th:action="@{/member/profile/edit}" th:object="${memberUpdateForm}" method="post">
-            <!--        <div th:replace="form_errors :: formErrorsFragment"></div>-->
+            <div th:replace="form_errors :: formErrorsFragment"></div>
             <div class="mb-3">
                 <label class="form-label">사용자ID</label>
                 <input type="text" th:value="${member.memberId}" class="form-control" th:readonly="readonly">
@@ -44,7 +53,7 @@
                     <input type="text" th:value="${member.nickname}" class="form-control" th:readonly="readonly">
                     <input id="modify-nickname" type="text" th:field="*{nickname}" class="input-none form-control">
                     <div id="btn-nickname"
-                         class="text-center w-[50px] pt-1.5 rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black">
+                         class="text-center w-[50px] flex-none pt-1.5 rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black">
                         변경
                     </div>
                 </div>
@@ -55,7 +64,7 @@
                 <div class="flex gap-1">
                     <input id="modify-pw" type="password" th:field="*{password1}" class="input-readOnly form-control"/>
                     <div id="btn-pw"
-                         class="text-center w-[50px] rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black pt-1.5">
+                         class="text-center w-[50px] flex-none rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black pt-1.5">
                         변경
                     </div>
                 </div>
@@ -63,7 +72,7 @@
 
             <div class="mb-3">
                 <label class="form-label">비밀번호 확인</label>
-                <input id="modify-pw-check" type="password" th:field="*{password2}" class="input-readOnly form-control" th:readonly="readonly">
+                <input id="modify-pw-check" type="password" th:field="*{password2}" class="input-readOnly form-control">
             </div>
             <div class="mb-3">
                 <label class="form-label">이메일</label>
@@ -95,6 +104,8 @@
     $("#btn-pw").click(function () {
         if ($("#modify-pw").hasClass("input-readOnly")) {
             $("#modify-pw").removeClass("input-readOnly");
+        }
+        if ($("#modify-pw-check").hasClass("input-readOnly")) {
             $("#modify-pw-check").removeClass("input-readOnly");
         }
     });

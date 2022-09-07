@@ -41,8 +41,8 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .and()
-                        .csrf()
-                        .csrfTokenRepository(new HttpSessionCsrfTokenRepository());
+                .csrf()
+                .csrfTokenRepository(new HttpSessionCsrfTokenRepository());
         return http.build();
     }
     @Bean

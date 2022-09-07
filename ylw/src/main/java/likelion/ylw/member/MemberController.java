@@ -95,7 +95,7 @@ public class MemberController {
     }
 
     @PostMapping("/profile/edit")
-    public String my_page_edit(MemberUpdateForm memberUpdateForm, Model model, Principal principal) {
+    public String my_page_edit(@Valid MemberUpdateForm memberUpdateForm, BindingResult bindingResult, Model model, Principal principal) {
         System.out.println("---------------------");
         System.out.println("principal.getName : " + principal.getName());
         System.out.println("---------------------");
@@ -106,6 +106,13 @@ public class MemberController {
         System.out.println("member : " + member);
         System.out.println("---------------------");
 
+        if (!memberUpdateForm.getPassword1().equals(memberUpdateForm.getPassword2())) {
+            bindingResult.rejectValue("password2", "passwordIncorrect",
+                    "2개의 패스워드가 일치하지 않습니다.");
+
+            model.addAttribute("member", member);
+            return "editProfile_form";
+        }
         memberService.update(memberUpdateForm, member);
         return "redirect:/member/myPage";
     }
@@ -117,11 +124,18 @@ public class MemberController {
     }
 
     @PostMapping("/delete")
-    public String delete_account(MemberDeleteForm memberDeleteForm, Principal principal) {
+    public String delete_account(@Valid MemberDeleteForm memberDeleteForm, BindingResult bindingResult, Principal principal) {
         String memberId = principal.getName();
+        Member member = memberService.getMemberId(memberId);
+
+        if (!memberDeleteForm.getPassword().equals(member.getPassword())) {
+            bindingResult.rejectValue("password", "passwordNotMatched",
+                    "패스워드가 일치하지 않습니다.");
+            return "deleteAccount_form";
+        }
+
         memberService.delete(memberDeleteForm, memberId);
         return "delete_account";
     }
 }
 
-//탈퇴 시 비밀번호 오류 처리, 로그인 입력 시 오류 처리
