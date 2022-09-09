@@ -7,7 +7,7 @@
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-.picture {
+.profile-img {
   border-radius: 50%;
 }
 .popup {
@@ -106,10 +106,13 @@
             <div class="flex my-20">
                 <div class="flex flex-col my-auto items-center pt-1 mr-1">
                     <div class="mx-9">
-                        <img class="picture" src="https://picsum.photos/id/233/300/300"></img>
+                        <img class="profile-img" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />
                     </div>
                     <div class="text-center w-[50px] rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black mt-3 pt-1">
-                        <button type="submit">변경</button>
+                        <form th:action="@{|/member/myPage|}" method="post" enctype="multipart/form-data">
+                            <input type="file" name="memberImg" accept="image/png, image/gif, image/jpeg">
+                            <button id="btn-img" type="submit" onclick="ImgUpdate()">업로드</button>
+                        </form>
                     </div>
                 </div>
                 <div class="w-[60%] pl-7">
@@ -121,14 +124,14 @@
                         </li>
 
                         <li class="flex items-center py-3">
+                            <span>아이디</span>
+                            <span class="ml-auto" th:text="${member.memberId}"></span>
+                        </li>
+                        <li class="flex items-center py-3">
                             <span>닉네임</span>
                             <span class="ml-auto" th:text="${member.nickname}"></span>
                         </li>
 
-                        <li class="flex items-center py-3">
-                            <span>아이디</span>
-                            <span class="ml-auto" th:text="${member.memberId}"></span>
-                        </li>
                         <li class="flex items-center py-3">
                             <span>이메일 주소</span>
                             <span class="ml-auto" th:text="${member.email}"></span>
@@ -231,13 +234,22 @@
 </html>
 
 <script>
-$('.btn-popup').click(function() {
-  $('.popup').addClass('active');
-});
+<!--$('.btn-popup').click(function() {-->
+<!--  $('.popup').addClass('active');-->
+<!--});-->
 
-$('.popup__btn-close').click(function() {
-  $('.popup').removeClass('active');
-});
+<!--$('.popup__btn-close').click(function() {-->
+<!--  $('.popup').removeClass('active');-->
+<!--});-->
+
+function ImgUpdate(){
+var result = confirm("프로필 이미지를 변경하시겠습니까?");
+ if (result == true){
+   console.log("변경이 완료되었습니다.");
+ }else{
+   console.log("취소되었습니다");
+ }
+}
 </script>
 
 

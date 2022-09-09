@@ -9,9 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -20,26 +22,27 @@ public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
+    // 회원가입 폼 (memberId, 닉네임, 비밀번호, 프로필 이미지 입력)
     @GetMapping("/signup")
     public String signup(MemberCreateForm memberCreateForm) {
         return "member/member_signup_form";
     }
 
+    // 회원가입 처리 (루트로 이동)
     @PostMapping("/signup")
     public String signup(@Valid MemberCreateForm memberCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "member/member_signup_form";
         }
-
         if (!memberCreateForm.getPassword1().equals(memberCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordIncorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
             return "member/member_signup_form";
         }
-
         try {
             memberService.create(memberCreateForm.getMemberId(),
-                    memberCreateForm.getPassword1(), memberCreateForm.getEmail(), memberCreateForm.getNickname());
+                    memberCreateForm.getPassword1(), memberCreateForm.getEmail(), memberCreateForm.getNickname()
+                    , memberCreateForm.getMemberImg());
         } catch (SignupEmailDuplicatedException e) {
             bindingResult.reject("signupEmailDuplicated", e.getMessage());
             return "member/member_signup_form";
@@ -47,22 +50,23 @@ public class MemberController {
             bindingResult.reject("signupUsernameDuplicated", e.getMessage());
             return "member/member_signup_form";
         }
-
         return "redirect:/";
     }
 
+    // 로그인 폼
     @GetMapping("/login")
     public String login() {
         return "member/member_login_form";
     }
 
+    // 아이디 찾기 폼(이메일 입력)
     @GetMapping("/find/id")
     public String find_id(MailForm mailForm) {
-
         return "member/member_find_id_form";
     }
 
-    @PostMapping("/find/id")   /* /findID*/
+    // 아이디 찾기 처리 (아이디 찾기 완료 페이지로 이동)
+    @PostMapping("/find/id")
     public String find_id(Model model, @Valid MailForm mailForm, BindingResult bindingResult) {
         try {
             Member member = memberService.findByEmail(mailForm.getEmail());
@@ -74,25 +78,34 @@ public class MemberController {
         }
     }
 
+    // 마이페이지
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/myPage")
     public String my_page(Principal principal, Model model) {
-        System.out.println("principal getName(): " + principal.getName());
         Member member = memberService.findByMemberId(principal.getName());
         model.addAttribute("member", member);
         return "member/member_myPage";
     }
 
+    @PostMapping("/myPage")
+    public String my_page(Principal principal, Model model, MultipartFile memberImg) {
+        String memberId = principal.getName();
+        Member member = memberService.findByMemberId(memberId);
+        memberService.updateImage(member, memberImg);
+        model.addAttribute("member", member);
+        return "member/member_myPage";
+    }
+
+    // 회원정보 수정 폼 (닉네임, 비밀번호 변경가능)
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/edit/profile")
     public String my_page_edit(MemberUpdateForm memberUpdateForm, Principal principal, Model model) {
-
         Member member = memberService.findByMemberId(principal.getName());
-
         model.addAttribute("member", member);
         return "member/member_edit_form";
     }
 
+    // 회원 정보 수정 처리 (마이페이지로 이동)
     @PostMapping("/edit/profile")
     public String my_page_edit(@Valid MemberUpdateForm memberUpdateForm, BindingResult bindingResult, Model model, Principal principal) {
         System.out.println("---------------------");
@@ -112,16 +125,18 @@ public class MemberController {
             model.addAttribute("member", member);
             return "member/member_edit_form";
         }
-        memberService.update(memberUpdateForm, member);
+        memberService.update(memberUpdateForm, member, memberUpdateForm.getMemberImg());
         return "redirect:/member/myPage";
     }
 
+    //회원 탈퇴 폼 (비밀번호 입력 시 탈퇴)
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete")
     public String delete_account(MemberDeleteForm memberDeleteForm) {
         return "member/member_delete_form";
     }
 
+    //회원 탈퇴 처리 (탈퇴 완료 페이지로 이동)
     @PostMapping("/delete")
     public String delete_account(@Valid MemberDeleteForm memberDeleteForm, BindingResult bindingResult, Principal principal) {
         String memberId = principal.getName();
@@ -157,6 +172,13 @@ public class MemberController {
         System.out.println("delete 하고난 후");
         System.out.println("--------------------");
         return "member/member_delete_complete";
+    }
+
+    @GetMapping("/rank")
+    public String search_rank(Model model) {
+        List<Member> members = memberService.findAll();
+        model.addAttribute("members", members);
+        return "member/member_ranking";
     }
 }
 

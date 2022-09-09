@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.io.File;
 import java.time.LocalDateTime;
 
 @Entity
@@ -46,6 +48,7 @@ public class Member extends BaseTimeEntity {
     @ColumnDefault("0")
     private Integer popularVoteCount;
 
+    private String memberImgPath;
 //    private LocalDateTime createdDate;
 
 //    @Enumerated(EnumType.STRING)
