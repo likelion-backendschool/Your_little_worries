@@ -1,0 +1,75 @@
+<%@ page language="java" contentType="text/html; charset="UTF-8" pageEncoding="UTF-8"%>
+
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://thymeleaf.org"
+        layout:decorate="~{layout}"
+>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+    .included {
+    position: relative;
+    }
+
+    .picture {
+      border: 1px solid black;
+      border-radius: 50%;
+      width: 100px;
+    }
+
+    .profile-none {
+      display: none;
+      position: absolute;
+    }
+    </style>
+</head>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js%22%3E"></script>
+<div layout:fragment="content" class="main-content-container container-fluid px-4">
+    <div class="container mx-auto w-[1100px] p-10 my-10 flex flex-col bg-white rounded-2xl shadow-lg">
+        <div class="mt-0 mb-2 text-center text-4xl font-bold my-5">랭킹 조회</div>
+        <div class="included">
+            <table class="table table-hover text-center">
+                <thead>
+                <tr>
+                    <th scope="col">순위</th>
+                    <th scope="col" class="text-start">유저 프로필</th>
+                    <th scope="col">닉네임</th>
+                    <th scope="col">점수</th>
+                </tr>
+                </thead>
+                <tbody>
+<!--                <% for(int i = 0; i <= 3; i++) {-->
+<!--                    Member member = ${members.get}-->
+<!--                %>-->
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>
+                            <img class="picture" src="https://picsum.photos/id/233/300/300"></img>
+                            <th:block th:replace="member/member_fragment :: memberFragment"></th:block>
+                        </td>
+                        <td>Otto</td>
+                        <td>80</td>
+                    </tr>
+<!--                <% } %>-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</html>
+
+
+<script>
+$(".picture").hover(
+  function () {
+    $("#target").removeClass('profile-none ');
+  },
+  function () {
+    $("#target").addClass('profile-none ');
+  }
+);
+</script>

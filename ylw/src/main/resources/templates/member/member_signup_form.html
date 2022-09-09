@@ -21,10 +21,10 @@
             </div>
         </div>
 
-        <form th:action="@{|/member/signup|}" th:object="${memberCreateForm}" method="post">
+        <form th:action="@{|/member/signup|}" th:object="${memberCreateForm}" method="post" enctype="multipart/form-data">
             <div th:replace="form_errors :: formErrorsFragment"></div>
             <div class="mb-3">
-                <label class="form-label">사용자ID</label>
+                <label class="form-label">사용자 ID</label>
                 <input type="text" th:field="*{memberId}" class="form-control">
             </div>
             <div class="mb-3">
@@ -43,7 +43,10 @@
                 <label class="form-label">이메일</label>
                 <input type="email" th:field="*{email}" class="form-control">
             </div>
-
+            <div class="mb-3">
+                <span class="pb-5">프로필 이미지 설정</span>
+                <input type="file" name="memberImg" accept="image/png, image/gif, image/jpeg">
+            </div>
             <div class="text-center">
                 <button type="submit"
                         class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">

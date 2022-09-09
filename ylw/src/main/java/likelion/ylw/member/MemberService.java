@@ -3,35 +3,63 @@ package likelion.ylw.member;
 import likelion.ylw.member.mail.NotFoundEmailException;
 import likelion.ylw.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
 public class MemberService {
+    @Value("${custom.genFileDirPath}")
+    private String genFileDirPath;
+    String profileImgRelPath;
+    File profileImgFile;
+
+
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Member create(String memberId, String password, String email, String nickname) {
-        Member member = new Member();
-        member.setMemberId(memberId);
-        member.setPassword(passwordEncoder.encode(password));
-        member.setEmail(email);
-        member.setNickname(nickname);
+
+    public Member create(String memberId, String password, String email, String nickname, MultipartFile memberImg) {
+        profileImgRelPath = "member/default.png";
+        profileImgFile = new File(genFileDirPath + "/" + profileImgRelPath);
+
+        profileImgFile.mkdirs();
 
         try {
+            memberImg.transferTo(profileImgFile);
+            System.out.println("-----------------------");
+            System.out.println("MultipartFile memberImg: " + memberImg);
+            System.out.println("-----------------------");
+            System.out.println("String profileImgRelPath: " + profileImgRelPath);
+            System.out.println("-----------------------");
+            Member member = new Member();
+            member.setMemberId(memberId);
+            member.setPassword(passwordEncoder.encode(password));
+            member.setEmail(email);
+            member.setNickname(nickname);
+            member.setMemberImgPath(profileImgRelPath);
             memberRepository.save(member);
+            return member;
         } catch (DataIntegrityViolationException e) {
             if (memberRepository.existsByMemberId(memberId)) {
                 throw new SignupMemberIdDuplicatedException("이미 사용중인 아이디 입니다.");
             } else {
                 throw new SignupEmailDuplicatedException("이미 사용중인 이메일 입니다.");
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return member;
     }
 
 
@@ -56,38 +84,30 @@ public class MemberService {
         throw new NotFoundEmailException("해당 이메일에 가입된 정보가 없습니다.");
     }
 
-    public void update(MemberUpdateForm memberUpdateForm, Member m) {
+    public void update(MemberUpdateForm memberUpdateForm, Member m, MultipartFile memberImg) {
         Optional<Member> om = memberRepository.findByMemberId(m.getMemberId());
+        profileImgRelPath = "member/" + UUID.randomUUID().toString()+".png";
+        profileImgFile = new File(genFileDirPath + "/" + profileImgRelPath);
+
         if (om.isPresent()) {
             Member member = om.get();
             Optional<String> op = Optional.ofNullable(memberUpdateForm.getPassword1());
-            System.out.println("---------------------");
-            System.out.println("Optional password : " + op);
-            System.out.println("---------------------");
+
             if(op.isPresent()) {
-                System.out.println("---------------------");
-                System.out.println("password 수정정보 존재");
-                System.out.println("---------------------");
                 member.setPassword(passwordEncoder.encode(memberUpdateForm.getPassword1()));
             }
-            System.out.println("---------------------");
-            System.out.println("memberUpdateForm.getNickname : " + memberUpdateForm.getNickname());
-            System.out.println("---------------------");
             if(!memberUpdateForm.getNickname().equals("")) {
-                System.out.println("---------------------");
-                System.out.println("nickname은 공백이 아닙니다");
-                System.out.println("---------------------");
                 member.setNickname(memberUpdateForm.getNickname());
             }
+            System.out.println("--------------------------");
+            System.out.println("이미지 변경 안했을 시 값 : " + memberUpdateForm.getMemberImg());
+            System.out.println("--------------------------");
+
             memberRepository.save(member);
-            System.out.println("---------------------");
-            System.out.println("회원정보를 수정했습니다");
-            System.out.println("---------------------");
+
             return;
         }
-        System.out.println("---------------------");
-        System.out.println("회원정보를 수정하지 못했습니다");
-        System.out.println("---------------------");
+
     }
 
     public void delete(MemberDeleteForm memberDeleteForm, String memberId) {
@@ -97,18 +117,30 @@ public class MemberService {
 
             if (passwordEncoder.matches(memberDeleteForm.getPassword(), member.getPassword())) {
                 memberRepository.deleteById(member.getId());
-                System.out.println("-----------------");
-                System.out.println("회원을 삭제했습니다.");
-                System.out.println("-----------------");
+
                 return;
             }
-            System.out.println("-----------------");
-            System.out.println("입력하신 비밀번호가 일치하지 않습니다.");
-            System.out.println("-----------------");
+
         }
-        System.out.println("-----------------");
-        System.out.println("회원정보를 찾지 못했습니다.");
-        System.out.println("-----------------");
+
+    }
+
+    public void updateImage(Member member, MultipartFile memberImg) {
+        profileImgRelPath = "member" + UUID.randomUUID().toString() + ".png";
+        profileImgFile = new File(genFileDirPath + "/" + profileImgRelPath);
+
+        profileImgFile.mkdirs();
+        try {
+            memberImg.transferTo(profileImgFile);
+            member.setMemberImgPath(profileImgRelPath);
+            memberRepository.save(member);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Member> findAll() {
+        return memberRepository.findAll();
     }
 }
 
