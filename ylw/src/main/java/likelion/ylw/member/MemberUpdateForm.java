@@ -2,6 +2,7 @@ package likelion.ylw.member;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
 import javax.validation.constraints.Email;
@@ -17,4 +18,5 @@ public class MemberUpdateForm {
 
     private String nickname;
 
+    private MultipartFile memberImg;
 }
