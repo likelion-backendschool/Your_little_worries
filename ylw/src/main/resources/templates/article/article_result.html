@@ -7,17 +7,116 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/styles/snsIcon/snsIcon.css"> <!-- sns공유하기 -->
     <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>  <!-- 카카오sns 공유하기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 </head>
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
 
 
+<!--    <div style="width: 300px; height: 300px;">-->
+<!--        &lt;!&ndash;차트가 그려질 부분&ndash;&gt;-->
+<!--        <canvas id="myChart1"></canvas>-->
+<!--    </div>-->
+<!--    <div style="width: 300px; height: 300px;">-->
+<!--        &lt;!&ndash;차트가 그려질 부분&ndash;&gt;-->
+<!--        <canvas id="myChart2"></canvas>-->
+<!--    </div>-->
+<!--    <div style="width: 300px; height: 300px;">-->
+<!--        &lt;!&ndash;차트가 그려질 부분&ndash;&gt;-->
+<!--        <canvas id="myChart3"></canvas>-->
+<!--    </div>-->
+<!--    <div style="width: 300px; height: 300px;">-->
+<!--        &lt;!&ndash;차트가 그려질 부분&ndash;&gt;-->
+<!--        <canvas id="myChart4"></canvas>-->
+<!--    </div>-->
+<!--    <div style="width: 300px; height: 300px;">-->
+<!--        &lt;!&ndash;차트가 그려질 부분&ndash;&gt;-->
+<!--        <canvas id="myChart5"></canvas>-->
+<!--    </div>-->
+<!--    <script type="text/javascript">-->
+
+<!--        for(let i = 1; i<=6; i++) {-->
+<!--            var context = document-->
+<!--                .getElementById('myChart'+i)-->
+<!--                .getContext('2d');-->
+<!--            var title = i+"0";-->
+<!--            var text = i+"0대"-->
+<!--            var data = [12,34,53,23]-->
+<!--            var json = {-->
+<!--                type: "pie", // 차트의 형태-->
+<!--                data: { // 차트에 들어갈 데이터-->
+<!--                    labels: [-->
+<!--                        "항목1", "항목2", "항목3", "항목4"-->
+<!--                    ],-->
+<!--                    datasets: [-->
+<!--                        { //데이터-->
+<!--                            label: title, //차트 제목-->
+<!--                            fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지-->
+<!--                            data: data,-->
+<!--                            backgroundColor: [-->
+<!--                                'rgba(54, 162, 235, 0.2)',-->
+<!--                                'rgba(120, 162, 235, 0.2)',-->
+<!--                                'rgba(124, 50, 215, 0.2)',-->
+<!--                                'rgba(54, 100, 235, 0.2)'-->
+<!--                            ],-->
+<!--                        }-->
+<!--                    ]-->
+<!--                },-->
+<!--                options: {-->
+<!--                    title: {-->
+<!--                        display: true,-->
+<!--                        text: text-->
+<!--                    }-->
+<!--                }-->
+<!--            };-->
+<!--            var myChart = new Chart(context,json );-->
+<!--        }-->
+
+
+<!--        var context = document-->
+<!--            .getElementById('myChart')-->
+<!--            .getContext('2d');-->
+<!--        var type="bar";-->
+<!--        var myChart = new Chart(context, {-->
+<!--            type: type, // 차트의 형태-->
+<!--            data: { // 차트에 들어갈 데이터-->
+<!--                labels: [-->
+<!--                    //x 축-->
+<!--                    '항목1','항목2','항목3','항목4'-->
+<!--                ],-->
+<!--                datasets: [-->
+<!--                    { //데이터-->
+<!--                        label: '남', //차트 제목-->
+<!--                        fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지-->
+<!--                        data: [-->
+<!--                            21,19,25,20,23,26,25 //x축 label에 대응되는 데이터 값-->
+<!--                        ],-->
+<!--                        backgroundColor: 'rgba(54, 162, 235, 0.2)',-->
+<!--                    } ,-->
+<!--                    {-->
+<!--                        label: '여',-->
+<!--                        fill: false,-->
+<!--                        data: [-->
+<!--                            1, 20, 6, 2-->
+<!--                        ],-->
+<!--                        backgroundColor: 'rgba(255, 99, 132, 0.2)',-->
+<!--                    }-->
+<!--                ]-->
+<!--            },-->
+<!--        });-->
+<!--    </script>-->
     <!--/*결과 데이터 그래프가 들어올 자리*/-->
     <h1>결과 페이지</h1>
     <hr>
     게시글 제목 :[[${article.title}]]
     <br>
-    게시글 내용 : [[${article.content}]]
+    게글 내용 : [[${article.content}]]
     <hr>
+    [[${statsResult.compare10And20}]]
+    [[${statsResult.compare10And30}]]
+    [[${statsResult.compare10And40}]]
+    [[${statsResult.compare20And30}]]
+    [[${statsResult.compare20And40}]]
+    [[${statsResult.compare30And40}]]
 
     <button type="button" id="shareTw" class="link-icon twitter"></button>
     <button type="button" id="shareFb" class="link-icon facebook"></button>
