@@ -4571,7 +4571,7 @@ html .ql-toolbar {
   bottom: 0; }
 
 .card-post--1 .card-post__category {
-  top: 0.9375rem;
+  top: -0.5rem;
   right: 0.9375rem;
   position: absolute;
   text-transform: uppercase; }
