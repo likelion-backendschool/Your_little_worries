@@ -50,12 +50,14 @@ public class StatsResultService {
         ChiSquareTest t = new ChiSquareTest();
         long[][] counts = new long[row][column];
 
+        // 카이제곱에 메서드에 넣기위해 이중배열에 데이터를 넣어주는 과정
         int index = 0;
         for (StatsItemResult statsItemResult : statsItemResults) {
             long[] count = {statsItemResult.getTotal10(), statsItemResult.getTotal20(), statsItemResult.getTotal30(), statsItemResult.getTotalOver40()};
             counts[index++] = count;
         }
 
+        // 10대-20대, 10대-30대, ... 30대-40대 각각 비교하여 카이제곱검증 결과를 db에 넣어줌
         index = 0;
         long[][] turnCounts = transpose(counts);
         for (int i = 0; i < column-1; i++) {

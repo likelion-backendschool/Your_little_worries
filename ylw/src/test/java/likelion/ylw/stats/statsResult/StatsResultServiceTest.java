@@ -40,6 +40,7 @@ class StatsResultServiceTest {
         long[][] counts = new long[row][column];
 
         int index = 0;
+        // 카이제곱에 메서드에 넣기위해 이중배열에 데이터를 넣어주는 과정
         for (StatsItemResult statsItemResult : statsItemResults) {
             long[] count = {statsItemResult.getTotal10(), statsItemResult.getTotal20(), statsItemResult.getTotal30(), statsItemResult.getTotalOver40()};
             counts[index++] = count;
@@ -57,9 +58,9 @@ class StatsResultServiceTest {
                 double v1 = t.chiSquareTest(countAB);
                 double v2 = t.chiSquare(countAB);
                 boolean result = t.chiSquareTest(countAB,0.05);
-                System.out.println("result = " + v1);
-                System.out.println("result = " + v2);
-                System.out.println("result = " + result);
+                System.out.println(i+1+"와"+(j+1)+"의 p-value = " + v1);
+                System.out.println(i+1+"와"+(j+1)+"의 카이제곱통게값 = " + v2);
+                System.out.println(i+1+"와"+(j+1)+"의 결과 = " + result);
                 switch (index) {
                     case 0 -> statsResult.setCompare10And20(result);
                     case 1 -> statsResult.setCompare10And30(result);
