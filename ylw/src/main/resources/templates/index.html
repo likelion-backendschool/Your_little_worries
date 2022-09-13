@@ -1,41 +1,265 @@
+<!--<html-->
+<!--        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--        xmlns:th="http://thymeleaf.org"-->
+<!--        layout:decorate="~{layout}">-->
+<!--<div layout:fragment="content" class="main-content-container container-fluid px-4">-->
+<!--    <section th:each="category, loop : ${categoryList}">-->
+<!--        <div class="page-header row no-gutters py-4">-->
+<!--            <div class="col-12 col-sm-4 text-center text-sm-left mb-0">-->
+<!--                <span class="text-uppercase page-subtitle">카테고리</span>-->
+<!--                <h3 class="page-title" th:text="${category.name}"></h3>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="d-flex align-content-start flex-wrap">-->
+<!--            <div class="col-sm-6 col-lg-5 col-xl-3" th:each="article, loop : ${articleListArray[loop.index]}">-->
+<!--                <div class="card card-small card-post mb-4">-->
+<!--                    <div class="card-body">-->
+<!--                        <h5 class="card-title" th:text="${article.title}"></h5>-->
+<!--                        <p class="card-text text-muted" th:text="${article.content}"></p>-->
+<!--                    </div>-->
+<!--                    <div class="card-footer border-top d-flex">-->
+<!--                        <div class="card-post__author d-flex">-->
+<!--                            <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small" th:if="${member.memberImgPath}" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />-->
+<!--                            <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small" th:unless="${member.memberImgPath}" th:src="@{/gen/member.png}" />-->
+
+<!--                            &lt;!&ndash;                            <a href="#" class="card-post__author-avatar card-post__author-avatar&#45;&#45;small" style="background-image: url('images/avatars/1.jpg');">Written by James Khan</a>&ndash;&gt;-->
+<!--                            <div class="d-flex flex-column justify-content-center ml-3">-->
+<!--                                <span class="card-post__author-name" th:text="${article.author.nickname}"></span>-->
+<!--                                <small class="text-muted" th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd')}"></small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="my-auto ml-auto">-->
+<!--                            <a class="btn btn-sm btn-accent ml-auto" th:href="@{|/article/vote/${article.id}|}">-->
+<!--                                <i class="material-icons">file_copy</i> 투표하기</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+
+<!--</div>-->
+<!--<script layout:fragment="script" type='text/javascript'>-->
+<!--</script>-->
+<!--</html>-->
 <html
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <section th:each="category, loop : ${categoryList}">
-        <div class="page-header row no-gutters py-4">
-            <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-                <span class="text-uppercase page-subtitle">카테고리</span>
-                <h3 class="page-title" th:text="${category.name}"></h3>
-            </div>
+
+    <div class="page-header row no-gutters py-4">
+        <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+            <span class="text-uppercase page-subtitle">category</span>
+            <h3 class="page-title">Popular</h3>
         </div>
-        <div class="d-flex align-content-start flex-wrap">
-            <div class="col-sm-6 col-lg-5 col-xl-3" th:each="article, loop : ${articleListArray[loop.index]}">
-                <div class="card card-small card-post mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${article.title}"></h5>
-                        <p class="card-text text-muted" th:text="${article.content}"></p>
+    </div>
+    <!--메인 화면 투표지 카드 예시-->
+    <div class="row">
+
+        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+            <div class="card card-small card-post card-post--1">
+                <div class="card-post__image" style="background-image: url('images/content-management/1.jpg');">
+                    <a href="#" class="card-post__category badge badge-pill badge-warning"
+                       th:text="${articlesByCategory.get(0).category.name}"></a>
+                    <div class="card-post__author d-flex">
+                        <img class="card-post__author-avatar card-post__author-avatar--small"
+                             th:if="${articlesByCategory.get(0).author.memberImgPath}"
+                             th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                        <img class="card-post__author-avatar card-post__author-avatar--small"
+                             th:unless="${articlesByCategory.get(0).author.memberImgPath}" th:src="@{/gen/member.png}"/>
                     </div>
-                    <div class="card-footer border-top d-flex">
-                        <div class="card-post__author d-flex">
-                            <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('images/avatars/1.jpg');">Written by James Khan</a>
-                            <div class="d-flex flex-column justify-content-center ml-3">
-                                <span class="card-post__author-name" th:text="${article.author.nickname}"></span>
-                                <small class="text-muted" th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd')}"></small>
-                            </div>
-                        </div>
-                        <div class="my-auto ml-auto">
-                            <a class="btn btn-sm btn-accent ml-auto" th:href="@{|/article/vote/${article.id}|}">
-                                <i class="material-icons">file_copy</i> 투표하기</a>
-                        </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a class="text-fiord-blue" href="#" th:text="${articlesByCategory.get(0).title}"></a>
+                    </h5>
+                    <p class="card-text w-[183px] d-inline-block mb-3 whitespace-nowrap overflow-hidden text-ellipsis" th:text="${articlesByCategory.get(0).content}"></p>
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="text-muted"
+                             th:text="${#temporals.format(articlesByCategory.get(0).createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                        <div class="card-post__author-name"
+                             th:text="${articlesByCategory.get(0).author.nickname}"></div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+
+        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+            <div class="card card-small card-post card-post--1">
+                <div class="card-post__image" style="background-image: url('images/content-management/2.jpg');">
+                    <a href="#" class="card-post__category badge badge-pill badge-danger"
+                       th:text="${articlesByCategory.get(1).category.name}"></a>
+                <div class="card-post__author d-flex">
+                    <img class="card-post__author-avatar card-post__author-avatar--small"
+                         th:if="${articlesByCategory.get(1).author.memberImgPath}"
+                         th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                    <img class="card-post__author-avatar card-post__author-avatar--small"
+                         th:unless="${articlesByCategory.get(1).author.memberImgPath}" th:src="@{/gen/member.png}"/>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a class="text-fiord-blue" href="#" th:text="${articlesByCategory.get(1).title}"></a>
+                </h5>
+                <p class="card-text w-[183px] d-inline-block mb-3 whitespace-nowrap overflow-hidden text-ellipsis" th:text="${articlesByCategory.get(1).content}"></p>
+                <div class="d-flex flex-row justify-content-between">
+                    <div class="text-muted"
+                          th:text="${#temporals.format(articlesByCategory.get(1).createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    <div class="card-post__author-name"
+                          th:text="${articlesByCategory.get(1).author.nickname}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+        <div class="card card-small card-post card-post--1">
+            <div class="card-post__image" style="background-image: url('images/content-management/3.jpg');">
+                <a href="#" class="card-post__category badge badge-pill badge-dark"
+                   th:text="${articlesByCategory.get(2).category.name}"></a>
+                <div class="card-post__author d-flex">
+                    <img class="card-post__author-avatar card-post__author-avatar--small"
+                         th:if="${articlesByCategory.get(2).author.memberImgPath}"
+                         th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                    <img class="card-post__author-avatar card-post__author-avatar--small"
+                         th:unless="${articlesByCategory.get(2).author.memberImgPath}" th:src="@{/gen/member.png}"/>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a class="text-fiord-blue" href="#" th:text="${articlesByCategory.get(2).title}"></a>
+                </h5>
+                <p class="card-text w-[183px] d-inline-block mb-3 whitespace-nowrap overflow-hidden text-ellipsis" th:text="${articlesByCategory.get(2).content}"></p>
+                <div class="d-flex flex-row justify-content-between">
+                    <div class="text-muted"
+                         th:text="${#temporals.format(articlesByCategory.get(2).createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    <div class="card-post__author-name"
+                         th:text="${articlesByCategory.get(2).author.nickname}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+        <div class="card card-small card-post card-post--1">
+            <div class="card-post__image" style="background-image: url('images/content-management/4.jpg');">
+                <a href="#" class="card-post__category badge badge-pill badge-light"
+                   th:text="${articlesByCategory.get(3).category.name}"></a>
+                <div class="card-post__author d-flex">
+                    <img class="card-post__author-avatar card-post__author-avatar--small"
+                         th:if="${articlesByCategory.get(3).author.memberImgPath}"
+                         th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                    <img class="card-post__author-avatar card-post__author-avatar--small"
+                         th:unless="${articlesByCategory.get(3).author.memberImgPath}" th:src="@{/gen/member.png}"/>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a class="text-fiord-blue" href="#" th:text="${articlesByCategory.get(3).title}"></a>
+                </h5>
+                <p class="card-text w-[183px] d-inline-block mb-3 whitespace-nowrap overflow-hidden text-ellipsis" th:text="${articlesByCategory.get(3).content}"></p>
+                <div class="d-flex flex-row justify-content-between">
+                    <div class="text-muted"
+                         th:text="${#temporals.format(articlesByCategory.get(3).createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    <div class="card-post__author-name"
+                         th:text="${articlesByCategory.get(3).author.nickname}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+        <div class="card card-small card-post card-post--1">
+            <div class="card-post__image" style="background-image: url('images/content-management/5.jpg');">
+                <a href="#" class="card-post__category badge badge-pill badge-secondary"
+                   th:text="${articlesByCategory.get(4).category.name}"></a>
+                <div class="card-post__author d-flex">
+                    <img class="card-post__author-avatar card-post__author-avatar--small"
+                         th:if="${articlesByCategory.get(4).author.memberImgPath}"
+                         th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                    <img class="card-post__author-avatar card-post__author-avatar--small"
+                         th:unless="${articlesByCategory.get(4).author.memberImgPath}" th:src="@{/gen/member.png}"/>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a class="text-fiord-blue" href="#" th:text="${articlesByCategory.get(4).title}"></a>
+                </h5>
+                <p class="card-text w-[183px] d-inline-block mb-3 whitespace-nowrap overflow-hidden text-ellipsis" th:text="${articlesByCategory.get(4).content}"></p>
+                <div class="d-flex flex-row justify-content-between">
+                    <div class="text-muted"
+                         th:text="${#temporals.format(articlesByCategory.get(4).createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    <div class="card-post__author-name"
+                         th:text="${articlesByCategory.get(4).author.nickname}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+        <div class="card card-small card-post card-post--1">
+            <div class="card-post__image" style="background-image: url('images/content-management/6.jpg');">
+                <a href="#" class="card-post__category badge badge-pill badge-info"
+                   th:text="${articlesByCategory.get(5).category.name}"></a>
+                <div class="card-post__author d-flex">
+                    <img class="card-post__author-avatar card-post__author-avatar--small"
+                         th:if="${articlesByCategory.get(5).author.memberImgPath}"
+                         th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                    <img class="card-post__author-avatar card-post__author-avatar--small"
+                         th:unless="${articlesByCategory.get(5).author.memberImgPath}" th:src="@{/gen/member.png}"/>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a class="text-fiord-blue" href="#" th:text="${articlesByCategory.get(5).title}"></a>
+                </h5>
+                <p class="card-text w-[183px] d-inline-block mb-3 whitespace-nowrap overflow-hidden text-ellipsis" th:text="${articlesByCategory.get(5).content}"></p>
+                <div class="d-flex flex-row justify-content-between">
+                    <div class="text-muted"
+                         th:text="${#temporals.format(articlesByCategory.get(5).createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    <div class="card-post__author-name"
+                         th:text="${articlesByCategory.get(5).author.nickname}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
-<script layout:fragment="script" type='text/javascript'>
-</script>
+
+
+<!--    <div class="row row-cols-3">-->
+<!--        <div th:each="article : ${articleList}">-->
+<!--            <div class="card card-small card-post mb-4 col">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title" th:text="${article.title}"></h5>-->
+<!--                    <p class="card-text text-muted" th:text="${article.content}"></p>-->
+<!--                </div>-->
+<!--                <div class="card-footer border-top d-flex">-->
+<!--                    <div class="card-post__author d-flex">-->
+<!--                        <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small"-->
+<!--                             th:if="${article.author.memberImgPath}"-->
+<!--                             th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>-->
+<!--                        <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small"-->
+<!--                             th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>-->
+
+<!--                        <div class="d-flex flex-column justify-content-center ml-3">-->
+<!--                            <span class="card-post__author-name" th:text="${article.author.nickname}"></span>-->
+<!--                            <small class="text-muted"-->
+<!--                                   th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd')}"></small>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="my-auto ml-auto">-->
+<!--                        <a class="btn btn-sm btn-accent ml-auto" th:href="@{|/article/vote/${article.id}|}">-->
+<!--                            <i class="material-icons">file_copy</i> 투표하기</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
 </html>

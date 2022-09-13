@@ -9,6 +9,9 @@
     <style>
 .profile-img {
   border-radius: 50%;
+  width:280px;
+  height:280px;
+  object-fit:cover;
 }
 .popup {
   position: fixed;
@@ -106,7 +109,8 @@
             <div class="flex my-20">
                 <div class="flex flex-col my-auto items-center pt-1 mr-1">
                     <div class="mx-9">
-                        <img class="profile-img" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />
+                        <img class="profile-img" th:if="${member.memberImgPath}" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />
+                        <img class="profile-img" th:unless="${member.memberImgPath}" th:src="@{/gen/member.png}" />
                     </div>
                     <div class="text-center w-[50px] rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black mt-3 pt-1">
                         <form th:action="@{|/member/myPage|}" method="post" enctype="multipart/form-data">
@@ -250,6 +254,12 @@ var result = confirm("프로필 이미지를 변경하시겠습니까?");
    console.log("취소되었습니다");
  }
 }
+
+const failImg = (imgTag) =>{
+        imgTag.onerror="";
+        imgTag.src= conPath + "/images/profileImg/member.png";
+        return true;
+    }
 </script>
 
 

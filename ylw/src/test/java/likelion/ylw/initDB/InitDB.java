@@ -33,15 +33,15 @@ public class InitDB {
     @Autowired
     private NoticeService noticeService;
 
-//    @Test
-//    @DisplayName("유저 3명 생성")
-//    void t1() {
-//        Member member1 = memberService.create("user1","12345","user1@naver.com", "김유저", "/member/default/png");
-//        Member member2 = memberService.create("user2","12345","user2@naver.com", "이유저");
-//        Member member3 = memberService.create("user3","12345","user3@naver.com", "박유저");
-//        Member member4 = memberService.create("user4","12345","user4@naver.com", "나유저");
-//
-//    }
+        @Test
+    @DisplayName("유저 3명 생성")
+    void t1() {
+        Member member1 = memberService.create("user1","12345","user1@naver.com", "김유저");
+        Member member2 = memberService.create("user2","12345","user2@naver.com", "이유저");
+        Member member3 = memberService.create("user3","12345","user3@naver.com", "박유저");
+        Member member4 = memberService.create("user4","12345","user4@naver.com", "나유저");
+
+    }
     @Test
     @DisplayName("카테고리 3개 생성")
     void t2() {

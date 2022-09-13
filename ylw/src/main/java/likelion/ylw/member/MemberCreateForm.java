@@ -30,6 +30,4 @@ public class MemberCreateForm {
     private String nickname;
 
     private Integer score;
-
-    private MultipartFile memberImg;
 }
