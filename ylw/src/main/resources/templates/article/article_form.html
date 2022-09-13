@@ -6,26 +6,26 @@
 
 <div layout:fragment="content" class="main-content-container container-fluid px-4 mt-3">
     <h5>투표등록</h5>
-    <form th:object="${articleForm}" method="post">
+    <form th:object="${articleForm}" method="post" onsubmit="return checkForms()">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <input type="hidden" name="author" th:value="${#authentication.name}"/>
         <div class="mb-3">
             <label for="subject" class="form-label">제목</label>
             <input th:if="${modifyToken}==1" type="text" th:field="*{title}" class="form-control" readonly/>
-            <input th:unless="${modifyToken}==1" type="text" th:field="*{title}" class="form-control"/>
+            <input id="titleForm" th:unless="${modifyToken}==1" type="text" th:field="*{title}" class="form-control"/>
         </div>
         <div class="mb-3">
             <label for="category" class="form-label">카테고리</label>
-            <select class="form-select" th:name="category_id">
+            <select id="categoryForm" class="form-select" th:name="category_id">
                 <option th:text="|==카테고리 선택==|" th:selected="${category_id}==0"></option>
                 <option th:each="category : ${categoryList}" th:value="${category.id}" th:text="${category.name}"
-                        th:selected="${category.id} == ${category_id}"></option>
+                        id="categorySelected" th:selected="${category.id} == ${category_id}"></option>
             </select>
         </div>
 
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-            <textarea th:field="*{content}" class="form-control" rows="10"></textarea>
+            <textarea id="contentForm" th:field="*{content}" class="form-control" rows="10"></textarea>
         </div>
 
         <div th:if="${modifyToken}!=1" class="mb-3">
@@ -36,10 +36,10 @@
         <div class="card-body flex-column d-flex">
             <div th:if="${modifyToken}!=1" id="itemContainer">
                 <div class="input-group mb-3">
-                    <input class="form-control" type="text" name="items[]"  placeholder="내용을 입력해주세요"/>
+                    <input class="items form-control" type="text" name="items[]"  placeholder="내용을 입력해주세요"/>
                 </div>
                 <div class="input-group mb-3">
-                    <input class="form-control" type="text" name="items[]"  placeholder="내용을 입력해주세요"/>
+                    <input class="items form-control" type="text" name="items[]"  placeholder="내용을 입력해주세요"/>
                 </div>
             </div>
             <div>
@@ -52,8 +52,8 @@
     $("#append_column").on("click", function () {
 
         const column = `<div class="input-group mb-3">
-                <input class="form-control" type="text" name="items[]"  placeholder="내용을 입력해주세요"/>
-                <div id="delete" class="btn btn-outline-info float-right" onclick="deleteColumnForm(this)">-</div>
+                <input class="items form-control" type="text" name="items[]"  placeholder="내용을 입력해주세요"/>
+                <div id="delete" class="btn btn-outline-info float-right" onclick="return deleteColumnForm()">-</div>
             </div>`;
 
         const columnParents = document.createElement('div')
@@ -65,5 +65,40 @@
         const parents = content.parentNode.parentNode
         parents.remove()
     }
+
+    function checkForms() {
+        const titleValue = document.getElementById("titleForm").value;
+        if (titleValue.trim() == "") {
+            alert("제목을 입력해주세요");
+            document.getElementById("titleForm").focus();
+            return false;
+        }
+
+        const categoryValue = document.getElementById("categoryForm");
+        const categorySelected = categoryValue.options[categoryValue.selectedIndex].value;
+        if (categorySelected.trim() == "==카테고리 선택==") {
+            alert("카테고리를 선택해주세요");
+            document.getElementById("categoryForm").focus();
+            return false;
+        }
+
+        const contentValue = document.getElementById("contentForm").value;
+        if (contentValue.trim() == "") {
+            alert("내용을 입력해주세요");
+            document.getElementById("contentForm").focus();
+            return false;
+        }
+
+        const itemValues = document.querySelectorAll(".items")
+
+        for (var i = 0; i < itemValues.length; i++) {
+            if (itemValues[i].value.trim() == "") {
+                alert((i+1) + "번 항목내용을 입력해주세요");
+                itemValues[i].focus();
+                return false;
+            }
+        }
+    }
+
 </script>
 </html>

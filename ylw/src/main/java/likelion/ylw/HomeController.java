@@ -4,9 +4,15 @@ import likelion.ylw.article.Article;
 import likelion.ylw.article.ArticleService;
 import likelion.ylw.category.Category;
 import likelion.ylw.category.CategoryService;
+
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
+
+import likelion.ylw.notice.Notice;
+import likelion.ylw.notice.NoticeService;
+
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.math3.distribution.ChiSquaredDistribution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,14 +31,34 @@ public class HomeController {
 
     private final ArticleService articleService;
     private final CategoryService categoryService;
+    private final NoticeService noticeService;
 
     @RequestMapping("/")
     public String list(Model model) {
         List<Article> articlesByCategory = new ArrayList<>();
         for(int i = 1; i <= 6; i++) {
             Category category = categoryService.findById(i);
+// feature/image
              articlesByCategory.add(articleService.findByCategory(category).get(0));
         }
+
+            List<Article> articleList = articleService.findByCategoryTop8(category);
+            return articleList;
+        }).toArray();
+
+        List<Article> newArticleList = articleService.findTop8();
+        List<Article> popularArticleList = articleService.findByViewCountTop8();
+
+        Notice recentNotice = noticeService.getNoticeByTop1();
+
+        model.addAttribute("recentNotice", recentNotice);
+
+        model.addAttribute("popularArticleList", popularArticleList);
+
+        model.addAttribute("newArticleList", newArticleList);
+
+        model.addAttribute("articleListArray", articleLists);
+// develop
 
         model.addAttribute("articlesByCategory", articlesByCategory);
 

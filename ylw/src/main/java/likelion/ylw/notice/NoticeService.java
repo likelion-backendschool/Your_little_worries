@@ -30,12 +30,16 @@ public class NoticeService {
     }
 
     public Notice getNotice(Integer id) {
-        Optional<Notice> Notice = this.noticeRepository.findById(id);
-        if (Notice.isPresent()) {
-            return Notice.get();
+        Optional<Notice> notice = this.noticeRepository.findById(id);
+        if (notice.isPresent()) {
+            return notice.get();
         } else {
             throw new DataNotFoundException("Notice not found");
         }
+    }
+
+    public Notice getNoticeByTop1(){
+        return this.noticeRepository.findTopByOrderByIdDesc();
     }
 
     public void create(String title, String content, Member member) {

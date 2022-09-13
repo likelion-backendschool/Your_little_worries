@@ -13,5 +13,9 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     List<Article> findByCategory(Category category);
 
-    List<Article> findTop10ByCategoryOrderByIdDesc(Category category);
+    List<Article> findTop8ByCategoryOrderByIdDesc(Category category);
+
+    List<Article> findTop8ByOrderByIdDesc();
+
+    List<Article> findTop8ByOrderByViewCountDesc();
 }
