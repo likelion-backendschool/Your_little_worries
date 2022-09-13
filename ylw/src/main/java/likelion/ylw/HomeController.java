@@ -35,13 +35,9 @@ public class HomeController {
 
     @RequestMapping("/")
     public String list(Model model) {
-        List<Article> articlesByCategory = new ArrayList<>();
-        for(int i = 1; i <= 6; i++) {
+        List<Category> categoryList = categoryService.getList();
+        Object[] articleLists = IntStream.rangeClosed(1, categoryList.size()).mapToObj(i -> {
             Category category = categoryService.findById(i);
-// feature/image
-             articlesByCategory.add(articleService.findByCategory(category).get(0));
-        }
-
             List<Article> articleList = articleService.findByCategoryTop8(category);
             return articleList;
         }).toArray();
@@ -58,33 +54,10 @@ public class HomeController {
         model.addAttribute("newArticleList", newArticleList);
 
         model.addAttribute("articleListArray", articleLists);
-// develop
 
-        model.addAttribute("articlesByCategory", articlesByCategory);
+        model.addAttribute("categoryList", categoryList);
 
         return "index";
     }
 
-//    @RequestMapping("/")
-//    public String homeController(Model model) {
-////        Article article = articleService.findById()
-//        List<Category> categoryList = categoryService.getList();
-////        List<Article> articles = articleService.findAll();
-//        Object[] articleLists = IntStream.rangeClosed(1, categoryList.size()).mapToObj(i -> {
-//            Category category = categoryService.findById(i);
-//            List<Article> articleList = articleService.findByCategoryTop10(category);
-//            return articleList;
-//        }).toArray();
-//
-//        model.addAttribute("articleListArray", articleLists);
-//
-//        model.addAttribute("categoryList", categoryList);
-//
-//        return "index";
-//    }
-
-    @RequestMapping("/layout")
-    public String layouttest() {
-        return "examples/tables";
-    }
 }
