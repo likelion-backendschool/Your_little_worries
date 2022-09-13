@@ -25,30 +25,18 @@ public class MemberService {
     String profileImgRelPath;
     File profileImgFile;
 
-
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
 
-    public Member create(String memberId, String password, String email, String nickname, MultipartFile memberImg) {
-        profileImgRelPath = "member/default.png";
-        profileImgFile = new File(genFileDirPath + "/" + profileImgRelPath);
-
-        profileImgFile.mkdirs();
+    public Member create(String memberId, String password, String email, String nickname) {
 
         try {
-            memberImg.transferTo(profileImgFile);
-            System.out.println("-----------------------");
-            System.out.println("MultipartFile memberImg: " + memberImg);
-            System.out.println("-----------------------");
-            System.out.println("String profileImgRelPath: " + profileImgRelPath);
-            System.out.println("-----------------------");
             Member member = new Member();
             member.setMemberId(memberId);
             member.setPassword(passwordEncoder.encode(password));
             member.setEmail(email);
             member.setNickname(nickname);
-            member.setMemberImgPath(profileImgRelPath);
             memberRepository.save(member);
             return member;
         } catch (DataIntegrityViolationException e) {
@@ -57,15 +45,9 @@ public class MemberService {
             } else {
                 throw new SignupEmailDuplicatedException("이미 사용중인 이메일 입니다.");
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
-
-    /**
-     * 유저아이디에 해당하는 유저 객체 가져오기
-     */
     public Member findByMemberId(String memberId) {
         Optional<Member> member = this.memberRepository.findByMemberId(memberId);
         if (member.isPresent()) {

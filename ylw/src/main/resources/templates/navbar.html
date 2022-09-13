@@ -54,7 +54,8 @@
         <a class="nav-link w-[130px] text-center pt-6" sec:authorize="isAnonymous()" th:href="@{/member/login}"><i class="fa-solid fa-circle-user"></i> 로그인</a>
         <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <img class="user-avatar rounded-circle mr-2" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" alt="avat"/>
+<!--                <img class="user-avatar rounded-circle mr-2" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />-->
+
                 <span class="d-none d-md-inline-block" th:text="${#authentication.name}"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-small">
