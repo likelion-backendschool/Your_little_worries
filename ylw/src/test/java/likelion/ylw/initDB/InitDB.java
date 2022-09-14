@@ -33,29 +33,43 @@ public class InitDB {
     @Autowired
     private NoticeService noticeService;
 
-        @Test
-    @DisplayName("유저 3명 생성")
-    void t1() {
-        Member member1 = memberService.create("user1","12345","user1@naver.com", "김유저");
-        Member member2 = memberService.create("user2","12345","user2@naver.com", "이유저");
-        Member member3 = memberService.create("user3","12345","user3@naver.com", "박유저");
-        Member member4 = memberService.create("user4","12345","user4@naver.com", "나유저");
-
-    }
     @Test
-    @DisplayName("카테고리 3개 생성")
+    @DisplayName("유저 6명 생성")
+    void t1() {
+        Member member1 = memberService.create("member1","1234","member1@test.com", "김멤버");
+        Member member2 = memberService.create("member2","1234","member2@test.com", "이멤버");
+        Member member3 = memberService.create("member3","1234","member3@test.com", "박멤버");
+        Member member4 = memberService.create("member4","1234","member4@test.com", "나멤버");
+        Member member5 = memberService.create("member5","1234","member5@test.com", "최멤버");
+        Member member6 = memberService.create("member6","1234","member6@test.com", "하멤버");
+    }
+
+    @Test
+    @DisplayName("카테고리 6개 생성")
     void t2() {
         Category category1 = new Category();
-        category1.setName("스포츠");
+        category1.setName("일상");
         categoryRepository.save(category1);
 
         Category category2 = new Category();
-        category2.setName("정치");
+        category2.setName("데이트");
         categoryRepository.save(category2);
 
         Category category3 = new Category();
-        category3.setName("문화");
+        category3.setName("음식");
         categoryRepository.save(category3);
+
+        Category category4 = new Category();
+        category4.setName("관계");
+        categoryRepository.save(category4);
+
+        Category category5 = new Category();
+        category5.setName("직장");
+        categoryRepository.save(category5);
+
+        Category category6 = new Category();
+        category6.setName("패션");
+        categoryRepository.save(category6);
     }
 
     @Test
@@ -94,8 +108,8 @@ public class InitDB {
     @Test
     @DisplayName("1번 카테고리의 1번 게시글에 댓글 100개 추가")
     void t4() {
-        Member member1 = memberService.findByMemberId("user1");
-        Member member2 = memberService.findByMemberId("user2");
+        Member member1 = memberService.findByMemberId("member1");
+        Member member2 = memberService.findByMemberId("member2");
         Article article = articleRepository.findById(1).get();
         for (int i = 1; i <= 200; i++) {
             if (i%2==0) {
