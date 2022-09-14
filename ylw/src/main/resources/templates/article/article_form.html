@@ -11,7 +11,7 @@
         <input type="hidden" name="author" th:value="${#authentication.name}"/>
         <div class="mb-3">
             <label for="subject" class="form-label">제목</label>
-            <input th:if="${modifyToken}==1" type="text" th:field="*{title}" class="form-control" readonly/>
+            <input id="titleForm" th:if="${modifyToken}==1" type="text" th:field="*{title}" class="form-control" readonly/>
             <input id="titleForm" th:unless="${modifyToken}==1" type="text" th:field="*{title}" class="form-control"/>
         </div>
         <div class="mb-3">
@@ -91,7 +91,7 @@
 
         const itemValues = document.querySelectorAll(".items")
 
-        for (var i = 0; i < itemValues.length; i++) {
+        for (const i = 0; i < itemValues.length; i++) {
             if (itemValues[i].value.trim() == "") {
                 alert((i+1) + "번 항목내용을 입력해주세요");
                 itemValues[i].focus();

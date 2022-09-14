@@ -65,6 +65,7 @@
                    th:text="수정"></a>
                 <!--       sec:authorize="isAuthenticated()"-->
                 <!--       th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"-->
+
                 <a href="javascript:void(0);" th:data-uri="@{|/article/delete/${article.id}|}"
                    class="delete btn btn-sm btn-outline-secondary"
                    th:text="삭제"></a>
