@@ -53,7 +53,7 @@
 
         const column = `<div class="input-group mb-3">
                 <input class="items form-control" type="text" name="items[]"  placeholder="내용을 입력해주세요"/>
-                <div id="delete" class="btn btn-outline-info float-right" onclick="return deleteColumnForm()">-</div>
+                <div id="delete" class="btn btn-outline-info float-right" onclick="deleteColumnForm(this)">-</div>
             </div>`;
 
         const columnParents = document.createElement('div')
