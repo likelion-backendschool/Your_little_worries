@@ -17,5 +17,5 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
 
     List<Article> findTop8ByOrderByIdDesc();
 
-    List<Article> findTop8ByOrderByViewCountDesc();
+    List<Article> findTop6ByOrderByViewCountDesc();
 }

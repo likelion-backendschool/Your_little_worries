@@ -43,7 +43,7 @@ public class HomeController {
         }).toArray();
 
         List<Article> newArticleList = articleService.findTop8();
-        List<Article> popularArticleList = articleService.findByViewCountTop8();
+        List<Article> popularArticleList = articleService.findByViewCountTop6();
 
         Notice recentNotice = noticeService.getNoticeByTop1();
 

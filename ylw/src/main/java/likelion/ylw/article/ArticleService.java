@@ -50,8 +50,8 @@ public class ArticleService {
         return articleRepository.findTop8ByCategoryOrderByIdDesc(category);
     }
 
-    public List<Article> findByViewCountTop8() {
-        return articleRepository.findTop8ByOrderByViewCountDesc();
+    public List<Article> findByViewCountTop6() {
+        return articleRepository.findTop6ByOrderByViewCountDesc();
     }
 
     public List<Article> findTop8() {
@@ -67,6 +67,20 @@ public class ArticleService {
         article.setContent(content);
         article.setAuthor(memberRepository.findByMemberId(author).get());
         article.setCategory(category);
+
+        articleRepository.save(article);
+        return article;
+    }
+
+    public Article createPupular(String title, String content, String author, Integer category_id, Long view_count) {
+        Category category = categoryService.findById(category_id);
+
+        Article article = new Article();
+        article.setTitle(title);
+        article.setContent(content);
+        article.setAuthor(memberRepository.findByMemberId(author).get());
+        article.setCategory(category);
+        article.setViewCount(view_count);
 
         articleRepository.save(article);
         return article;

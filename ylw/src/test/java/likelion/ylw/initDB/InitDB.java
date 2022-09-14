@@ -129,7 +129,39 @@ public class InitDB {
         for (int i = 0; i < 100; i++) {
             noticeService.create(i+"번째 공지입니다", "내용입니다",member);
         }
+    }
 
+    @Test
+    @DisplayName("인기 게시글 6개 생성")
+    void t6() {
+        Member member1 = memberService.findByMemberId("member1");
+        Member member2 = memberService.findByMemberId("member2");
+        Member member3 = memberService.findByMemberId("member3");
+        Member member4 = memberService.findByMemberId("member4");
+        Member member5 = memberService.findByMemberId("member5");
+        Member member6 = memberService.findByMemberId("member6");
+
+        Article article1 = articleService.createPupular("카공할 때", "중간에 나가서 점심먹고와도 될까???", member1.getMemberId(), 1, 100L);
+        articleItemService.create(article1, "이미 페이했으니 괜찮다");
+        articleItemService.create(article1, "민폐여서 안된다");
+        Article article2 = articleService.createPupular("소개팅할 때", "파스타 돌려먹어야할까요", member2.getMemberId(), 2, 100L);
+        articleItemService.create(article2, "맞다");
+        articleItemService.create(article2, "틀리다");
+        Article article3 = articleService.createPupular("파인애플 피자", "맛있니??", member3.getMemberId(), 3, 100L);
+        articleItemService.create(article3, "맛있다");
+        articleItemService.create(article3, "먹을 수 없다");
+        Article article4 = articleService.createPupular("친구가 말을할 때", "입냄새가 나는데 말을 해줘야할까 말아야할까??", member4.getMemberId(), 4, 100L);
+        articleItemService.create(article4, "해줘야한다");
+        articleItemService.create(article4, "말아야한다");
+        Article article5 = articleService.createPupular("직장인 고민거리", "오늘 뭐먹지??", member5.getMemberId(), 5, 100L);
+        articleItemService.create(article5, "김치볶음밥");
+        articleItemService.create(article5, "짜장면");
+        articleItemService.create(article5, "돼지고기 김치찌개");
+        articleItemService.create(article5,"콩나물해장국");
+        Article article6 = articleService.createPupular("내 지갑에 50만원이 있으면", "50만원으로 명품 옷을 살까 아니면 그냥 적당한 브랜드 옷을 여러개 살까 아니면 비브랜드 저렴한 옷을 왕창 살까", member6.getMemberId(), 6, 100L);
+        articleItemService.create(article6, "명품옷");
+        articleItemService.create(article6, "적당한 브랜드옷");
+        articleItemService.create(article6, "저렴한옷 많이");
     }
 
 }
