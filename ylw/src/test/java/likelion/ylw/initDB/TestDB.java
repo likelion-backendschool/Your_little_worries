@@ -104,4 +104,11 @@ public class TestDB {
         articleItemService.create(article6, "적당한 브랜드옷");
         articleItemService.create(article6, "저렴한옷 많이");
     }
+
+    @Test
+    @DisplayName("공지사항 생성")
+    void t5() {
+        Member member = memberService.findByMemberId("member2");
+        noticeService.create("제목입니다.", "내용입니다.", member);
+    }
 }
