@@ -81,8 +81,10 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/myPage")
     public String my_page(Principal principal, Model model) {
+        List<Member> members = memberService.findAll();
         Member member = memberService.findByMemberId(principal.getName());
-        model.addAttribute("member", member);
+        memberService.evalTotalScore(member);
+        model.addAttribute("members", members);
         return "member/member_myPage";
     }
 
@@ -174,9 +176,14 @@ public class MemberController {
     }
 
     @GetMapping("/rank")
-    public String search_rank(Model model) {
-        List<Member> members = memberService.findAll();
-        model.addAttribute("members", members);
+    public String search_rank(Principal principal, Model model) {
+        String memberId = principal.getName();
+        Member member = memberService.findByMemberId(memberId);
+        List<Member> orderedMembers = memberService.getRankingList();
+        memberService.evalRank();
+        model.addAttribute("orderedMembers", orderedMembers);
+        model.addAttribute("member", member);
+
         return "member/member_ranking";
     }
 }

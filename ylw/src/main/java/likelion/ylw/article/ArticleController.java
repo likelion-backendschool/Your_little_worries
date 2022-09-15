@@ -8,6 +8,7 @@ import likelion.ylw.comment.CommentService;
 import likelion.ylw.comment.NonMemberCommentForm;
 import likelion.ylw.comment.vote.CommentVoteService;
 import likelion.ylw.member.Member;
+import likelion.ylw.member.MemberRepository;
 import likelion.ylw.member.MemberService;
 import likelion.ylw.stats.StatsCollection;
 import likelion.ylw.stats.StatsCollectionForm;
@@ -44,6 +45,7 @@ public class ArticleController {
     private final ArticleItemService articleItemService;
     private final CategoryService categoryService;
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
     private final CommentVoteService commentVoteService;
     private final StatsCollectionService statsCollectionService;
     private final RequestService requestService;
@@ -107,6 +109,9 @@ public class ArticleController {
             if (count != 0) {
                 return "article/article_vote";
             }
+            member.setParticipateCount(member.getParticipateCount()+1);
+            memberRepository.save(member);
+            memberService.evalParticipateScore(member);
         }
 
         statsCollectionService.createStatsCollection(statsCollectionForm.getArticleItemId(),
