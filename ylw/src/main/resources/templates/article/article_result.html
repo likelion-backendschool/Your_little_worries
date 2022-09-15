@@ -7,17 +7,83 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/styles/snsIcon/snsIcon.css"> <!-- sns공유하기 -->
     <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>  <!-- 카카오sns 공유하기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 </head>
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
 
 
+    <div style="width: 300px; height: 300px;">
+        <!--차트가 그려질 부분-->
+        <canvas id="myChart1"></canvas>
+    </div>
+
+
+    <script type="text/javascript" th:inline="javascript">
+
+
+        const result    = [[${articleItem2dArr}]]
+        console.log(result)
+        const total     = result[0];
+        const male      = result[1];
+        const female    = result[2];
+        const age10     = result[3];
+        const age20     = result[4];
+        const age30     = result[5];
+        const age40     = result[6];
+        const ageOver50 = result[7];
+        var context = document
+            .getElementById('myChart1')
+            .getContext('2d');
+        var type="bar";
+        var myChart = new Chart(context, {
+            type: type, // 차트의 형태
+            data: { // 차트에 들어갈 데이터
+                labels: [
+                    //x 축
+                    '항목1','항목2'
+                ],
+                datasets: [
+                    { //데이터
+                        label: '총 투표수', //차트 제목
+                        fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
+                        data: total,//x축 label에 대응되는 데이터 값
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    } ,
+                ]
+            },
+        });
+    </script>
+
     <!--/*결과 데이터 그래프가 들어올 자리*/-->
+
     <h1>결과 페이지</h1>
     <hr>
     게시글 제목 :[[${article.title}]]
     <br>
-    게시글 내용 : [[${article.content}]]
+    게글 내용 : [[${article.content}]]
+    <div th:text="${statsResult.result} ? '해당 투표에는 선호도 차이가 있다고 볼 수 있습니다' : '해당 투표에는 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.male} ? '남자의 경우 선호도 차이가 있다고 볼 수 있습니다' : '남자의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.female} ? '여자의 경우 선호도 차이가 있다고 볼 수 있습니다' : '여자의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.age10} ? '10대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '10대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.age20} ? '20대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '20대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.age30} ? '30대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '30대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.age40} ? '40대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '40대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.ageOver50} ? '50대 이상의 경우 선호도 차이가 있다고 볼 수 있습니다' : '50대 이상의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
     <hr>
+        <div th:each="articleItem,stat : ${articleItemList}">
+            <div th:text="${stat.count+'번 항목'}">
+            </div>
+            <div>
+            항목 총 투표 수<span th:text="${articleItem.total}"></span>
+            남자 투표 수<span th:text="${articleItem.maleTotal}"></span>
+            여자 투표 수<span th:text="${articleItem.femaleTotal}"></span>
+            10대 <span th:text="${articleItem.total10}"></span>
+            20대 <span th:text="${articleItem.total20}"></span>
+            30대 <span th:text="${articleItem.total30}"></span>
+            40대 <span th:text="${articleItem.total40}"></span>
+            50대 <span th:text="${articleItem.totalOver50}"></span>
+            </div>
+        </div>
 
     <button type="button" id="shareTw" class="link-icon twitter"></button>
     <button type="button" id="shareFb" class="link-icon facebook"></button>

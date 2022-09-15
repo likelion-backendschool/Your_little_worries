@@ -12,6 +12,8 @@ import likelion.ylw.member.MemberService;
 import likelion.ylw.stats.StatsCollection;
 import likelion.ylw.stats.StatsCollectionForm;
 import likelion.ylw.stats.StatsCollectionService;
+import likelion.ylw.stats.statsResult.StatsResult;
+import likelion.ylw.stats.statsResult.StatsResultService;
 import likelion.ylw.util.requestservice.RequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,6 +47,7 @@ public class ArticleController {
     private final CommentVoteService commentVoteService;
     private final StatsCollectionService statsCollectionService;
     private final RequestService requestService;
+    private final StatsResultService statsResultService;
 
     @GetMapping("/list")
     public String list(Model model, @RequestParam("category") Integer category_id) {
@@ -110,6 +113,11 @@ public class ArticleController {
                 statsCollectionForm.getAge(), statsCollectionForm.getGender(), statsCollectionForm.getUserName(),
                 clientIp);
 
+        // 투표 더 한 것을 db에 계산
+        articleItemService.plusResult(statsCollectionForm.getArticleItemId(), statsCollectionForm.getAge(), statsCollectionForm.getGender());
+
+        // 카이제곱검정 수행
+        statsResultService.calculate(article);
         return String.format("redirect:/article/result/%d", id);
     }
 
@@ -142,7 +150,13 @@ public class ArticleController {
         Article article = articleService.create(articleForm.getTitle(), articleForm.getContent(),
                 principal.getName(), category_id);
         Stream.of(articleForm.getItems())
-                .forEach(item -> articleItemService.create(article, item));
+                .forEach(item -> {
+                    ArticleItem articleItem = articleItemService.create(article, item);
+                });
+
+        // 카이제곱 db 생성
+        statsResultService.create(article);
+
         return String.format("redirect:/article/vote/%d", article.getId());
     }
 
@@ -201,11 +215,21 @@ public class ArticleController {
         }
 
         Article article = articleService.findById(id);
+
         Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
+
+        StatsResult statsResult = statsResultService.getStatsResultByArticle(article);
+        List<ArticleItem> articleItemList = articleItemService.findArticleItemByArticleId(id);
+
+        long[][] articleItem2dArr = statsResultService.listTo2DArray(articleItemList);
+        articleItem2dArr = statsResultService.transpose(articleItem2dArr);
 
         model.addAttribute("article", article);
         model.addAttribute("commentList", commentList);
+        model.addAttribute("statsResult", statsResult);
 
+        model.addAttribute("articleItemList", articleItemList);
+        model.addAttribute("articleItem2dArr", articleItem2dArr);
         // 댓글 전달
 
         return "article/article_result";

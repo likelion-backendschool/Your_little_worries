@@ -8,6 +8,7 @@ import likelion.ylw.comment.CommentService;
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
 import likelion.ylw.notice.NoticeService;
+import likelion.ylw.stats.statsResult.StatsResultService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,6 +102,8 @@ public class InitDB {
 
                 ArticleItem articleItem1 = articleItemService.create(article1, "맞다");
                 ArticleItem articleItem2 = articleItemService.create(article1, "틀리다");
+
+                statsResultService.create(article1);
             }
         }
     }

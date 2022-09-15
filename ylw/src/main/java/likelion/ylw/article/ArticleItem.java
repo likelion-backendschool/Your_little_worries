@@ -1,11 +1,10 @@
 package likelion.ylw.article;
 
-import likelion.ylw.stats.StatsCollection;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+
 
 @Entity
 @Getter
@@ -20,6 +19,13 @@ public class ArticleItem {
     @ManyToOne
     private Article article;
 
-    @OneToMany
-    private List<StatsCollection> statsCollection;
+    private Integer total = 0;
+    private Integer maleTotal = 0;
+    private Integer femaleTotal = 0;
+    private Integer total10 = 0;
+    private Integer total20 = 0;
+    private Integer total30 = 0;
+    private Integer total40 = 0;
+    private Integer totalOver50 = 0;
+
 }
