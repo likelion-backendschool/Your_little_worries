@@ -12,8 +12,6 @@ import likelion.ylw.member.MemberService;
 import likelion.ylw.stats.StatsCollection;
 import likelion.ylw.stats.StatsCollectionForm;
 import likelion.ylw.stats.StatsCollectionService;
-import likelion.ylw.stats.statsItemResult.StatsItemResult;
-import likelion.ylw.stats.statsItemResult.StatsItemResultService;
 import likelion.ylw.stats.statsResult.StatsResult;
 import likelion.ylw.stats.statsResult.StatsResultService;
 import likelion.ylw.util.requestservice.RequestService;
@@ -47,7 +45,6 @@ public class ArticleController {
     private final CommentVoteService commentVoteService;
     private final StatsCollectionService statsCollectionService;
     private final RequestService requestService;
-    private final StatsItemResultService statsItemResultService;
     private final StatsResultService statsResultService;
 
     @GetMapping("/list")
@@ -115,7 +112,7 @@ public class ArticleController {
                 clientIp);
 
         // 투표 더 한 것을 db에 계산
-        statsItemResultService.plusResult(statsCollectionForm.getArticleItemId(), statsCollectionForm.getAge(), statsCollectionForm.getGender());
+        articleItemService.plusResult(statsCollectionForm.getArticleItemId(), statsCollectionForm.getAge(), statsCollectionForm.getGender());
 
         // 카이제곱검정 수행
         statsResultService.calculate(article);
@@ -153,7 +150,6 @@ public class ArticleController {
         Stream.of(articleForm.getItems())
                 .forEach(item -> {
                     ArticleItem articleItem = articleItemService.create(article, item);
-                    statsItemResultService.create(article, articleItem); // 항목별 합계 결과 db 생성
                 });
 
         // 카이제곱 db 생성
@@ -223,17 +219,15 @@ public class ArticleController {
         StatsResult statsResult = statsResultService.getStatsResultByArticle(article);
         List<ArticleItem> articleItemList = articleItemService.findArticleItemByArticleId(id);
 
-        List<StatsItemResult> statsItemResultList = statsItemResultService.getStatsItemResultsByArtcle(article);
-        long[][] statsItemResult2dArr = statsResultService.listTo2DArray(statsItemResultList);
-        statsItemResult2dArr = statsResultService.transpose(statsItemResult2dArr);
+        long[][] articleItem2dArr = statsResultService.listTo2DArray(articleItemList);
+        articleItem2dArr = statsResultService.transpose(articleItem2dArr);
 
         model.addAttribute("article", article);
         model.addAttribute("commentList", commentList);
         model.addAttribute("statsResult", statsResult);
-        model.addAttribute("articleItemList", articleItemList);
-        model.addAttribute("statsItemResultList", statsItemResultList);
 
-        model.addAttribute("statsItemResult2dArr", statsItemResult2dArr);
+        model.addAttribute("articleItemList", articleItemList);
+        model.addAttribute("articleItem2dArr", articleItem2dArr);
         // 댓글 전달
 
         return "article/article_result";

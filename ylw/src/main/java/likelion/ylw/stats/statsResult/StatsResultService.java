@@ -1,8 +1,8 @@
 package likelion.ylw.stats.statsResult;
 
 import likelion.ylw.article.Article;
-import likelion.ylw.stats.statsItemResult.StatsItemResult;
-import likelion.ylw.stats.statsItemResult.StatsItemResultRepository;
+import likelion.ylw.article.ArticleItem;
+import likelion.ylw.article.ArticleItemRepository;
 import likelion.ylw.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.math3.stat.inference.ChiSquareTest;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class StatsResultService {
 
     private final StatsResultRepository statsResultRepository;
-    private final StatsItemResultRepository statsItemResultRepository;
+    private final ArticleItemRepository articleItemRepository;
 
     private static int COLUMN  = 8; // 결과값 개수
 
@@ -45,13 +45,13 @@ public class StatsResultService {
      * 항목의 투표수가 모두 0인 경우 오류나는 상태
      */
     public void calculate(Article article) {
-        List<StatsItemResult> statsItemResults = statsItemResultRepository.findAllByArticle(article); // 항목별 투표 결과
+        List<ArticleItem> articleItems = articleItemRepository.findArticleItemByArticleId(article.getId()); // 항목별 투표 결과
         StatsResult statsResult = statsResultRepository.findByArticle(article).get();
 
 
         // 카이제곱에 메서드에 넣기위해 이중배열에 데이터를 넣어주는 과정
-        long[][] counts = listTo2DArray(statsItemResults);
-        int row = statsItemResults.size(); // 항목 개수
+        long[][] counts = listTo2DArray(articleItems);
+        int row = articleItems.size(); // 항목 개수
 
         // 계산하기 편하도록 2차배열을 90도 회전해줌
         counts = transpose(counts);
@@ -88,12 +88,12 @@ public class StatsResultService {
     /**
      * StatsItemResult리스트를 이중배열로 변환해줌
      */
-    public long[][] listTo2DArray(List<StatsItemResult> statsItemResults) {
-        long[][] counts = new long[statsItemResults.size()][COLUMN];
+    public long[][] listTo2DArray(List<ArticleItem> ArticleItems) {
+        long[][] counts = new long[ArticleItems.size()][COLUMN];
         int index = 0;
-        for (StatsItemResult statsItemResult : statsItemResults) {
-            long[] count = { statsItemResult.getTotal(), statsItemResult.getMaleTotal(), statsItemResult.getFemaleTotal(),
-                    statsItemResult.getTotal10(), statsItemResult.getTotal20(), statsItemResult.getTotal30(),statsItemResult.getTotal40(), statsItemResult.getTotalOver50()
+        for (ArticleItem articleItem : ArticleItems) {
+            long[] count = { articleItem.getTotal(), articleItem.getMaleTotal(), articleItem.getFemaleTotal(),
+                    articleItem.getTotal10(), articleItem.getTotal20(), articleItem.getTotal30(),articleItem.getTotal40(), articleItem.getTotalOver50()
             };
             counts[index++] = count;
         }

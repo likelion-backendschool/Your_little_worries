@@ -8,8 +8,6 @@ import likelion.ylw.comment.CommentService;
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
 import likelion.ylw.notice.NoticeService;
-import likelion.ylw.stats.statsItemResult.StatsItemResultService;
-import likelion.ylw.stats.statsResult.StatsResultRepository;
 import likelion.ylw.stats.statsResult.StatsResultService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,12 +33,11 @@ public class InitDB {
     private CommentService commentService;
     @Autowired
     private NoticeService noticeService;
-    @Autowired
-    private StatsResultRepository statsResultRepository;
+
     @Autowired
     private StatsResultService statsResultService;
-    @Autowired
-    private StatsItemResultService statsItemResultService;
+
+
 
 
     @Test
@@ -97,9 +94,6 @@ public class InitDB {
 
                 ArticleItem articleItem1 = articleItemService.create(article1, "맞다");
                 ArticleItem articleItem2 = articleItemService.create(article1, "틀리다");
-
-                statsItemResultService.create(article1, articleItem1);
-                statsItemResultService.create(article1, articleItem2);
 
                 statsResultService.create(article1);
             }
