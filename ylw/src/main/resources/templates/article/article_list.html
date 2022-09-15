@@ -4,46 +4,39 @@
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <table>
-        <thead>
-        <tr>
-            <th>제목</th>
-            <th>내용</th>
-            <th>생성 시각</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="article : ${articleList}">
-<!--            <td>-->
-<!--                <a th:href="@{|/article/vote/${article.id}|}"  th:text="${article.title}"></a>-->
-<!--            </td>-->
-<!--            <td th:text="${article.content}"></td>-->
-<!--            <td th:text="${article.getCreatedDate()}"></td>-->
-            <div class="card card-small card-post mb-4">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${article.title}"></h5>
-                    <p class="card-text text-muted" th:text="${article.content}"></p>
+    <div class="page-header row no-gutters py-4">
+        <div class="col-12 col-sm-4 text-center text-sm-left mb-4 mb-sm-0">
+            <span class="text-uppercase page-subtitle">카테고리</span>
+            <h3 class="page-title" th:text="${category.name}"></h3>
+            <a class="btn btn-lg btn-accent mt-3" th:href="@{/article/create(category = ${category.id})}">
+                <i class="material-icons">edit</i>
+                <span th:text="|${category.name} 투표등록|"></span>
+            </a>
+        </div>
+    </div>
+    <div th:each="article : ${articleList}">
+        <div class="card card-small card-post mb-4">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${article.title}"></h5>
+                <p class="card-text text-muted" th:text="${article.content}"></p>
+            </div>
+            <div class="card-footer border-top d-flex">
+                <div class="card-post__author d-flex">
+                    <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small" th:if="${article.author.memberImgPath}" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />
+                    <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small" th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}" />
+                    <div class="d-flex flex-column justify-content-center ml-3">
+                        <span class="card-post__author-name" th:text="${article.author.nickname}"></span>
+                        <small class="text-muted" th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd')}"></small>
+                    </div>
                 </div>
-                <div class="card-footer border-top d-flex">
-                    <div class="card-post__author d-flex">
-                        <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small" th:if="${article.author.memberImgPath}" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />
-                        <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small" th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}" />
-                        <div class="d-flex flex-column justify-content-center ml-3">
-                            <span class="card-post__author-name" th:text="${article.author.nickname}"></span>
-                            <small class="text-muted" th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd')}"></small>
-                        </div>
-                    </div>
-                    <div class="my-auto ml-auto">
-                        <a class="btn btn-sm btn-accent ml-auto" th:href="@{|/article/vote/${article.id}|}">
-                            <i class="material-icons">file_copy</i> 투표하기</a>
-                    </div>
+                <div class="my-auto ml-auto">
+                    <a class="btn btn-sm btn-accent ml-auto" th:href="@{|/article/vote/${article.id}|}">
+                        <i class="material-icons">file_copy</i> 투표하기</a>
                 </div>
             </div>
-        </tr>
-        </tbody>
+        </div>
+    </div>
 
-        <a th:href="@{|/article/categoryList|}" th:text="|카테고리 리스트로 이동|"></a>
-        <a th:href="@{/article/create(category = ${category.id})}" th:text="|${category.name}게시판에 글 작성|"></a>
-    </table>
+    <a th:href="@{/article/create(category = ${category.id})}" ></a>
 </div>
 </html>
