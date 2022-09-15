@@ -27,5 +27,6 @@ public class StatsItemResult {
     private Integer total10 = 0;
     private Integer total20 = 0;
     private Integer total30 = 0;
-    private Integer totalOver40 = 0;
+    private Integer total40 = 0;
+    private Integer totalOver50 = 0;
 }

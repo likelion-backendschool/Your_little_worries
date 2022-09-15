@@ -217,13 +217,23 @@ public class ArticleController {
         }
 
         Article article = articleService.findById(id);
+
         Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
-        StatsResult statsResult = statsResultService.getStatsResult(article);
+
+        StatsResult statsResult = statsResultService.getStatsResultByArticle(article);
+        List<ArticleItem> articleItemList = articleItemService.findArticleItemByArticleId(id);
+
+        List<StatsItemResult> statsItemResultList = statsItemResultService.getStatsItemResultsByArtcle(article);
+        long[][] statsItemResult2dArr = statsResultService.listTo2DArray(statsItemResultList);
+        statsItemResult2dArr = statsResultService.transpose(statsItemResult2dArr);
 
         model.addAttribute("article", article);
         model.addAttribute("commentList", commentList);
         model.addAttribute("statsResult", statsResult);
+        model.addAttribute("articleItemList", articleItemList);
+        model.addAttribute("statsItemResultList", statsItemResultList);
 
+        model.addAttribute("statsItemResult2dArr", statsItemResult2dArr);
         // 댓글 전달
 
         return "article/article_result";

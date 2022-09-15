@@ -12,111 +12,78 @@
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
 
 
-<!--    <div style="width: 300px; height: 300px;">-->
-<!--        &lt;!&ndash;차트가 그려질 부분&ndash;&gt;-->
-<!--        <canvas id="myChart1"></canvas>-->
-<!--    </div>-->
-<!--    <div style="width: 300px; height: 300px;">-->
-<!--        &lt;!&ndash;차트가 그려질 부분&ndash;&gt;-->
-<!--        <canvas id="myChart2"></canvas>-->
-<!--    </div>-->
-<!--    <div style="width: 300px; height: 300px;">-->
-<!--        &lt;!&ndash;차트가 그려질 부분&ndash;&gt;-->
-<!--        <canvas id="myChart3"></canvas>-->
-<!--    </div>-->
-<!--    <div style="width: 300px; height: 300px;">-->
-<!--        &lt;!&ndash;차트가 그려질 부분&ndash;&gt;-->
-<!--        <canvas id="myChart4"></canvas>-->
-<!--    </div>-->
-<!--    <div style="width: 300px; height: 300px;">-->
-<!--        &lt;!&ndash;차트가 그려질 부분&ndash;&gt;-->
-<!--        <canvas id="myChart5"></canvas>-->
-<!--    </div>-->
-<!--    <script type="text/javascript">-->
-
-<!--        for(let i = 1; i<=6; i++) {-->
-<!--            var context = document-->
-<!--                .getElementById('myChart'+i)-->
-<!--                .getContext('2d');-->
-<!--            var title = i+"0";-->
-<!--            var text = i+"0대"-->
-<!--            var data = [12,34,53,23]-->
-<!--            var json = {-->
-<!--                type: "pie", // 차트의 형태-->
-<!--                data: { // 차트에 들어갈 데이터-->
-<!--                    labels: [-->
-<!--                        "항목1", "항목2", "항목3", "항목4"-->
-<!--                    ],-->
-<!--                    datasets: [-->
-<!--                        { //데이터-->
-<!--                            label: title, //차트 제목-->
-<!--                            fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지-->
-<!--                            data: data,-->
-<!--                            backgroundColor: [-->
-<!--                                'rgba(54, 162, 235, 0.2)',-->
-<!--                                'rgba(120, 162, 235, 0.2)',-->
-<!--                                'rgba(124, 50, 215, 0.2)',-->
-<!--                                'rgba(54, 100, 235, 0.2)'-->
-<!--                            ],-->
-<!--                        }-->
-<!--                    ]-->
-<!--                },-->
-<!--                options: {-->
-<!--                    title: {-->
-<!--                        display: true,-->
-<!--                        text: text-->
-<!--                    }-->
-<!--                }-->
-<!--            };-->
-<!--            var myChart = new Chart(context,json );-->
-<!--        }-->
+    <div style="width: 300px; height: 300px;">
+        <!--차트가 그려질 부분-->
+        <canvas id="myChart1"></canvas>
+    </div>
 
 
-<!--        var context = document-->
-<!--            .getElementById('myChart')-->
-<!--            .getContext('2d');-->
-<!--        var type="bar";-->
-<!--        var myChart = new Chart(context, {-->
-<!--            type: type, // 차트의 형태-->
-<!--            data: { // 차트에 들어갈 데이터-->
-<!--                labels: [-->
-<!--                    //x 축-->
-<!--                    '항목1','항목2','항목3','항목4'-->
-<!--                ],-->
-<!--                datasets: [-->
-<!--                    { //데이터-->
-<!--                        label: '남', //차트 제목-->
-<!--                        fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지-->
-<!--                        data: [-->
-<!--                            21,19,25,20,23,26,25 //x축 label에 대응되는 데이터 값-->
-<!--                        ],-->
-<!--                        backgroundColor: 'rgba(54, 162, 235, 0.2)',-->
-<!--                    } ,-->
-<!--                    {-->
-<!--                        label: '여',-->
-<!--                        fill: false,-->
-<!--                        data: [-->
-<!--                            1, 20, 6, 2-->
-<!--                        ],-->
-<!--                        backgroundColor: 'rgba(255, 99, 132, 0.2)',-->
-<!--                    }-->
-<!--                ]-->
-<!--            },-->
-<!--        });-->
-<!--    </script>-->
+    <script type="text/javascript" th:inline="javascript">
+
+
+        const result    = [[${statsItemResult2dArr}]]
+        console.log(result)
+        const total     = result[0];
+        const male      = result[1];
+        const female    = result[2];
+        const age10     = result[3];
+        const age20     = result[4];
+        const age30     = result[5];
+        const age40     = result[6];
+        const ageOver50 = result[7];
+        var context = document
+            .getElementById('myChart1')
+            .getContext('2d');
+        var type="bar";
+        var myChart = new Chart(context, {
+            type: type, // 차트의 형태
+            data: { // 차트에 들어갈 데이터
+                labels: [
+                    //x 축
+                    '항목1','항목2'
+                ],
+                datasets: [
+                    { //데이터
+                        label: '총 투표수', //차트 제목
+                        fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
+                        data: total,//x축 label에 대응되는 데이터 값
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    } ,
+                ]
+            },
+        });
+    </script>
+
     <!--/*결과 데이터 그래프가 들어올 자리*/-->
+
     <h1>결과 페이지</h1>
     <hr>
     게시글 제목 :[[${article.title}]]
     <br>
     게글 내용 : [[${article.content}]]
+    <div th:text="${statsResult.result} ? '해당 투표에는 선호도 차이가 있다고 볼 수 있습니다' : '해당 투표에는 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.male} ? '남자의 경우 선호도 차이가 있다고 볼 수 있습니다' : '남자의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.female} ? '여자의 경우 선호도 차이가 있다고 볼 수 있습니다' : '여자의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.age10} ? '10대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '10대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.age20} ? '20대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '20대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.age30} ? '30대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '30대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.age40} ? '40대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '40대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
+    <div th:text="${statsResult.ageOver50} ? '50대 이상의 경우 선호도 차이가 있다고 볼 수 있습니다' : '50대 이상의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
     <hr>
-    [[${statsResult.compare10And20}]]
-    [[${statsResult.compare10And30}]]
-    [[${statsResult.compare10And40}]]
-    [[${statsResult.compare20And30}]]
-    [[${statsResult.compare20And40}]]
-    [[${statsResult.compare30And40}]]
+        <div th:each="statsItemResult,stat : ${statsItemResultList}">
+            <div th:text="${stat.count+'번 항목'}">
+            </div>
+            <div>
+            항목 총 투표 수<span th:text="${statsItemResult.total}"></span>
+            남자 투표 수<span th:text="${statsItemResult.maleTotal}"></span>
+            여자 투표 수<span th:text="${statsItemResult.femaleTotal}"></span>
+            10대 <span th:text="${statsItemResult.total10}"></span>
+            20대 <span th:text="${statsItemResult.total20}"></span>
+            30대 <span th:text="${statsItemResult.total30}"></span>
+            40대 <span th:text="${statsItemResult.total40}"></span>
+            50대 <span th:text="${statsItemResult.totalOver50}"></span>
+            </div>
+        </div>
 
     <button type="button" id="shareTw" class="link-icon twitter"></button>
     <button type="button" id="shareFb" class="link-icon facebook"></button>

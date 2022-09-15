@@ -17,13 +17,13 @@ public class StatsResult {
     private Double pValue;
 
     private Boolean result;
-    private Boolean compareGender;
-    private Boolean compare10And20;
-    private Boolean compare10And30;
-    private Boolean compare10And40;
-    private Boolean compare20And30;
-    private Boolean compare20And40;
-    private Boolean compare30And40;
+    private Boolean male;
+    private Boolean female;
+    private Boolean age10;
+    private Boolean age20;
+    private Boolean age30;
+    private Boolean age40;
+    private Boolean ageOver50;
 
     @OneToOne
     private Article article;

@@ -49,14 +49,14 @@ public class CommentServiceTest {
     void test() {
         double[] expected = new double[]
                 {
-                        20 , 20, 20, 20, 20
+                        11 ,11,
                 };
 
         // Example 1: Reject null hypothesis, observed doesnt fit
 
         long[] observed1 = new long[]
                 {
-                        18,  16,  15,  29,  22,
+                        20,2
                 };
 
         chiTest(expected, observed1);
@@ -67,19 +67,7 @@ public class CommentServiceTest {
     {
         double alpha = 0.05; // confidence level 99%
 
-        System.out.println();
 
-        System.out.printf("%15.15s: ", "Observed");
-        for (int i = 0; i < observed.length; i++) {
-            System.out.printf("%-6d ", observed[i]);
-        }
-
-        System.out.println();
-
-        System.out.printf("%15.15s: ", "Expected");
-        for (int i = 0; i < expected.length; i++) {
-            System.out.printf("%-5.1f ", expected[i]);
-        }
 
         ChiSquareTest t = new ChiSquareTest();
 
@@ -90,19 +78,19 @@ public class CommentServiceTest {
         System.out.println(pval2);
         System.out.println("여부"+ pval3);
 
-        long[][] expected22 = new long[][]
-                {
-                        {23,21,63},
-                        {31,48,159},
-                        {13,23,119},
-                };
-
-        double v1 = t.chiSquareTest(expected22);
-        double v2 = t.chiSquare(expected22);
-        boolean v3 = t.chiSquareTest(expected22,0.05);
-        System.out.println("여러 행 결과 : " +v1);
-        System.out.println("여러 행 결과 : " +v2);
-        System.out.println("여러 행 결과 : " +v3);
+//        long[][] expected22 = new long[][]
+//                {
+//                        {20,2,63},
+//                        {31,48,159},
+//                        {13,23,119},
+//                };
+//        long[][] expected22 = {{20,2}};
+//        double v1 = t.chiSquareTest(expected22);
+//        double v2 = t.chiSquare(expected22);
+//        boolean v3 = t.chiSquareTest(expected22,0.05);
+//        System.out.println("여러 행 결과 : " +v1);
+//        System.out.println("여러 행 결과 : " +v2);
+//        System.out.println("여러 행 결과 : " +v3);
 
 //        // 남여 의 경우
 //

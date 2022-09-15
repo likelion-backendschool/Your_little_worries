@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,57 +29,65 @@ class StatsResultServiceTest {
 
     @Test
     void calculate() {
-        Article article = articleRepository.findById(4).get();
+        Article article = articleRepository.findById(2).get();
 
-        List<StatsItemResult> statsItemResults = statsItemResultRepository.findAllByArticle(article);
+        List<StatsItemResult> statsItemResults = statsItemResultRepository.findAllByArticle(article); // 항목별 투표 결과
         StatsResult statsResult = statsResultRepository.findByArticle(article).get();
 
-        int row = statsItemResults.size();
-        int column = 4;
+        int row = statsItemResults.size(); // 항목 개수
+        int column = 8;                    // 구해야 될 결과값 개수
 
-        ChiSquareTest t = new ChiSquareTest();
         long[][] counts = new long[row][column];
 
-        int index = 0;
         // 카이제곱에 메서드에 넣기위해 이중배열에 데이터를 넣어주는 과정
+        int index = 0;
         for (StatsItemResult statsItemResult : statsItemResults) {
-            long[] count = {statsItemResult.getTotal10(), statsItemResult.getTotal20(), statsItemResult.getTotal30(), statsItemResult.getTotalOver40()};
+            long[] count = { statsItemResult.getTotal(), statsItemResult.getMaleTotal(), statsItemResult.getFemaleTotal(),
+                    statsItemResult.getTotal10(), statsItemResult.getTotal20(), statsItemResult.getTotal30(),statsItemResult.getTotal40(), statsItemResult.getTotalOver50()
+            };
             counts[index++] = count;
         }
-        long[][] turnCounts = turn(counts);
-        index = 0;
-        for (int i = 0; i < column-1; i++) {
-            // 비교대상 A
-            long[] countA = turnCounts[i];
-            for (int j = i+1; j < column; j++) {
-                // 비교대상 B
-                long[] countB = turnCounts[j];
-                long[][] countAB = {countA, countB};
 
-                double v1 = t.chiSquareTest(countAB);
-                double v2 = t.chiSquare(countAB);
-                boolean result = t.chiSquareTest(countAB,0.05);
-                System.out.println(i+1+"와"+(j+1)+"의 p-value = " + v1);
-                System.out.println(i+1+"와"+(j+1)+"의 카이제곱통게값 = " + v2);
-                System.out.println(i+1+"와"+(j+1)+"의 결과 = " + result);
-                switch (index) {
-                    case 0 -> statsResult.setCompare10And20(result);
-                    case 1 -> statsResult.setCompare10And30(result);
-                    case 2 -> statsResult.setCompare10And40(result);
-                    case 3 -> statsResult.setCompare20And30(result);
-                    case 4 -> statsResult.setCompare20And40(result);
-                    default -> statsResult.setCompare30And40(result);
-                }
-                index++;
+        // 계산하기 편하도록 2차배열을 90도 회전해줌
+        counts = transpose(counts);
+
+        // 카이제곱검증 코드
+        for (int i = 0; i < column; i++) {
+            long[] observed = counts[i];
+            double[] expected = new double[row];
+
+            // 기대값 구해줌
+            long sum = Arrays.stream(observed).sum();
+            double avg = sum/row;
+            Arrays.fill(expected, avg);
+
+
+            ChiSquareTest t = new ChiSquareTest();
+            boolean result = t.chiSquareTest(expected, observed,0.05); // 카이제곱 결과
+            double result2 = t.chiSquareTest(expected, observed); // 카이제곱 결과
+            double result3 = t.chiSquare(expected, observed); // 카이제곱 결과
+            System.out.println(i+" result2 = " + result2 +"result3"+result3);
+
+            // 결과 db 적용
+            switch (i) {
+                case 0 -> statsResult.setResult(result);
+                case 1 -> statsResult.setMale(result);
+                case 2 -> statsResult.setFemale(result);
+                case 3 -> statsResult.setAge10(result);
+                case 4 -> statsResult.setAge20(result);
+                case 5 -> statsResult.setAge30(result);
+                case 6 -> statsResult.setAge40(result);
+                case 7 -> statsResult.setAgeOver50(result);
             }
+
         }
         statsResultRepository.save(statsResult);
         /**
-         * 비교 대상 둘 다 0일 경우 NaN를 반환함
+         * 비교 대상 둘 다 0일 경우 에러
          */
     }
     @Test
-    void trunTest() {
+    void transposeTest() {
         long[][] a = {
                 {1,2,3,4},
                 {5,6,7,8},
@@ -91,7 +100,7 @@ class StatsResultServiceTest {
             }
             System.out.println(" ");
         }
-        long[][] b = turn(a);
+        long[][] b = transpose(a);
 
         for (long[] longs : b) {
             for (long aLong : longs) {
@@ -100,7 +109,7 @@ class StatsResultServiceTest {
             System.out.println(" ");
         }
     }
-    public long[][] turn(long[][] counts) {
+    public long[][] transpose(long[][] counts) {
         // 2,4   4,2
         long[][] newCounts = new long[counts[0].length][counts.length];
 
