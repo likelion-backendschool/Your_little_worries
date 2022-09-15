@@ -36,15 +36,23 @@
                     <span>투표등록</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link " th:with="link='/article/categoryList'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <i class="material-icons">vertical_split</i>
                     <span>카테고리</span>
                 </a>
+                <div class="dropdown-menu dropdown-menu-small" x-placement="bottom-start" style="display: none; position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(5px, 52px, 0px);">
+                    <a class="dropdown-item " th:with="link='/article/list?category=1'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">일상</a>
+                    <a class="dropdown-item " th:with="link='/article/list?category=2'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">데이트</a>
+                    <a class="dropdown-item " th:with="link='/article/list?category=3'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">음식</a>
+                    <a class="dropdown-item " th:with="link='/article/list?category=4'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">관계</a>
+                    <a class="dropdown-item " th:with="link='/article/list?category=5'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">직장</a>
+                    <a class="dropdown-item " th:with="link='/article/list?category=6'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">패션</a>
+                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link " th:with="link='/notice/list'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">
-                    <i class="material-icons">note_add</i>
+                    <i class="material-icons">receipt_long</i>
                     <span>공지 사항</span>
                 </a>
             </li>

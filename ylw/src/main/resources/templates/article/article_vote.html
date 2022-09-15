@@ -52,7 +52,7 @@
                 <!--                투표 안한 로그인 유저-->
 <!--                <button th:if="${statsCollection} == null"-->
                 <button
-                        type="submit" class="btn btn-primary float-right">투표하기
+                        type="submit" class="btn btn-primary float-right mt-3">투표하기
                 </button>
 <!--                &lt;!&ndash;                이미 투표한 로그인 유저의 경우&ndash;&gt;-->
 <!--                <button th:unless="${statsCollection} == null"-->
@@ -65,6 +65,7 @@
                    th:text="수정"></a>
                 <!--       sec:authorize="isAuthenticated()"-->
                 <!--       th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"-->
+
                 <a href="javascript:void(0);" th:data-uri="@{|/article/delete/${article.id}|}"
                    class="delete btn btn-sm btn-outline-secondary"
                    th:text="삭제"></a>

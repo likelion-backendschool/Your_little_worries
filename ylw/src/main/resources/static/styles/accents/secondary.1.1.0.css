@@ -2171,7 +2171,8 @@ i.material-icons {
   .card .list-group-item {
     padding: 0.8125rem 1.875rem; }
   .card .card-text {
-    margin-bottom: 1.5625rem; }
+    margin-bottom: 1.5625rem;
+    }
   .card a:hover {
     text-decoration: none; }
   .card-small {

@@ -11,9 +11,9 @@ public class MemberServiceTests {
     @Autowired
     private MemberService memberService;
 
-    @Test
-    @DisplayName("회원가입이 가능하다.")
-    public void t1() {
-        memberService.create("member2", "1234", "1234member2@email.com", "haha");
-    }
+//    @Test
+//    @DisplayName("회원가입이 가능하다.")
+//    public void t1() {
+//        memberService.create("member2", "1234", "1234member2@email.com", "haha");
+//    }
 }

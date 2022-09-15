@@ -3,6 +3,7 @@
       xmlns:th="http://thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
+
 <nav th:fragment="navbarFragment" class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
     <form action="#" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
         <div class="input-group input-group-seamless ml-3">
@@ -53,7 +54,8 @@
         <a class="nav-link w-[130px] text-center pt-6" sec:authorize="isAnonymous()" th:href="@{/member/login}"><i class="fa-solid fa-circle-user"></i> 로그인</a>
         <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <img class="user-avatar rounded-circle mr-2" src="/images/avatars/0.jpg" alt="User Avatar">
+<!--                <img class="user-avatar rounded-circle mr-2" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />-->
+
                 <span class="d-none d-md-inline-block" th:text="${#authentication.name}"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-small">
@@ -61,7 +63,7 @@
                     <i class="material-icons">&#xE7FD;</i> 마이페이지</a>
                 <a class="dropdown-item" href="components-blog-posts.html">
                     <i class="material-icons">vertical_split</i> 내 게시물 보기</a>
-                <a class="dropdown-item" href="add-new-post.html">
+                <a class="dropdown-item" th:href="@{/article/create}">
                     <i class="material-icons">note_add</i> 투표지 등록하기</a>
                 <a class="dropdown-item" href="add-new-post.html">
                     <i class="material-icons">note_add</i> 내 랭킹 보기</a>

@@ -2,8 +2,125 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
-<div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <section th:each="category, loop : ${categoryList}">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<div layout:fragment="content" class="main-content-container container-fluid px-0">
+    <div class="alert alert-accent alert-dismissible fade show mb-0" role="alert" th:if="${recentNotice != null}">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+        <i class="fa fa-info mx-2"></i>
+        <a class="text-white" th:href="@{|/notice/detail/${recentNotice.id}|}">
+            <strong th:text="${recentNotice.title}"></strong>
+        </a>
+    </div>
+    <section class="border-bottom px-4">
+        <div class="page-header row no-gutters py-4">
+            <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+                <span class="text-uppercase page-subtitle">카테고리별 인기 투표</span>
+                <h3 class="page-title">인기 급상승</h3>
+            </div>
+        </div>
+        <div class="d-flex align-content-start flex-wrap">
+            <div class="col-sm-6 col-lg-4 col-xl-3" th:each="article, loop : ${popularArticleList}">
+                <div class="card card-small card-post card-post--1 mb-4">
+                    <div class="card-post__image" th:style="'background-image: url('+ @{|/images/content-management/${article.category.id}.jpg|} + ');'">
+                        <a th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-light"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 2" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-success"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 3" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-warning"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 4" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-danger"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 5" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-dark"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 6" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-info"
+                           th:text="${article.category.name}"></a>
+                        <div class="card-post__author d-flex">
+                            <img class="card-post__author-avatar card-post__author-avatar--small"
+                                 th:if="${article.author.memberImgPath}"
+                                 th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                            <img class="card-post__author-avatar card-post__author-avatar--small"
+                                 th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
+                        </div>
+                    </div>
+                    <div class="card-body pb-2">
+                        <h5 class="card-title txt_line" th:text="${article.title}">
+                        </h5>
+                        <p class="card-text txt_multi" th:text="${article.content}"></p>
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="text-muted"
+                                 th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                            <div class="card-post__author-name"
+                                 th:text="${article.author.nickname}"></div>
+                        </div>
+                    </div>
+                    <div class="card-footer border-top d-flex justify-content-between pt-2 px-3 pb-2">
+                        <a class="btn btn-accent" th:href="@{|/article/vote/${article.id}|}">
+                            <i class="material-icons">how_to_vote</i> 투표하기</a>
+                        <a class="btn btn-outline-accent" th:href="@{|/article/result/${article.id}|}">
+                            <i class="material-icons">summarize</i> 결과보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="border-bottom px-4">
+        <div class="page-header row no-gutters py-4">
+            <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+                <span class="text-uppercase page-subtitle">가장 최근 투표</span>
+                <h3 class="page-title">최신 투표</h3>
+            </div>
+        </div>
+        <div class="d-flex align-content-start flex-wrap">
+            <div class="col-sm-6 col-lg-4 col-xl-3" th:each="article, loop : ${newArticleList}">
+                <div class="card card-small card-post card-post--1 mb-4">
+                    <div class="card-post__image" th:style="'background-image: url('+ @{|/images/content-management/${article.category.id}.jpg|} + ');'">
+                        <a th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-light"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 2" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-success"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 3" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-warning"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 4" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-danger"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 5" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-dark"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 6" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-info"
+                           th:text="${article.category.name}"></a>
+                        <div class="card-post__author d-flex">
+                            <img class="card-post__author-avatar card-post__author-avatar--small"
+                                 th:if="${article.author.memberImgPath}"
+                                 th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                            <img class="card-post__author-avatar card-post__author-avatar--small"
+                                 th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
+                        </div>
+                    </div>
+                    <div class="card-body pb-2">
+                        <h5 class="card-title txt_line" th:text="${article.title}">
+                        </h5>
+                        <p class="card-text txt_multi" th:text="${article.content}"></p>
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="text-muted"
+                                 th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                            <div class="card-post__author-name"
+                                 th:text="${article.author.nickname}"></div>
+                        </div>
+                    </div>
+                    <div class="card-footer border-top d-flex justify-content-between pt-2 px-3 pb-2">
+                        <a class="btn btn-accent" th:href="@{|/article/vote/${article.id}|}">
+                            <i class="material-icons">how_to_vote</i> 투표하기</a>
+                        <a class="btn btn-outline-accent" th:href="@{|/article/result/${article.id}|}">
+                            <i class="material-icons">summarize</i> 결과보기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section th:each="category, loop : ${categoryList}" class="border-bottom px-4">
         <div class="page-header row no-gutters py-4">
             <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                 <span class="text-uppercase page-subtitle">카테고리</span>
@@ -11,24 +128,45 @@
             </div>
         </div>
         <div class="d-flex align-content-start flex-wrap">
-            <div class="col-sm-6 col-lg-5 col-xl-3" th:each="article, loop : ${articleListArray[loop.index]}">
-                <div class="card card-small card-post mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${article.title}"></h5>
-                        <p class="card-text text-muted" th:text="${article.content}"></p>
-                    </div>
-                    <div class="card-footer border-top d-flex">
+            <div class="col-sm-6 col-lg-4 col-xl-3" th:each="article : ${articleListArray[loop.index]}">
+                <div class="card card-small card-post card-post--1 mb-4">
+                    <div class="card-post__image" th:style="'background-image: url('+ @{|/images/content-management/${article.category.id}.jpg|} + ');'">
+                        <a th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-light"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 2" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-success"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 3" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-warning"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 4" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-danger"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 5" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-dark"
+                           th:text="${article.category.name}"></a>
+                        <a th:if="${article.category.id} == 6" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-info"
+                           th:text="${article.category.name}"></a>
                         <div class="card-post__author d-flex">
-                            <a href="#" class="card-post__author-avatar card-post__author-avatar--small" style="background-image: url('images/avatars/1.jpg');">Written by James Khan</a>
-                            <div class="d-flex flex-column justify-content-center ml-3">
-                                <span class="card-post__author-name" th:text="${article.author.nickname}"></span>
-                                <small class="text-muted" th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd')}"></small>
-                            </div>
+                            <img class="card-post__author-avatar card-post__author-avatar--small"
+                                 th:if="${article.author.memberImgPath}"
+                                 th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                            <img class="card-post__author-avatar card-post__author-avatar--small"
+                                 th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
                         </div>
-                        <div class="my-auto ml-auto">
-                            <a class="btn btn-sm btn-accent ml-auto" th:href="@{|/article/vote/${article.id}|}">
-                                <i class="material-icons">file_copy</i> 투표하기</a>
+                    </div>
+                    <div class="card-body pb-2">
+                        <h5 class="card-title txt_line" th:text="${article.title}">
+                        </h5>
+                        <p class="card-text txt_multi" th:text="${article.content}"></p>
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="text-muted"
+                                 th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                            <div class="card-post__author-name"
+                                 th:text="${article.author.nickname}"></div>
                         </div>
+                    </div>
+                    <div class="card-footer border-top d-flex justify-content-between pt-2 px-3 pb-2">
+                        <a class="btn btn-accent" th:href="@{|/article/vote/${article.id}|}">
+                            <i class="material-icons">how_to_vote</i> 투표하기</a>
+                        <a class="btn btn-outline-accent" th:href="@{|/article/result/${article.id}|}">
+                            <i class="material-icons">summarize</i> 결과보기</a>
                     </div>
                 </div>
             </div>
