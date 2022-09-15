@@ -14,3 +14,10 @@
     line-height: 1.2em;
     height: 2.4em;
 }
+
+#dropdown-container {
+    display: none;
+}
+
+#dropdown-container .nav-link {
+}
