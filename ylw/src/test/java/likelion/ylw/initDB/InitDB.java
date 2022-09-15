@@ -149,6 +149,7 @@ public class InitDB {
         Article article1 = articleService.createPupular("카공할 때", "중간에 나가서 점심먹고와도 될까???", member1.getMemberId(), 1, 100L);
         articleItemService.create(article1, "이미 페이했으니 괜찮다");
         articleItemService.create(article1, "민폐여서 안된다");
+
         Article article2 = articleService.createPupular("소개팅할 때", "파스타 돌려먹어야할까요", member2.getMemberId(), 2, 100L);
         articleItemService.create(article2, "맞다");
         articleItemService.create(article2, "틀리다");
@@ -167,6 +168,13 @@ public class InitDB {
         articleItemService.create(article6, "명품옷");
         articleItemService.create(article6, "적당한 브랜드옷");
         articleItemService.create(article6, "저렴한옷 많이");
+
+        statsResultService.create(article1);
+        statsResultService.create(article2);
+        statsResultService.create(article3);
+        statsResultService.create(article4);
+        statsResultService.create(article5);
+        statsResultService.create(article6);
     }
 
 }

@@ -1,6 +1,8 @@
 package likelion.ylw.article;
 
+import likelion.ylw.article.recommend.ArticleRecommend;
 import likelion.ylw.category.Category;
+import likelion.ylw.comment.vote.CommentVote;
 import likelion.ylw.member.Member;
 import likelion.ylw.util.BaseTimeEntity;
 import lombok.Getter;
@@ -10,6 +12,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,8 +35,8 @@ public class Article extends BaseTimeEntity {
 
     private Long viewCount;
 
-    @ManyToMany
-    Set<Member> voter;
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    Set<ArticleRecommend> recommends = new HashSet<>();
 
     @ColumnDefault("false")
     private boolean isBlind;
