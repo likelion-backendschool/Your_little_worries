@@ -50,4 +50,13 @@ public class ArticleItemService {
         }
         articleItemRepository.save(articleItem);
     }
+
+    public Integer getVoteTotal(Article article) {
+        List<ArticleItem> articleItems = articleItemRepository.findArticleItemByArticleId(article.getId());
+        int sum = 0;
+        for (ArticleItem articleItem : articleItems) {
+            sum += articleItem.getTotal();
+        }
+        return sum;
+    }
 }
