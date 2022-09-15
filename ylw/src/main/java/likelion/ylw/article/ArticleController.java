@@ -27,6 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -51,6 +52,7 @@ public class ArticleController {
     private final RequestService requestService;
     private final StatsResultService statsResultService;
 
+    private static int MINIMUN_VOTES = 30;
     @GetMapping("/list")
     public String list(Model model, @RequestParam("category") Integer category_id) {
         Category category = categoryService.findById(category_id);
@@ -77,7 +79,7 @@ public class ArticleController {
     @PostMapping("/vote/{id}")
     public String vote(@Valid StatsCollectionForm statsCollectionForm, BindingResult bindingResult,
                        @PathVariable("id") Integer id, Model model, @AuthenticationPrincipal User user,
-                       HttpServletRequest request) {
+                       HttpServletRequest request, RedirectAttributes redirectAttr) {
 
         Article article = articleService.findById(id);
         List<ArticleItem> articleItems = articleItemService.findArticleItemByArticleId(id);
@@ -118,6 +120,16 @@ public class ArticleController {
                 statsCollectionForm.getAge(), statsCollectionForm.getGender(), statsCollectionForm.getUserName(),
                 clientIp);
 
+        // 최소 투표수 체크
+        int total = articleItemService.getVoteTotal(article);
+        if (total < MINIMUN_VOTES) {
+            System.out.println("아직 투표수가 너무 적어요 XX표가 더 필요해요");
+            model.addAttribute("rejectResultPage", true );
+            redirectAttr.addFlashAttribute("message",
+                    "현재 투표수는 %d입니다. %d의 투표수가 모이면 결과를 볼 수 있습니다.".formatted(total,30-total));
+            return String.format("redirect:/article/vote/%d", id);
+        }
+
         // 투표 더 한 것을 db에 계산
         articleItemService.plusResult(statsCollectionForm.getArticleItemId(), statsCollectionForm.getAge(), statsCollectionForm.getGender());
 
@@ -156,7 +168,7 @@ public class ArticleController {
                 principal.getName(), category_id);
         Stream.of(articleForm.getItems())
                 .forEach(item -> {
-                    ArticleItem articleItem = articleItemService.create(article, item);
+                    articleItemService.create(article, item);
                 });
 
         // 카이제곱 db 생성
@@ -210,7 +222,18 @@ public class ArticleController {
      */
     @GetMapping("/result/{id}")
     public String resultArticle(Model model, @PathVariable("id") Integer id, CommentForm commentForm, NonMemberCommentForm nonMemberCommentForm,
-                                @RequestParam(value="page", defaultValue="0") int page, Principal principal) {
+                                @RequestParam(value="page", defaultValue="0") int page, Principal principal, RedirectAttributes redirectAttr) {
+
+        Article article = articleService.findById(id);
+        // 최소 투표수 체크
+        int total = articleItemService.getVoteTotal(article);
+        if (total < MINIMUN_VOTES) {
+            System.out.println("아직 투표수가 너무 적어요 XX표가 더 필요해요");
+            model.addAttribute("rejectResultPage", true );
+            redirectAttr.addFlashAttribute("message",
+                    "현재 투표수는 %d입니다. %d의 투표수가 모이면 결과를 볼 수 있습니다.".formatted(total,30-total));
+            return String.format("redirect:/article/vote/%d", id);
+        }
 
         if (principal != null) {
             // 로그인 회원의 댓글 좋아요 목록
@@ -218,8 +241,6 @@ public class ArticleController {
             Set<Comment> votedComments = commentVoteService.getCommentsByMemberId(member);
             model.addAttribute("votedComments", votedComments);
         }
-
-        Article article = articleService.findById(id);
 
         Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
 
@@ -235,7 +256,7 @@ public class ArticleController {
 
         model.addAttribute("articleItemList", articleItemList);
         model.addAttribute("articleItem2dArr", articleItem2dArr);
-        // 댓글 전달
+
 
         return "article/article_result";
     }

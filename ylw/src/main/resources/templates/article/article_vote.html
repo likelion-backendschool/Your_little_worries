@@ -137,6 +137,13 @@
         return false;
     }
 
+
+    // 최소 투표조건에 맞지 않으면 결과창에 못 들어간다는 
+    if ([[${message}]] != null) {
+        alert([[${message}]]);
+    }
+
+
     /**
      *  추천
      */
@@ -179,6 +186,7 @@
                 alert(err);
             });
     }
+
 
 </script>
 </html>

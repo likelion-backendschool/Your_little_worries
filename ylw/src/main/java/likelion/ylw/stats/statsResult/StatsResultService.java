@@ -61,6 +61,10 @@ public class StatsResultService {
             long[] observed = counts[i];
             double[] expected = new double[row];
 
+            // 투표를 하나도 안 한 투표지인 경우 계산하면 안 됨
+            if (Arrays.stream(observed).filter(item -> item == 0).count() == counts.length) {
+                continue;
+            }
             // 기대값 구해줌
             long sum = Arrays.stream(observed).sum();
             double avg = sum/row;
