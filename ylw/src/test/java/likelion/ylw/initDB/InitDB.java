@@ -33,6 +33,8 @@ public class InitDB {
     private CommentService commentService;
     @Autowired
     private NoticeService noticeService;
+    @Autowired
+    private StatsResultService statsResultService;
 
     @Test
     @DisplayName("유저 6명 생성")
