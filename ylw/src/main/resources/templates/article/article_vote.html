@@ -61,18 +61,42 @@
             </form>
 
             <div class="my-3">
-                <a th:href="@{|/article/modify/${article.id}|}" class="btn btn-sm btn-outline-secondary"
+                <a sec:authorize="isAuthenticated()"
+                   th:if="${article.author.memberId == #authentication.getPrincipal().getUsername()}"
+                   th:href="@{|/article/modify/${article.id}|}" class="btn btn-sm btn-outline-secondary"
                    th:text="수정"></a>
-                <!--       sec:authorize="isAuthenticated()"-->
-                <!--       th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"-->
 
-                <a href="javascript:void(0);" th:data-uri="@{|/article/delete/${article.id}|}"
+                <a sec:authorize="isAuthenticated()"
+                   th:if="${article.author.memberId == #authentication.getPrincipal().getUsername()}"
+                   href="javascript:void(0);" th:data-uri="@{|/article/delete/${article.id}|}"
                    class="delete btn btn-sm btn-outline-secondary"
                    th:text="삭제"></a>
                 <a th:href="@{|/article/result/${article.id}|}" class="btn btn-sm btn-outline-secondary"
                    th:text="결과페이지"></a>
                 <a th:href="@{|/article/list/}"></a>
             </div>
+            <div class="text-center">
+                <button class="btn btn-outline-primary mt-4">
+                    추천하기
+                </button>
+            </div>
+<!--            <th:block th:if="${#authentication.name != 'anonymousUser'}">-->
+<!--                <th:block th:if="${#sets.contains(votedComments, comment)}">-->
+<!--                    <a href="javascript:void(0);" th:myId="${comment.id}" th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button" class="material-icons text-dark  ml-2 px-1 float-right">-->
+<!--                        thumb_up_alt-->
+<!--                    </a>-->
+<!--                </th:block>-->
+<!--                <th:block th:unless="${#sets.contains(votedComments, comment)}">-->
+<!--                    <a href="javascript:void(0);" th:myId="${comment.id}" th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button" class="material-icons text-dark  ml-2 px-1 float-right">-->
+<!--                        thumb_up_off_alt-->
+<!--                    </a>-->
+<!--                </th:block>-->
+<!--            </th:block>-->
+<!--            <th:block th:if="${#authentication.name == 'anonymousUser'}">-->
+<!--                <a href="javascript:void(0);" th:myId="${comment.id}" th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button" class="material-icons text-dark  ml-2 px-1 float-right">-->
+<!--                    thumb_up_off_alt-->
+<!--                </a>-->
+<!--            </th:block>-->
         </div>
     </div>
 </div>
@@ -113,6 +137,48 @@
         return false;
     }
 
+    /**
+     *  추천
+     */
+    function pushVoteBtn(event, commentId) {
+
+        if(![[${#authentication.name != 'anonymousUser'}]]) {
+            alert("로그인 후 이용해주세요");
+            return false;
+        }
+
+        fetch(`/comment/vote/${commentId}`, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(res => {
+                if (res.url === "http://localhost:8080/member/login"){
+                    location.href = "http://localhost:8080/member/login";
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.result === "success") {
+                    const voteBtn = event.target;
+                    if(voteBtn.innerText === "thumb_up_alt") {
+                        // 좋아요 된 상태라면 취소
+                        voteBtn.innerText = "thumb_up_off_alt";
+                        voteBtn.nextElementSibling.innerText--;
+                    } else {
+                        // 좋아요가 안 된 상태라면 추가
+                        voteBtn.innerText = "thumb_up_alt";
+                        voteBtn.nextElementSibling.innerText++;
+                    }
+                } else if (data.result === "failure") {
+                    alert("자신의 댓글에는 추천할 수 없습니다.");
+                    return;
+                }
+            })
+            .catch(err => {
+                alert(err);
+            });
+    }
 
 </script>
 </html>
