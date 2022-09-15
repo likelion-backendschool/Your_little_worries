@@ -39,7 +39,12 @@ public class NoticeService {
     }
 
     public Notice getNoticeByTop1(){
-        return this.noticeRepository.findTopByOrderByIdDesc();
+        Optional<Notice> notice = this.noticeRepository.findTopByOrderByIdDesc();
+        if (notice.isPresent()) {
+            return notice.get();
+        } else {
+            throw new DataNotFoundException("Notice not found");
+        }
     }
 
     public void create(String title, String content, Member member) {
