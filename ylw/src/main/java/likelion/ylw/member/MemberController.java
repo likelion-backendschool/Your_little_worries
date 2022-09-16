@@ -85,6 +85,7 @@ public class MemberController {
         Member member = memberService.findByMemberId(principal.getName());
         memberService.evalTotalScore(member);
         model.addAttribute("members", members);
+        model.addAttribute("member",member);
         return "member/member_myPage";
     }
 
