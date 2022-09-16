@@ -100,7 +100,7 @@
                 </thead>
                 <tbody>
                     <tr class="p-3"th:each="orderedMember, loop : ${orderedMembers}">
-                        <th scope="row" th:text="${orderedMember.rank}"></th>
+                        <th scope="row" th:text="${orderedMember.currentRank}"></th>
                         <td class="profile w-full">
                             <div class="flex justify-between">
                                 <img class="picture" th:if="${member.memberImgPath}"
