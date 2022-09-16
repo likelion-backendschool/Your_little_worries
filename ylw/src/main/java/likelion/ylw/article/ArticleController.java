@@ -1,5 +1,7 @@
 package likelion.ylw.article;
 
+import likelion.ylw.article.recommend.ArticleRecommendRepository;
+import likelion.ylw.article.recommend.ArticleRecommendService;
 import likelion.ylw.category.Category;
 import likelion.ylw.category.CategoryService;
 import likelion.ylw.comment.Comment;
@@ -30,7 +32,9 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -49,6 +53,8 @@ public class ArticleController {
     private final RequestService requestService;
     private final StatsResultService statsResultService;
 
+    private final ArticleRecommendService articleRecommendService;
+
     @GetMapping("/list")
     public String list(Model model, @RequestParam("category") Integer category_id) {
         Category category = categoryService.findById(category_id);
@@ -62,8 +68,15 @@ public class ArticleController {
 
 
     @GetMapping("/vote/{id}")
-    public String vote(Model model, @PathVariable("id") Integer id, StatsCollectionForm statsCollectionForm) {
+    public String vote(Model model, @PathVariable("id") Integer id, StatsCollectionForm statsCollectionForm, Principal principal) {
         Article article = articleService.findById(id);
+        if (principal != null) {
+            // 로그인 회원의 좋아요 목록
+            Member member = memberService.findByMemberId(principal.getName());
+            boolean exist = articleRecommendService.existsByMemberAndArticle(member, article);
+            model.addAttribute("exist", exist);
+        }
+
         List<ArticleItem> articleItems = articleItemService.findArticleItemByArticleId(id);
 
         model.addAttribute("article", article);
@@ -198,6 +211,23 @@ public class ArticleController {
         articleService.modify(article, articleForm.getContent(), category_id);
 
         return String.format("redirect:/article/vote/%d", article.getId());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/recommend/{id}")
+    public String pushRecommendBtn(@PathVariable Integer id, Principal principal) {
+        Member member = memberService.findByMemberId(principal.getName());
+        Article article = articleService.findById(id);
+
+        // 본인 글에 추천하는 경우
+        if (article.getAuthor() != null) {
+            if (article.getAuthor().getMemberId().equals(principal.getName())) {
+
+            }
+        }
+        articleRecommendService.pushVoteBtn(article, member);
+
+        return String.format("redirect:/article/vote/%d", id);
     }
 
     /**
