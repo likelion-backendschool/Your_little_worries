@@ -165,7 +165,7 @@ public class MemberService {
         int i = 1;
         List<Member> orderedMembers = memberRepository.findAllByOrderByScoreDesc();
         for(Member orderedMember : orderedMembers) {
-            orderedMember.setRank(i);
+            orderedMember.setCurrentRank(i);
             i++;
         }
     }
