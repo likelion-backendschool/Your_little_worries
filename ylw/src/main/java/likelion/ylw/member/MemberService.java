@@ -28,7 +28,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     public Member create(String memberId, String password, String email, String nickname) {
 
         try {
@@ -124,5 +123,50 @@ public class MemberService {
     public List<Member> findAll() {
         return memberRepository.findAll();
     }
-}
 
+
+    /* 인기투표지:1000, 투표지:100, 투표하기:15 */
+    // 투표지 등록 점수
+    public void evalEnrollScore(Member member) {
+        int count = member.getEnrollCount();
+        int baseScore = 100;
+        member.setEnrollScore(count * baseScore);
+        memberRepository.save(member);
+    }
+
+    // 투표하기 점수
+    public void evalParticipateScore(Member member) {
+        int count = member.getParticipateCount();
+        int baseScore = 15;
+        member.setParticipateScore(count * baseScore);
+        memberRepository.save(member);
+    }
+
+    // 인기투표지 선정
+    public void evalPopularVoteScore(Member member) {
+            int count = member.getPopularVoteCount();
+            int baseScore = 1000;
+            member.setPopularVoteScore(count * baseScore);
+            memberRepository.save(member);
+    }
+
+    // 총점
+    public void evalTotalScore(Member member) {
+        int totalScore = member.getEnrollScore() + member.getParticipateScore() + member.getPopularVoteScore();
+        member.setScore(totalScore);
+        memberRepository.save(member);
+    }
+
+    public List<Member> getRankingList() {
+        return memberRepository.findAllByOrderByScoreDesc();
+    }
+
+    public void evalRank() {
+        int i = 1;
+        List<Member> orderedMembers = memberRepository.findAllByOrderByScoreDesc();
+        for(Member orderedMember : orderedMembers) {
+            orderedMember.setCurrentRank(i);
+            i++;
+        }
+    }
+}

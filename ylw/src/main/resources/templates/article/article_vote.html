@@ -144,5 +144,57 @@
         alert("이미 투표하셨습니다");
         return false;
     }
+
+
+    // 최소 투표조건에 맞지 않으면 결과창에 못 들어간다는 
+    if ([[${message}]] != null) {
+        alert([[${message}]]);
+    }
+
+
+    /**
+     *  추천
+     */
+    function pushVoteBtn(event, commentId) {
+
+        if(![[${#authentication.name != 'anonymousUser'}]]) {
+            alert("로그인 후 이용해주세요");
+            return false;
+        }
+
+        fetch(`/comment/vote/${commentId}`, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(res => {
+                if (res.url === "http://localhost:8080/member/login"){
+                    location.href = "http://localhost:8080/member/login";
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.result === "success") {
+                    const voteBtn = event.target;
+                    if(voteBtn.innerText === "thumb_up_alt") {
+                        // 좋아요 된 상태라면 취소
+                        voteBtn.innerText = "thumb_up_off_alt";
+                        voteBtn.nextElementSibling.innerText--;
+                    } else {
+                        // 좋아요가 안 된 상태라면 추가
+                        voteBtn.innerText = "thumb_up_alt";
+                        voteBtn.nextElementSibling.innerText++;
+                    }
+                } else if (data.result === "failure") {
+                    alert("자신의 댓글에는 추천할 수 없습니다.");
+                    return;
+                }
+            })
+            .catch(err => {
+                alert(err);
+            });
+    }
+
+
 </script>
 </html>

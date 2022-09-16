@@ -160,39 +160,24 @@
                 <div class="flex">
                     <span class="flex-grow">랭킹점수</span>
                     <div class="con mr-2 font-bold text-blue-500 underline">
-                        <a class="btn-popup" type="submit">
-                            내 랭킹 확인하기
-                        </a>
+                        <a th:href="@{|/member/rank|}">내 랭킹 확인하기</a>
                     </div>
                     <div class="text-center w-[15%] mb-2 bg-yellow-400 font-bold text-white px-5" th:text="${member.score}"></div>
                 </div>
                 <div class="flex">
-                    <span class="flex-grow">투표등록</span>
+                    <span class="flex-grow">투표 등록횟수</span>
                     <span class="mr-2 text-red-500 font-bold" th:text="|${member.enrollCount}회|"></span>
-                    <div class="text-center w-[15%] mb-2 bg-indigo-900 font-bold text-white px-5">20</div>
+                    <div class="text-center w-[15%] mb-2 bg-indigo-900 font-bold text-white px-5" th:text="${member.enrollScore}"></div>
                 </div>
                 <div class="flex">
-                    <span class="flex-grow">투표횟수</span>
+                    <span class="flex-grow">투표 참여횟수</span>
                     <span class="mr-2 text-red-500 font-bold" th:text="|${member.participateCount}회|"> </span>
-                    <div class="text-center w-[15%] mb-2 bg-indigo-900 font-bold text-white px-5">30</div>
+                    <div class="text-center w-[15%] mb-2 bg-indigo-900 font-bold text-white px-5" th:text="${member.participateScore}"></div>
                 </div>
                 <div class="flex">
                     <span class="flex-grow">인기투표지 선정횟수</span>
                     <span class="mr-2 text-red-500 font-bold" th:text="|${member.popularVoteCount}회|"></span>
-                    <div class="text-center w-[15%] mb-2 bg-indigo-900 font-bold text-white px-5">30</div>
-                </div>
-            </div>
-
-            <div class="popup">
-                <div class="popup__content">
-                    <div class="popup__head">
-                        <div class="popup__btn-close"></div>
-                    </div>
-                    <div class="popup__body">
-                        <div class="con">
-                            1등 가나다
-                        </div>
-                    </div>
+                    <div class="text-center w-[15%] mb-2 bg-indigo-900 font-bold text-white px-5" th:text="${member.popularVoteScore}"></div>
                 </div>
             </div>
         </section>
@@ -213,6 +198,7 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     <tr>
                         <td> 8973</td>
                         <td> 투표지제목1</td>
@@ -238,13 +224,6 @@
 </html>
 
 <script>
-<!--$('.btn-popup').click(function() {-->
-<!--  $('.popup').addClass('active');-->
-<!--});-->
-
-<!--$('.popup__btn-close').click(function() {-->
-<!--  $('.popup').removeClass('active');-->
-<!--});-->
 
 function ImgUpdate(){
 var result = confirm("프로필 이미지를 변경하시겠습니까?");

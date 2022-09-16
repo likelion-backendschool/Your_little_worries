@@ -48,6 +48,22 @@ public class Member extends BaseTimeEntity {
     @ColumnDefault("0")
     private Integer popularVoteCount;
 
+    @Column
+    @ColumnDefault("0")
+    private Integer enrollScore;
+
+    @Column
+    @ColumnDefault("0")
+    private Integer participateScore;
+
+    @Column
+    @ColumnDefault("0")
+    private Integer popularVoteScore;
+
+    @Column
+    @ColumnDefault("0")
+    private Integer currentRank;
+
     private String memberImgPath;
 //    private LocalDateTime createdDate;
 
