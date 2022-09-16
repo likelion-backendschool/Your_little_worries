@@ -5,14 +5,15 @@
 >
 
 <nav th:fragment="navbarFragment" class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
-    <form action="#" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+    <form th:action="@{/article/search}" method="get" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
         <div class="input-group input-group-seamless ml-3">
             <div class="input-group-prepend">
                 <div class="input-group-text">
                     <i class="fas fa-search"></i>
                 </div>
             </div>
-            <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
+            <input type="text" id="kw" name="kw" class="navbar-search form-control"  placeholder="투표지를 찾아보세요" aria-label="Search">
+        </div>
     </form>
     <ul class="navbar-nav border-left flex-row flex">
         <li class="nav-item border-right dropdown notifications">

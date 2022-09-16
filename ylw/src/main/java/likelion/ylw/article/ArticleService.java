@@ -2,12 +2,20 @@ package likelion.ylw.article;
 
 import likelion.ylw.category.Category;
 import likelion.ylw.category.CategoryService;
+import likelion.ylw.comment.Comment;
+import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberRepository;
 import likelion.ylw.member.MemberService;
 import likelion.ylw.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +31,11 @@ public class ArticleService {
 
     public List<Article> getList() {
         return articleRepository.findAll();
+    }
+
+    public List<Article> getSearchList(String kw) {
+        Specification<Article> spec = search(kw);
+        return this.articleRepository.findAll(spec);
     }
 
     public Article findByTitle(String title) {
@@ -101,5 +114,17 @@ public class ArticleService {
         article.setCategory(categoryService.findById(category_id));
 
         articleRepository.save(article);
+    }
+
+    private Specification<Article> search(String kw) {
+        return new Specification<>() {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Predicate toPredicate(Root<Article> q, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                query.distinct(true);  // 중복을 제거
+                return cb.or(cb.like(q.get("title"), "%" + kw + "%"), // 제목
+                        cb.like(q.get("content"), "%" + kw + "%"));      // 내용
+            }
+        };
     }
 }

@@ -260,4 +260,13 @@ public class ArticleController {
 
         return "article/article_result";
     }
+
+    @GetMapping("/search")
+    public String search(Model model, @RequestParam(value = "kw", defaultValue = "") String kw) {
+        List<Article> articleList = articleService.getSearchList(kw);
+
+        model.addAttribute("articleList", articleList);
+
+        return "article/article_search_list";
+    }
 }
