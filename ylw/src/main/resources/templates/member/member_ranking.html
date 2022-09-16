@@ -132,8 +132,6 @@
                                     </div>
                                 </div>
                             </div>
-<!--                            <img class="picture" th:src="@{/gen/} + ${orderedMember.memberImgPath}"></img>-->
-<!--                            <th:block th:replace="member/member_fragment :: memberFragment"></th:block>-->
                         </td>
                         <td th:text="${orderedMember.memberId}"></td>
                         <td th:text="${orderedMember.score}"></td>
@@ -146,17 +144,7 @@
 </html>
 
 
-<script th:inline="javascript">
-/*
-$(".picture").hover(
-  function () {
-    $("#target").removeClass('profile-none ');
-  },
-  function () {
-    $("#target").addClass('profile-none ');
-  }
-);
-*/
+<script>
 
 $(".profile .profile-btn").mouseover((e) => {
     console.log("yes");
