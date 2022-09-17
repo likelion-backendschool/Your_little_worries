@@ -49,15 +49,10 @@
                 </div>
                 <input id='result' th:field="*{articleItemId}" style="display: none"/>
 
-                <!--                투표 안한 로그인 유저-->
-                <!--                <button th:if="${statsCollection} == null"-->
                 <button
                         type="submit" class="btn btn-primary float-right mt-3">투표하기
                 </button>
-                <!--                &lt;!&ndash;                이미 투표한 로그인 유저의 경우&ndash;&gt;-->
-                <!--                <button th:unless="${statsCollection} == null"-->
-                <!--                     class="btn btn-primary float-right" onclick="alreadyVote()">투표하기-->
-                <!--                </button>-->
+
             </form>
 
             <div class="my-3">
@@ -111,20 +106,16 @@
     /**
      *  추천
      */
-
-
     const recommend_elements = document.getElementsByClassName("recommend");
     Array.from(recommend_elements).forEach(function (element) {
         element.addEventListener('click', function () {
             console.log(document.getElementById("isExist").innerText)
             if (document.getElementById("isExist") != null && document.getElementById("isExist").innerText == "true") {
-                if (confirm("확인을 누르시면 추천이 취소됩니다")) {
+                if (confirm("추천을 취소하시겠습니까?")) {
                     location.href = this.dataset.uri;
                 }
             } else {
-                if(confirm("추천 하시겠습니까?")){
                     location.href = this.dataset.uri;
-                }
             }
         });
     });
@@ -140,59 +131,9 @@
         $("#genderSelect").val(genderSelected);
     }
 
-    function alreadyVote() {
-        alert("이미 투표하셨습니다");
-        return false;
-    }
-
-
     // 최소 투표조건에 맞지 않으면 결과창에 못 들어간다는 
     if ([[${message}]] != null) {
         alert([[${message}]]);
-    }
-
-
-    /**
-     *  추천
-     */
-    function pushVoteBtn(event, commentId) {
-
-        if(![[${#authentication.name != 'anonymousUser'}]]) {
-            alert("로그인 후 이용해주세요");
-            return false;
-        }
-
-        fetch(`/comment/vote/${commentId}`, {
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-            .then(res => {
-                if (res.url === "http://localhost:8080/member/login"){
-                    location.href = "http://localhost:8080/member/login";
-                }
-                return res.json();
-            })
-            .then(data => {
-                if (data.result === "success") {
-                    const voteBtn = event.target;
-                    if(voteBtn.innerText === "thumb_up_alt") {
-                        // 좋아요 된 상태라면 취소
-                        voteBtn.innerText = "thumb_up_off_alt";
-                        voteBtn.nextElementSibling.innerText--;
-                    } else {
-                        // 좋아요가 안 된 상태라면 추가
-                        voteBtn.innerText = "thumb_up_alt";
-                        voteBtn.nextElementSibling.innerText++;
-                    }
-                } else if (data.result === "failure") {
-                    alert("자신의 댓글에는 추천할 수 없습니다.");
-                    return;
-                }
-            })
-            .catch(err => {
-                alert(err);
-            });
     }
 
 
