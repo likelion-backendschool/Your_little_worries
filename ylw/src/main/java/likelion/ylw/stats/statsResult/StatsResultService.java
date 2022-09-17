@@ -67,7 +67,7 @@ public class StatsResultService {
             }
             // 기대값 구해줌
             long sum = Arrays.stream(observed).sum();
-            double avg = sum/row;
+            double avg = (double) sum/row;
             Arrays.fill(expected, avg);
 
             ChiSquareTest t = new ChiSquareTest();

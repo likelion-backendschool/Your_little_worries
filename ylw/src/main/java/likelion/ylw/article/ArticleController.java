@@ -93,7 +93,7 @@ public class ArticleController {
     @PostMapping("/vote/{id}")
     public String vote(@Valid StatsCollectionForm statsCollectionForm, BindingResult bindingResult,
                        @PathVariable("id") Integer id, Model model, @AuthenticationPrincipal User user,
-                       HttpServletRequest request, RedirectAttributes redirectAttr) {
+                       HttpServletRequest request) {
 
         Article article = articleService.findById(id);
         List<ArticleItem> articleItems = articleItemService.findArticleItemByArticleId(id);
@@ -133,16 +133,6 @@ public class ArticleController {
         statsCollectionService.createStatsCollection(statsCollectionForm.getArticleItemId(),
                 statsCollectionForm.getAge(), statsCollectionForm.getGender(), statsCollectionForm.getUserName(),
                 clientIp);
-
-        // 최소 투표수 체크
-        int total = articleItemService.getVoteTotal(article);
-        if (total < MINIMUN_VOTES) {
-            System.out.println("아직 투표수가 너무 적어요 XX표가 더 필요해요");
-            model.addAttribute("rejectResultPage", true );
-            redirectAttr.addFlashAttribute("message",
-                    "현재 투표수는 %d입니다. %d의 투표수가 모이면 결과를 볼 수 있습니다.".formatted(total,30-total));
-            return String.format("redirect:/article/vote/%d", id);
-        }
 
         // 투표 더 한 것을 db에 계산
         articleItemService.plusResult(statsCollectionForm.getArticleItemId(), statsCollectionForm.getAge(), statsCollectionForm.getGender());
@@ -253,17 +243,13 @@ public class ArticleController {
      */
     @GetMapping("/result/{id}")
     public String resultArticle(Model model, @PathVariable("id") Integer id, CommentForm commentForm, NonMemberCommentForm nonMemberCommentForm,
-                                @RequestParam(value="page", defaultValue="0") int page, Principal principal, RedirectAttributes redirectAttr) {
+                                @RequestParam(value="page", defaultValue="0") int page, Principal principal) {
 
         Article article = articleService.findById(id);
         // 최소 투표수 체크
         int total = articleItemService.getVoteTotal(article);
         if (total < MINIMUN_VOTES) {
-            System.out.println("아직 투표수가 너무 적어요 XX표가 더 필요해요");
             model.addAttribute("rejectResultPage", true );
-            redirectAttr.addFlashAttribute("message",
-                    "현재 투표수는 %d입니다. %d의 투표수가 모이면 결과를 볼 수 있습니다.".formatted(total,30-total));
-            return String.format("redirect:/article/vote/%d", id);
         }
 
         if (principal != null) {

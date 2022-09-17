@@ -49,14 +49,14 @@ public class CommentServiceTest {
     void test() {
         double[] expected = new double[]
                 {
-                        11 ,11,
+                        10 ,10,
                 };
 
         // Example 1: Reject null hypothesis, observed doesnt fit
 
         long[] observed1 = new long[]
                 {
-                        20,2
+                        20,0
                 };
 
         chiTest(expected, observed1);
