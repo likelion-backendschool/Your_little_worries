@@ -16,14 +16,14 @@ public class StatsResult {
 
     private Double pValue;
 
-    private Boolean result;
-    private Boolean male;
-    private Boolean female;
-    private Boolean age10;
-    private Boolean age20;
-    private Boolean age30;
-    private Boolean age40;
-    private Boolean ageOver50;
+    private Boolean result = false;
+    private Boolean male = false;
+    private Boolean female = false;
+    private Boolean age10 = false;
+    private Boolean age20 = false;
+    private Boolean age30 = false;
+    private Boolean age40 = false;
+    private Boolean ageOver50 = false;
 
     @OneToOne
     private Article article;

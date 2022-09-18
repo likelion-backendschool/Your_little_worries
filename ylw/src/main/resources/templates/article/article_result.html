@@ -12,46 +12,60 @@
 </head>
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
 
-    <!-- Page Header -->
+    <!-- Page Header start-->
     <div class="page-header row no-gutters py-4">
         <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
-            <span class="text-uppercase page-subtitle">주제에 대한</span>
+            <span class="text-uppercase page-subtitle">나의 자질구레한 고민들</span>
             <h3 class="page-title">투표 결과</h3>
         </div>
     </div>
+    <!-- Page Header end-->
 
     <div class="row">
         <!-- total 결과 그래프 start -->
-
         <div class="col-lg-7 col-md-12 col-sm-12 mb-4">
             <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
                 <div class="card-header border-bottom">
-                    <h2 class="m-0">주제 : [[${article.title}]]</h2>
+                    <h3 class="m-1">[[${article.title}]]</h3>
+                    <div class="mt-3 ml-3 ">[[${article.content}]]</div>
                 </div>
-                <div class="card-body pt-0 m-0">
-                    <span>내용 : [[${article.content}]]</span>
-                    <canvas th:id="totalResult"height="auto" style="max-width: 100% !important;" class="blog-overview-users"></canvas>
-                    <th:block th:if="${rejectResultPage}">
-                        <div>투표 수가 너무 적어서 계산을 할 수 없어요.</div>
-                    </th:block>
-                    <th:block th:unless="${rejectResultPage}">
-                        <div th:text="${statsResult.result} ? '해당 투표에는 선호도 차이가 있다고 볼 수 있습니다' : '해당 투표에는 선호도 차이가 없다고 볼 수 있습니다.'"></div>
-                    </th:block>
-
+                <div class="card-body pt-0 mt-2">
+                    <canvas th:id="totalResult" height="500px"></canvas>
                 </div>
             </div>
         </div>
         <!-- total 결과 그래프 end -->
         <!-- 결과 수치 start -->
-        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-            <div class="card card-small h-100">
-                <div class="card-body py-0">
-                    <div id="totalVoteView">총 투표수는 120입니다</div>
-                    <div th:each="articleItem,stat : ${articleItemList}">
-                        <div>
-                            <span th:text="${articleItem.content}"></span>
-                            <span th:text="${articleItem.total}"></span>
+        <div class="col-lg-4 col-md-12 col-sm-12 mb-4">
+            <div class="stats-small stats-small--1 card card-small mb-4 rounded-2xl shadow-md">
+                <div class="card-body py-4 d-flex">
+                    <div class="d-flex flex-column m-auto">
+                        <div class="stats-small__data text-center">
+                            <span class="text-uppercase font-weight-bold">총 투표수</span>
+                            <h6 id="totalVoteView" class="stats-small__value count my-3"></h6>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-small stats-small--1 card card-small rounded-2xl shadow-md">
+                <div class="card-body ">
+                    <div th:each="articleItem,stat : ${articleItemList}">
+                        <div class="stats-small__data text-center border-bottom  rounded mb-2">
+                            <span class="stats-small__label pb-1 text-uppercase" th:text="${(stat.index+1+'.')+articleItem.content}"></span>
+                            <h6 class="stats-small__value count" th:text="${articleItem.total}"></h6>
+                        </div>
+                    </div>
+                    <div>
+                        <th:block th:if="${rejectResultPage}" class="row justify-content-around font-weight-bold">
+                            <h6 class="font-weight-bold border p-2 bg-info rounded bg-light ">
+                                <span>총 투표수 30을 넘어야 통계 결과를 얻을 수 있습니다.</span>
+                            </h6>
+                        </th:block>
+                        <th:block th:unless="${rejectResultPage}">
+                            <h6 class="font-weight-bold border p-2 bg-info rounded bg-light ">
+                                <span th:text="${statsResult.result} ? '통계 계산을 통해 해당 투표지에는 선호도 차이가 있음이 증명되었습니다.' : '통계 계산을 통해 해당 투표지에는 선호도 차이가 없음이 증명되었습니다.'"></span>
+                            </h6>
+                        </th:block>
                     </div>
                 </div>
             </div>
@@ -59,115 +73,105 @@
         <!-- 결과 수치 end -->
     </div>
 
-    <div> 총 투표 결과</div>
-    <div>게시글 제목 :</div>
-    <div>게시글 내용 : </div>
-    <br>
-
-    <div> 성별로 그래프 보여줌</div>
-    <!--공통 결과-->
-
-    <!--  투표수가 적은 경우  -->
-    <th:block th:if="${rejectResultPage}">
-        <div>투표 수가 너무 적어서 계산을 할 수 없어요.</div>
-    </th:block>
-    <!--  투표수가 많은 경우  -->
-
-    <th:block th:unless="${rejectResultPage}">
-        <div th:text="${statsResult.result} ? '해당 투표에는 선호도 차이가 있다고 볼 수 있습니다' : '해당 투표에는 선호도 차이가 없다고 볼 수 있습니다.'"></div>
-        <div th:text="${statsResult.male} ? '남자의 경우 선호도 차이가 있다고 볼 수 있습니다' : '남자의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
-        <div th:text="${statsResult.female} ? '여자의 경우 선호도 차이가 있다고 볼 수 있습니다' : '여자의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
-        <div th:text="${statsResult.age10} ? '10대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '10대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
-        <div th:text="${statsResult.age20} ? '20대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '20대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
-        <div th:text="${statsResult.age30} ? '30대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '30대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
-        <div th:text="${statsResult.age40} ? '40대의 경우 선호도 차이가 있다고 볼 수 있습니다' : '40대의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
-        <div th:text="${statsResult.ageOver50} ? '50대 이상의 경우 선호도 차이가 있다고 볼 수 있습니다' : '50대 이상의 경우 선호도 차이가 없다고 볼 수 있습니다.'"></div>
-    </th:block>
-
     <!-- 성별에 대한 결과 start -->
-    <div>성별 결과</div>
-
     <div class="col-lg-11 col-md-12 col-sm-12 mb-4">
         <div class="card card-small rounded-2xl shadow-md">
-            <div class="card-header border-bottom">
-                성별 결과
-            </div>
+            <h5 class="card-header border-bottom text-center font-weight-bold">
+                남녀 투표 결과
+            </h5>
             <div class="card-body row d-flex py-0 mb-3 justify-content-around">
+                <div class="col-lg-12 d-flex justify-content-center">
+
+                    <div class="container my-4">
+                        <div th:if="${rejectResultPage}" class="row justify-content-around font-weight-bold">
+                            <div>투표 수가 너무 적어서 계산을 할 수 없어요.</div>
+                        </div>
+                        <div th:unless="${rejectResultPage}" class="row justify-content-around">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-5 text-center border rounded p-3 m-2">
+                                <h6><span class="badge badge-secondary py-2 px-4 font">남자</span></h6>
+                                <div th:if="${statsResult.male}" id="maleResult"></div>
+                                <div th:unless="${statsResult.male}" class="font-weight-bold">해당 없음</div>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-5 text-center border rounded p-3 m-2" >
+                                <h6><span class="badge badge-secondary py-2 px-4">여자</span></h6>
+                                <div th:if="${statsResult.female}" id="femaleResult"></div>
+                                <div th:unless="${statsResult.female}" class="font-weight-bold">해당 없음</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div th:each="num : ${#numbers.sequence(1,2)}" >
                     <div class="col-lg-12 col-md-12 col-sm-12 mb-5">
-                        <h6 class="m-0 text-center" th:if="${num == 1}" th:text="남자"></h6>
-                        <h6 class="m-0 text-center" th:if="${num != 1}" th:text="여자"></h6>
-                        <canvas th:id="genderResult+${num}"  class="blog-users-by-device m-auto"></canvas>
+                        <h6 class="m-0 text-center font-weight-bold" th:if="${num == 1}" th:text="남자"></h6>
+                        <h6 class="m-0 text-center font-weight-bold" th:if="${num != 1}" th:text="여자"></h6>
+                        <canvas th:id="genderResult+${num}" ></canvas>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <!-- 성별에 대한 결과 end-->
+    <!-- 나이에 대한 결과 start-->
     <div class="col-lg-11 col-md-12 col-sm-12 mb-4">
         <div class="card card-small rounded-2xl shadow-md">
-            <div class="card-header border-bottom">
-                나이대 별 결과
-            </div>
+            <h5 class="card-header border-bottom text-center font-weight-bold">
+                나이대별 투표 결과
+            </h5>
             <div class="card-body row d-flex py-0 mb-3 justify-content-around">
+                <div class="col-lg-12 d-flex justify-content-center">
+
+                    <div class="container my-4">
+                        <div th:if="${rejectResultPage}" class="row justify-content-around font-weight-bold">
+                            <div>투표 수가 너무 적어서 계산을 할 수 없어요.</div>
+                        </div>
+                        <div th:unless="${rejectResultPage}" class="row justify-content-around">
+                            <div class="col-lg-2 col-md-4 col-sm-4 col-6 text-center border rounded p-3 m-2">
+                                <h6><span class="badge badge-secondary">10대</span></h6>
+                                <div th:if="${statsResult.age10}" id="age10Result"></div>
+                                <div th:unless="${statsResult.age10}" class="font-weight-bold">해당 없음</div>
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-sm-4 col-6 text-center border rounded p-3 m-2 ">
+                                <h6><span class="badge badge-secondary">20대</span></h6>
+                                <div th:if="${statsResult.age20}" id="age20Result"></div>
+                                <div th:unless="${statsResult.age20}" class="font-weight-bold">해당 없음</div>
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-sm-4 col-6 text-center border rounded p-3 m-2">
+                                <h6><span class="badge badge-secondary">30대</span></h6>
+                                <div th:if="${statsResult.age30}" id="age30Result"></div>
+                                <div th:unless="${statsResult.age30}" class="font-weight-bold">해당 없음</div>
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-sm-4 col-6 text-center border rounded p-3 m-2">
+                                <h6><span class="badge badge-secondary">40대</span></h6>
+                                <div th:if="${statsResult.age40}" id="age40Result"></div>
+                                <div th:unless="${statsResult.age40}" class="font-weight-bold">해당 없음</div>
+                            </div>
+                            <div class="col-lg-2 col-md-4 col-sm-4 col-6 text-center border rounded p-3 m-2">
+                                <h6><span class="badge badge-secondary">50대 이상</span></h6>
+                                <div th:if="${statsResult.ageOver50}" id="ageOver50Result"></div>
+                                <div th:unless="${statsResult.ageOver50}" class="font-weight-bold">해당 없음</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div th:each="num : ${#numbers.sequence(1,5)}" >
                     <div class="col-lg-12 col-md-12 col-sm-12 mb-5">
-                        <h6 class="m-0 text-center" th:if="${num != 5}" th:text="${num*10}+대"></h6>
-                        <h6 class="m-0 text-center" th:if="${num == 5}" th:text="${num*10}+'대 이상'"></h6>
-                        <canvas th:id="ageResult+${num}"  class="blog-users-by-device m-auto"></canvas>
+                        <h6 class="m-0 text-center font-weight-bold" th:if="${num != 5}" th:text="${num*10}+대"></h6>
+                        <h6 class="m-0 text-center font-weight-bold" th:if="${num == 5}" th:text="${num*10}+'대 이상'"></h6>
+                        <canvas th:id="ageResult+${num}" ></canvas>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
-
-    <!-- 나이대 별 결과 -->
-<!--    <div>나이대 별 결과</div>-->
-<!--    <div class="d-flex flex-wrap justify-content-around w-100  " >-->
-<!--        <div th:each="num : ${#numbers.sequence(1,5)}" class="col-lg-4 col-md-6 col-sm-12 mb-5">-->
-<!--            <div class="card card-small h-100 rounded-2xl shadow-md">-->
-<!--                <div class="card-header border-bottom">-->
-<!--                    <h6 class="m-0 text-center" th:if="${num != 5}" th:text="${num*10}+대"></h6>-->
-<!--                    <h6 class="m-0" th:if="${num == 5}" th:text="${num*10}+'대 이상'"></h6>-->
-<!--                </div>-->
-<!--                <div class="card-body d-flex py-0 mb-3">-->
-<!--                    <canvas th:id="ageResult+${num}"  class="blog-users-by-device m-auto"></canvas>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-    <!-- 나이대 별 결과 -->
-
-
-
-    <!--/*결과 데이터 그래프가 들어올 자리*/-->
-
-
-
-    <div th:each="articleItem,stat : ${articleItemList}">
-        <div th:text="${stat.count+'번 항목'}">
-        </div>
-        <div>
-        항목 총 투표 수<span th:text="${articleItem.total}"></span>
-        남자 투표 수<span th:text="${articleItem.maleTotal}"></span>
-        여자 투표 수<span th:text="${articleItem.femaleTotal}"></span>
-        10대 <span th:text="${articleItem.total10}"></span>
-        20대 <span th:text="${articleItem.total20}"></span>
-        30대 <span th:text="${articleItem.total30}"></span>
-        40대 <span th:text="${articleItem.total40}"></span>
-        50대 <span th:text="${articleItem.totalOver50}"></span>
-        </div>
+    <!-- 나이에 대한 결과 end -->
+    <!-- sns start-->
+    <div  class="ml-3">
+            <button type="button" id="shareTw" class="link-icon twitter"></button>
+            <button type="button" id="shareFb" class="link-icon facebook"></button>
+            <button type="button" id="shareKt" class="link-icon kakao"></button>
+            <button type="button" id="shareKs" class="link-icon kakaoStory"></button>
     </div>
-
-
-
-    <!-- sns-->
-    <button type="button" id="shareTw" class="link-icon twitter"></button>
-    <button type="button" id="shareFb" class="link-icon facebook"></button>
-    <button type="button" id="shareKt" class="link-icon kakao"></button>
-    <button type="button" id="shareKs" class="link-icon kakaoStory"></button>
+    <!-- sns end-->
     <!--/*    댓글 start   */-->
     <div class="col-lg-8 col-md-12 col-sm-12 mb-4 rounded-2xl shadow-md">
         <div th:text="|댓글(${commentList.totalElements})|" class="p-1 text-large" style="font-size:1.25rem">0</div>
@@ -394,13 +398,11 @@
     Chart.register(ChartDataLabels); // 차트에 value 보이게 설정
 
     const result    = [[${articleItem2dArr}]]
-
     const total     = result[0];
     const totalSum = total.reduce((sum, currValue) => {
         return sum + currValue;
     }, 0);
-    document.querySelector('#totalVoteView').innerHTML = "총 투표수 : " +totalSum
-
+    document.querySelector('#totalVoteView').innerHTML = totalSum // div안에 투표수 총 합 넣기
 
     const male      = result[1];
     const female    = result[2];
@@ -410,100 +412,81 @@
     const age40     = result[6];
     const ageOver50 = result[7];
 
-    // 항목 content
+    // chart에 넣기위한 항목 content 가져오기
     let contentList = new Array();
     /*[# th:each="articleItem : ${articleItemList}"]*/
     contentList.push(/*[[${articleItem.content}]]*/)
     /*[/]*/
 
-    for (let i = 3; i <= 7; i++) {
-        const ageChart = document.querySelector("#ageResult"+(i-2)).getContext('2d');
-
-        var type="bar";
-        var myChartAge = new Chart(ageChart, {
-            type: "pie", // 차트의 형태
-            data: { // 차트에 들어갈 데이터
-                labels: contentList,
-                datasets: [
-                    { //데이터
-                        label: '총 투표수', //차트 제목
-                        fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-                        data: result[i],//x축 label에 대응되는 데이터 값
-                        backgroundColor: [
-                            //색상
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                        ],
-                        borderColor: [
-                            //경계선 색상
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-
-                        ],
-                        borderWidth: 0.25 //경계선 굵기
-                    } ,
-                ]
-            },
-        });
+    //성별 결과
+    if ([[${statsResult.male}]]) {
+        const maleMaxContent = contentList[male.indexOf(Math.max(...male))]; // 최댓값 인덱스에 해당하는 항목
+        const maleResultTag = document.querySelector('#maleResult');
+        if (maleResultTag != null) {
+            maleResultTag.innerHTML = maleMaxContent;
+        }
     }
-    for (let i = 1; i <= 2; i++) {
-        const genderChart = document.querySelector("#genderResult"+(i)).getContext('2d');
-
-
-        var myChartGender = new Chart(genderChart, {
-            type: "pie", // 차트의 형태
-            data: { // 차트에 들어갈 데이터
-                labels: contentList,
-                datasets: [
-                    { //데이터
-                        fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-                        data: result[i],//x축 label에 대응되는 데이터 값
-                        backgroundColor: [
-                            //색상
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                        ],
-                        borderColor: [
-                            //경계선 색상
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-
-                        ],
-                        borderWidth: 0.25 //경계선 굵기
-                    } ,
-                ]
-            },
-        });
+    if ([[${statsResult.female}]]) {
+        const femaleMaxContent = contentList[female.indexOf(Math.max(...female))];
+        const femaleResultTag = document.querySelector('#femaleResult');
+        if (femaleResultTag != null) {
+            femaleResultTag.innerHTML = femaleMaxContent;
+        }
     }
+
+    // 나이대 별 결과
+    if ([[${statsResult.age10}]]) {
+        const age10MaxContent = contentList[age10.indexOf(Math.max(...age10))];
+        const ageResultTag = document.querySelector('#age10Result');
+        if (ageResultTag != null) {
+            ageResultTag.innerHTML = age10MaxContent;
+        }
+    }
+    if ([[${statsResult.age20}]]) {
+        const age20MaxContent = contentList[age20.indexOf(Math.max(...age20))];
+        const age20ResultTag = document.querySelector('#age20Result');
+        if (age20ResultTag != null) {
+            age20ResultTag.innerHTML = age20MaxContent;
+        }
+    }
+    if ([[${statsResult.age30}]]) {
+        const age30MaxContent = contentList[age30.indexOf(Math.max(...age30))];
+        const age30ResultTag = document.querySelector('#age30Result');
+        if (age30ResultTag != null) {
+            age30ResultTag.innerHTML = age30MaxContent;
+        }
+    }
+    if ([[${statsResult.age40}]]) {
+        const age40MaxContent = contentList[age40.indexOf(Math.max(...age40))];
+        const age40ResultTag = document.querySelector('#age40Result');
+        if (age40ResultTag != null) {
+            age40ResultTag.innerHTML = age40MaxContent;
+        }
+    }
+    if ([[${statsResult.ageOver50}]]) {
+        const ageOver50MaxContent = contentList[ageOver50.indexOf(Math.max(...ageOver50))];
+        const ageOver50ResultTag = document.querySelector('#ageOver50Result');
+        if (ageOver50ResultTag != null) {
+            ageOver50ResultTag.innerHTML = ageOver50MaxContent;
+        }
+    }
+
     const totalChart = document.querySelector('#totalResult').getContext('2d');
     const myChartTotal = new Chart(totalChart, {
         type: "bar", // 차트의 형태
-
         data: { // 차트에 들어갈 데이터
             labels: contentList,
             datasets: [{ //데이터
                 label: '총 투표수 결과', //차트 제목
                 data: total,//x축 label에 대응되는 데이터 값
                 datalabels:{
-                    color:'black',
-                    font:{size:16},
-                    // align: function(context) {
-                    //     if (context.dataset.data[context.dataIndex] < 15){
-                    //         return 'right'
-                    //     }
-                    // }, // 15이하 투표수의 경우 value표시를 오른쪽으로
+                    align: function(context) {
+                        if (context.dataset.data[context.dataIndex] > 0){
+                            return 'center'
+                        } else {
+                            return 'right'
+                        }
+                    }, // 0이하 투표수의 경우 value표시를 오른쪽으로
                 },
                 backgroundColor: [
                     //색상
@@ -520,10 +503,8 @@
                     'rgba(255, 206, 86, 1)',
                     'rgba(75, 192, 192, 1)',
                     'rgba(153, 102, 255, 1)',
-
                 ],
                 borderWidth: 0.25, //경계선 굵기
-                maxBarThickness:40,
             }]
         },
         options: {
@@ -538,13 +519,102 @@
                     beginAtZero: true,
                     grid: { // 격자제거
                         // display: false,
-                    }
+                    },
                 },
-
             },
             indexAxis: 'y', // 그래프 축 변경
+            maintainAspectRatio: false,
         }
     });
+    // 나이대별 차트
+    for (let i = 3; i <= 7; i++) {
+        const ageChart = document.querySelector("#ageResult"+(i-2)).getContext('2d');
+
+        var type="doughnut";
+        var myChartAge = new Chart(ageChart, {
+            type: "pie", // 차트의 형태
+            data: { // 차트에 들어갈 데이터
+                labels: contentList,
+                datasets: [
+                    { //데이터
+                        label: '총 투표수', //차트 제목
+                        fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
+                        data: result[i],//x축 label에 대응되는 데이터 값
+                        rotation:270,
+                        datalabels:{
+                            display: function(context) {
+                                if (context.dataset.data[context.dataIndex] == 0){
+                                    return false
+                                }
+                            }, // 15이하 투표수의 경우 value표시를 오른쪽으로
+                        },
+                        backgroundColor: [
+                            //색상
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                        ],
+                        borderColor: [
+                            //경계선 색상
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+
+                        ],
+                        borderWidth: 0.25 //경계선 굵기
+                    } ,
+                ]
+            },
+        });
+    }
+    // 성별 차트
+    for (let i = 1; i <= 2; i++) {
+        const genderChart = document.querySelector("#genderResult"+(i)).getContext('2d');
+        var myChartGender = new Chart(genderChart, {
+            type: "pie", // 차트의 형태
+            data: { // 차트에 들어갈 데이터
+                labels: contentList,
+                datasets: [
+                    { //데이터
+                        fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
+                        data: result[i],//x축 label에 대응되는 데이터 값
+                        rotation:270,
+                        datalabels:{
+                            display: function(context) {
+                                if (context.dataset.data[context.dataIndex] == 0){
+                                    return false
+                                }
+                            }, // 15이하 투표수의 경우 value표시를 오른쪽으로
+                        },
+                        backgroundColor: [
+                            //색상
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                        ],
+                        borderColor: [
+                            //경계선 색상
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+
+                        ],
+                        borderWidth: 0.25 //경계선 굵기
+                    } ,
+                ]
+            },
+        });
+    }
+
+
 </script>
 </div>
 </html>
