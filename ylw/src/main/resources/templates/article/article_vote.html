@@ -114,12 +114,6 @@
     const recommend_elements = document.getElementsByClassName("recommend");
     Array.from(recommend_elements).forEach(function (element) {
         element.addEventListener('click', function () {
-            const author = [[ ${article.author.memberId}]];
-
-            if (author == [[ ${#authentication.getPrincipal().getUsername()}]]) {
-                alert("자신의 글에 추천할 수 없습니다");
-                return false;
-            }
 
             if (document.getElementById("isExist") != null && document.getElementById("isExist").innerText == "true") {
                 if (confirm("추천을 취소하시겠습니까?")) {
