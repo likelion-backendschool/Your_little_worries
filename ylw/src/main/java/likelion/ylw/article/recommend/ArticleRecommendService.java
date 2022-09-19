@@ -36,4 +36,10 @@ public class ArticleRecommendService {
     public Set<Article> getArticlesByMember(Member member) {
         return articleRecommendRepository.findByMember(member);
     }
+
+    public boolean existsByMemberAndArticle(Member member, Article article) {
+        boolean result = articleRecommendRepository.existsByMemberAndArticle(member, article);
+
+        return result;
+    }
 }

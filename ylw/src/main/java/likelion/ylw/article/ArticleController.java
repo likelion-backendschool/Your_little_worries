@@ -1,5 +1,6 @@
 package likelion.ylw.article;
 
+import likelion.ylw.article.recommend.ArticleRecommendService;
 import likelion.ylw.category.Category;
 import likelion.ylw.category.CategoryService;
 import likelion.ylw.comment.Comment;
@@ -15,19 +16,15 @@ import likelion.ylw.stats.StatsCollectionForm;
 import likelion.ylw.stats.StatsCollectionService;
 import likelion.ylw.stats.statsResult.StatsResult;
 import likelion.ylw.stats.statsResult.StatsResultService;
+import likelion.ylw.util.message.MessageDto;
 import likelion.ylw.util.requestservice.RequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -52,7 +49,10 @@ public class ArticleController {
     private final RequestService requestService;
     private final StatsResultService statsResultService;
 
-    private static int MINIMUN_VOTES = 30;
+    private final ArticleRecommendService articleRecommendService;
+
+    private static int MINIMUM_VOTES = 30;
+
     @GetMapping("/list")
     public String list(Model model, @RequestParam("category") Integer category_id) {
         Category category = categoryService.findById(category_id);
@@ -66,20 +66,29 @@ public class ArticleController {
 
 
     @GetMapping("/vote/{id}")
-    public String vote(Model model, @PathVariable("id") Integer id, StatsCollectionForm statsCollectionForm) {
+    public String vote(Model model, @PathVariable("id") Integer id, StatsCollectionForm statsCollectionForm,
+                       Principal principal) {
         Article article = articleService.findById(id);
+        if (principal != null) {
+            // 로그인 회원의 좋아요 목록
+            Member member = memberService.findByMemberId(principal.getName());
+            boolean exist = articleRecommendService.existsByMemberAndArticle(member, article);
+            model.addAttribute("exist", exist);
+        }
+
         List<ArticleItem> articleItems = articleItemService.findArticleItemByArticleId(id);
 
         model.addAttribute("article", article);
         model.addAttribute("articleItems", articleItems);
+        model.addAttribute("params", null);
 
         return "article/article_vote";
     }
 
     @PostMapping("/vote/{id}")
     public String vote(@Valid StatsCollectionForm statsCollectionForm, BindingResult bindingResult,
-                       @PathVariable("id") Integer id, Model model, @AuthenticationPrincipal User user,
-                       HttpServletRequest request, RedirectAttributes redirectAttr) {
+                       @PathVariable("id") Integer id, Model model, Principal principal,
+                       HttpServletRequest request, MessageDto params) {
 
         Article article = articleService.findById(id);
         List<ArticleItem> articleItems = articleItemService.findArticleItemByArticleId(id);
@@ -87,30 +96,37 @@ public class ArticleController {
         model.addAttribute("article", article);
         model.addAttribute("articleItems", articleItems);
 
-        if (bindingResult.hasErrors()) {
-
-            return "article/article_vote";
-        }
         // Client IP
         String clientIp = requestService.getClientIp(request);
 
-        if (user == null) {
+        if (principal == null) {
             // 비로그인의 경우
             List<StatsCollection> findByIPList = statsCollectionService.findByIP(clientIp);
-            int count = (int) findByIPList.stream().filter(statsCollection -> statsCollection.getArticleItem().getArticle().getId() == id).count();
+            int IPcount = (int)findByIPList.stream().filter(statsCollection -> statsCollection.getArticleItem().getArticle().getId() == id).count();
 
-            if (count != 0) {
+            if (IPcount != 0) {
+                String redirectUri = String.format("/article/vote/%d", id);
+                MessageDto message = new MessageDto("이미 투표하셨습니다.", redirectUri, RequestMethod.GET, null);
+                showMessageAndRedirect(message, model);
                 return "article/article_vote";
             }
         } else {
             // 로그인의 경우
-            Member member = memberService.findByMemberId(user.getUsername());
+            Member member = memberService.findByMemberId(principal.getName());
             List<StatsCollection> statsCollectionList = statsCollectionService.findByMember(member);
-            int count = (int)statsCollectionList.stream().filter(statsCollection -> statsCollection.getArticleItem().getArticle().getId() == id).count();
+            int memberCount = (int)statsCollectionList.stream().filter(statsCollection -> statsCollection.getArticleItem().getArticle().getId() == id).count();
 
-            if (count != 0) {
+            if (memberCount != 0) {
+                String redirectUri = String.format("/article/vote/%d", id);
+                MessageDto message = new MessageDto("이미 투표하셨습니다.", redirectUri, RequestMethod.GET, null);
+                showMessageAndRedirect(message, model);
                 return "article/article_vote";
             }
+
+            if (bindingResult.hasErrors()) {
+                return "article/article_vote";
+            }
+
             member.setParticipateCount(member.getParticipateCount()+1);
             memberRepository.save(member);
             memberService.evalParticipateScore(member);
@@ -120,22 +136,17 @@ public class ArticleController {
                 statsCollectionForm.getAge(), statsCollectionForm.getGender(), statsCollectionForm.getUserName(),
                 clientIp);
 
-        // 최소 투표수 체크
-        int total = articleItemService.getVoteTotal(article);
-        if (total < MINIMUN_VOTES) {
-            System.out.println("아직 투표수가 너무 적어요 XX표가 더 필요해요");
-            model.addAttribute("rejectResultPage", true );
-            redirectAttr.addFlashAttribute("message",
-                    "현재 투표수는 %d입니다. %d의 투표수가 모이면 결과를 볼 수 있습니다.".formatted(total,30-total));
-            return String.format("redirect:/article/vote/%d", id);
-        }
-
         // 투표 더 한 것을 db에 계산
         articleItemService.plusResult(statsCollectionForm.getArticleItemId(), statsCollectionForm.getAge(), statsCollectionForm.getGender());
 
         // 카이제곱검정 수행
         statsResultService.calculate(article);
         return String.format("redirect:/article/result/%d", id);
+    }
+
+    private void showMessageAndRedirect(MessageDto params, Model model) {
+        System.out.println("4");
+        model.addAttribute("params", params);
     }
 
     @RequestMapping("/categoryList")
@@ -217,22 +228,35 @@ public class ArticleController {
         return String.format("redirect:/article/vote/%d", article.getId());
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/recommend/{id}")
+    public String pushRecommendBtn(@PathVariable Integer id, Principal principal, MessageDto params, Model model) {
+        Member member = memberService.findByMemberId(principal.getName());
+        Article article = articleService.findById(id);
+
+        // 본인 글에 추천하는 경우
+        if (article.getAuthor() != null) {
+            if (article.getAuthor().getMemberId().equals(principal.getName())) {
+
+            }
+        }
+        articleRecommendService.pushVoteBtn(article, member);
+
+        return String.format("redirect:/article/vote/%d", id);
+    }
+
     /**
      * [임시] 투표 결과 페이지
      */
     @GetMapping("/result/{id}")
     public String resultArticle(Model model, @PathVariable("id") Integer id, CommentForm commentForm, NonMemberCommentForm nonMemberCommentForm,
-                                @RequestParam(value="page", defaultValue="0") int page, Principal principal, RedirectAttributes redirectAttr) {
+                                @RequestParam(value="page", defaultValue="0") int page, Principal principal) {
 
         Article article = articleService.findById(id);
         // 최소 투표수 체크
         int total = articleItemService.getVoteTotal(article);
-        if (total < MINIMUN_VOTES) {
-            System.out.println("아직 투표수가 너무 적어요 XX표가 더 필요해요");
+        if (total < MINIMUM_VOTES) {
             model.addAttribute("rejectResultPage", true );
-            redirectAttr.addFlashAttribute("message",
-                    "현재 투표수는 %d입니다. %d의 투표수가 모이면 결과를 볼 수 있습니다.".formatted(total,30-total));
-            return String.format("redirect:/article/vote/%d", id);
         }
 
         if (principal != null) {
@@ -259,5 +283,14 @@ public class ArticleController {
 
 
         return "article/article_result";
+    }
+
+    @GetMapping("/search")
+    public String search(Model model, @RequestParam(value = "kw", defaultValue = "") String kw) {
+        List<Article> articleList = articleService.getSearchList(kw);
+
+        model.addAttribute("articleList", articleList);
+
+        return "article/article_search_list";
     }
 }
