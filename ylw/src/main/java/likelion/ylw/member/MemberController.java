@@ -1,5 +1,7 @@
 package likelion.ylw.member;
 
+import likelion.ylw.article.Article;
+import likelion.ylw.article.ArticleService;
 import likelion.ylw.member.mail.MailForm;
 import likelion.ylw.member.mail.NotFoundEmailException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final ArticleService articleService;
     private final PasswordEncoder passwordEncoder;
 
     // 회원가입 폼 (memberId, 닉네임, 비밀번호, 프로필 이미지 입력)
@@ -83,9 +86,12 @@ public class MemberController {
     public String my_page(Principal principal, Model model) {
         List<Member> members = memberService.findAll();
         Member member = memberService.findByMemberId(principal.getName());
+        memberService.evalLevel(member);
         memberService.evalTotalScore(member);
+        List<Article> myArticles = articleService.findByAuthor(member);
         model.addAttribute("members", members);
         model.addAttribute("member",member);
+        model.addAttribute("myArticles", myArticles);
         return "member/member_myPage";
     }
 
@@ -176,6 +182,7 @@ public class MemberController {
         return "member/member_delete_complete";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/rank")
     public String search_rank(Principal principal, Model model) {
         String memberId = principal.getName();

@@ -73,6 +73,9 @@ public class ArticleService {
         return articleRepository.findTop8ByOrderByIdDesc();
     }
 
+    public List<Article> findByAuthor(Member member) {
+        return articleRepository.findByAuthor(member);
+    }
 
     public Article create(String title, String content, String author,Integer category_id) {
         Category category = categoryService.findById(category_id);
