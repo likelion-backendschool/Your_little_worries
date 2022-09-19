@@ -38,5 +38,54 @@
     </div>
 
     <a th:href="@{/article/create(category = ${category.id})}" ></a>
+    <script>
+        let isFetching = false;
+
+        const drawList = (DATA) => {
+            let listHtml = "";
+            DATA.forEach((item, index) => {
+                const { id, data1, data2, data3, data4, data5, data6, data7 } = item;
+                const TR_ELE = document.createElement('tr');
+                listHtml = `<td>${data1}</td>
+                    <td>${data2}</td>
+                    <td>${data3}</td>
+                    <td>${data4}</td>
+                    <td>${data5}</td>
+                    <td>${data6}</td>
+                    <td>${data7}</td>`;
+
+                if (index === DATA.length - 1) lastId = id; // 마지막건 ID 저장
+
+                TR_ELE.innerHtml = listHtml;
+                TABLE_ELE.appendChild(TR_ELE);
+            });
+            isFetching = false; // callback이 끝났으니 isFetching 리셋
+        };
+
+        const getList = () => {
+            isFetching = true; // 아직 callback이 끝나지 않았어요!
+            fetch(URL, {
+                method: "GET",
+                body: {
+                    lastId
+                }
+            })
+                .then((res) => res.json())
+                .then((resJson) => {
+                    drawList(resJson);
+                });
+        };
+
+        window.addEventListener("scroll", function () {
+            const SCROLLED_HEIGHT = window.scrollY;
+            const WINDOW_HEIGHT = window.innerHeight;
+            const DOC_TOTAL_HEIGHT = document.body.offsetHeight;
+            const IS_END = (WINDOW_HEIGHT + SCROLLED_HEIGHT > DOC_TOTAL_HEIGHT - 500);
+
+            if (IS_BOTTOM && !isFetching) { // isFetching이 false일 때 조건 추가
+                getList();
+            }
+        });
+    </script>
 </div>
 </html>
