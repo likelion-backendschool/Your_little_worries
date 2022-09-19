@@ -163,9 +163,10 @@
             </div>
         </div>
     </div>
+
     <!-- 나이에 대한 결과 end -->
     <!-- sns start-->
-    <div  class="ml-3">
+    <div class="ml-3">
             <button type="button" id="shareTw" class="link-icon twitter"></button>
             <button type="button" id="shareFb" class="link-icon facebook"></button>
             <button type="button" id="shareKt" class="link-icon kakao"></button>
@@ -614,34 +615,30 @@
         });
     }
 
-
 </script>
 </div>
 </html>
 
-<script>
+<script type="text/javascript" th:inline="javascript">
     const btnShareTw = document.querySelector('#shareTw');
 
+    const pageUrl = document.location.href;
     btnShareTw.addEventListener('click', () => {
-        const pageUrl = 'www.daum.net'; // 우리 도메인으로 변경해야 됨
         window.open(`https://twitter.com/intent/tweet?url=${pageUrl}`);
     })
     const btnShareFb = document.querySelector('#shareFb');
 
     btnShareFb.addEventListener('click', () => {
-        const pageUrl = 'www.daum.net'; // 우리 도메인으로 변경해야 됨
         window.open(`http://www.facebook.com/sharer/sharer.php?u=${pageUrl}`);
     })
-
-
     // 카카오 스토리 공유하기 -
-    Kakao.init('242f01a3af5936797443874ee2bff51c');
+    const KAKAO_TOKEN = [[${@environment.getProperty('kakao.api-key')}]];
+    Kakao.init(KAKAO_TOKEN);
     const btnShareKs = document.querySelector('#shareKs');
 
     btnShareKs.addEventListener('click', () => {
-        console.log("aa");
         Kakao.Story.share({
-            url: 'www.daum.net', // 우리 도메인으로 변경해야 됨
+            url: pageUrl, // 우리 도메인으로 변경해야 됨
             text: '카카오스토리로 공유 합니다.'
         });
     })
@@ -654,8 +651,8 @@
             description: '나의 자질구레한 고민들의 투표 결과입니다.',
             imageUrl: 'http://eomcheon.com/images/main.jpg',
             link: {
-                mobileWebUrl: 'http://eomcheon.com/index.php',
-                webUrl: 'http://eomcheon.com/index.php'
+                mobileWebUrl: pageUrl,
+                webUrl: pageUrl
             }
         },
     });
