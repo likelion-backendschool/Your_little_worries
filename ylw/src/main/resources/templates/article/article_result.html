@@ -30,7 +30,12 @@
                     <div class="mt-3 ml-3 ">[[${article.content}]]</div>
                 </div>
                 <div class="card-body pt-0 mt-2">
-                    <canvas th:id="totalResult" height="500px"></canvas>
+                    <div style="height: 500px" th:if="${#lists.size(articleItemList) <= 6}">
+                        <canvas th:id="totalResult" ></canvas>
+                    </div>
+                    <div style="height: 700px" th:if="${#lists.size(articleItemList) > 6}">
+                        <canvas th:id="totalResult" ></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,7 +57,7 @@
                     <div th:each="articleItem,stat : ${articleItemList}">
                         <div class="stats-small__data text-center border-bottom  rounded mb-2">
                             <span class="stats-small__label pb-1 text-uppercase" th:text="${(stat.index+1+'.')+articleItem.content}"></span>
-                            <h6 class="stats-small__value count" th:text="${articleItem.total}"></h6>
+                            <h4><span class=" count" th:text="${articleItem.total}"></span></h4>
                         </div>
                     </div>
                     <div>
@@ -414,21 +419,30 @@
     const ageOver50 = result[7];
 
     // chart에 넣기위한 항목 content 가져오기
+    let OriginContentList = new Array();
     let contentList = new Array();
+    let content = '';
     /*[# th:each="articleItem : ${articleItemList}"]*/
-    contentList.push(/*[[${articleItem.content}]]*/)
+    content = /*[[${articleItem.content}]]*/
+    OriginContentList.push(content)
+    if (content.length >= 15) {
+        contentList.push(content.substring(0,10)+"..");
+    } else {
+        contentList.push(content);
+    }
+
     /*[/]*/
 
     //성별 결과
     if ([[${statsResult.male}]]) {
-        const maleMaxContent = contentList[male.indexOf(Math.max(...male))]; // 최댓값 인덱스에 해당하는 항목
+        const maleMaxContent = OriginContentList[male.indexOf(Math.max(...male))]; // 최댓값 인덱스에 해당하는 항목
         const maleResultTag = document.querySelector('#maleResult');
         if (maleResultTag != null) {
             maleResultTag.innerHTML = maleMaxContent;
         }
     }
     if ([[${statsResult.female}]]) {
-        const femaleMaxContent = contentList[female.indexOf(Math.max(...female))];
+        const femaleMaxContent = OriginContentList[female.indexOf(Math.max(...female))];
         const femaleResultTag = document.querySelector('#femaleResult');
         if (femaleResultTag != null) {
             femaleResultTag.innerHTML = femaleMaxContent;
@@ -437,35 +451,35 @@
 
     // 나이대 별 결과
     if ([[${statsResult.age10}]]) {
-        const age10MaxContent = contentList[age10.indexOf(Math.max(...age10))];
+        const age10MaxContent = OriginContentList[age10.indexOf(Math.max(...age10))];
         const ageResultTag = document.querySelector('#age10Result');
         if (ageResultTag != null) {
             ageResultTag.innerHTML = age10MaxContent;
         }
     }
     if ([[${statsResult.age20}]]) {
-        const age20MaxContent = contentList[age20.indexOf(Math.max(...age20))];
+        const age20MaxContent = OriginContentList[age20.indexOf(Math.max(...age20))];
         const age20ResultTag = document.querySelector('#age20Result');
         if (age20ResultTag != null) {
             age20ResultTag.innerHTML = age20MaxContent;
         }
     }
     if ([[${statsResult.age30}]]) {
-        const age30MaxContent = contentList[age30.indexOf(Math.max(...age30))];
+        const age30MaxContent = OriginContentList[age30.indexOf(Math.max(...age30))];
         const age30ResultTag = document.querySelector('#age30Result');
         if (age30ResultTag != null) {
             age30ResultTag.innerHTML = age30MaxContent;
         }
     }
     if ([[${statsResult.age40}]]) {
-        const age40MaxContent = contentList[age40.indexOf(Math.max(...age40))];
+        const age40MaxContent = OriginContentList[age40.indexOf(Math.max(...age40))];
         const age40ResultTag = document.querySelector('#age40Result');
         if (age40ResultTag != null) {
             age40ResultTag.innerHTML = age40MaxContent;
         }
     }
     if ([[${statsResult.ageOver50}]]) {
-        const ageOver50MaxContent = contentList[ageOver50.indexOf(Math.max(...ageOver50))];
+        const ageOver50MaxContent = OriginContentList[ageOver50.indexOf(Math.max(...ageOver50))];
         const ageOver50ResultTag = document.querySelector('#ageOver50Result');
         if (ageOver50ResultTag != null) {
             ageOver50ResultTag.innerHTML = ageOver50MaxContent;
@@ -506,14 +520,21 @@
                     'rgba(153, 102, 255, 1)',
                 ],
                 borderWidth: 0.25, //경계선 굵기
+                maxBarThickness:40,
             }]
         },
         options: {
             plugins:{
-                // label 숨기기
-                legend: {
+                legend: { // label 숨기기
                     display: false
                 },
+                tooltip: {  // hover시 툴팁 글자
+                    callbacks: {
+                        title: function(context) {
+                            return OriginContentList[context[0].dataIndex];
+                        }
+                    }
+                }
             },
             scales: {
                 y: {
@@ -570,6 +591,17 @@
                     } ,
                 ]
             },
+            options: {
+                plugins:{
+                    tooltip: {
+                        callbacks: {
+                            title: function(context) {
+                                return OriginContentList[context[0].dataIndex];
+                            }
+                        }
+                    }
+                },
+            }
         });
     }
     // 성별 차트
@@ -612,6 +644,17 @@
                     } ,
                 ]
             },
+            options: {
+                plugins:{
+                    tooltip: {
+                        callbacks: {
+                            title: function(context) {
+                                return OriginContentList[context[0].dataIndex];
+                            }
+                        }
+                    }
+                },
+            }
         });
     }
 
