@@ -2,6 +2,7 @@ package likelion.ylw.article;
 
 import likelion.ylw.category.Category;
 import likelion.ylw.category.CategoryService;
+import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberRepository;
 import likelion.ylw.member.MemberService;
 import likelion.ylw.util.DataNotFoundException;
@@ -60,6 +61,9 @@ public class ArticleService {
         return articleRepository.findTop8ByOrderByIdDesc();
     }
 
+    public List<Article> findByAuthor(Member member) {
+        return articleRepository.findByAuthor(member);
+    }
 
     public Article create(String title, String content, String author,Integer category_id) {
         Category category = categoryService.findById(category_id);
@@ -102,4 +106,5 @@ public class ArticleService {
 
         articleRepository.save(article);
     }
+
 }

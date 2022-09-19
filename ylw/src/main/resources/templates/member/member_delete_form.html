@@ -4,6 +4,9 @@
         layout:decorate="~{layout}"
 >
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+          integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -20,6 +23,9 @@
                         class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                         th:field="*{password}"
                 />
+            </div>
+            <div class="con mr-2 font-bold">
+                <a th:href="@{|/member/edit/profile|}"><i class="fa-solid fa-arrow-left fa-2x mr-2 pt-3"></i>이전 페이지로</a>
             </div>
             <div class="text-center">
                 <button type="submit"

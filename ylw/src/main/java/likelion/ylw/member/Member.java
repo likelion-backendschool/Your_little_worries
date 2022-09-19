@@ -64,6 +64,10 @@ public class Member extends BaseTimeEntity {
     @ColumnDefault("0")
     private Integer currentRank;
 
+    @Column
+    @ColumnDefault("1")
+    private Integer currentLevel;
+
     private String memberImgPath;
 //    private LocalDateTime createdDate;
 

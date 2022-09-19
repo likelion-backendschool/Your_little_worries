@@ -4,11 +4,10 @@
         layout:decorate="~{layout}"
 >
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
     .included {
-    position: relative;
+      position: relative;
     }
 
     .picture {
@@ -82,30 +81,54 @@
         display: none;
     }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+          integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js%22%3E"></script>
 <div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <div class="container mx-auto w-[1100px] p-10 my-10 flex flex-col bg-white rounded-2xl shadow-lg">
-        <div class="mt-0 mb-2 text-center text-4xl font-bold my-5">랭킹 조회</div>
-        <div class="included">
-            <table class="table table-hover text-center">
-                <thead>
-                <tr>
-                    <th scope="col">순위</th>
-                    <th scope="col" class="text-start">유저 프로필</th>
-                    <th scope="col">닉네임</th>
-                    <th scope="col">점수</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr class="p-3"th:each="orderedMember, loop : ${orderedMembers}">
+
+    <div class="page-header row no-gutters py-4">
+        <div class="col-12 col-sm-4 text-center text-sm-left mb-4 mb-sm-0">
+            <span class="text-uppercase page-subtitle">전체 랭킹 현황</span>
+            <h3 class="page-title">랭킹 조회</h3>
+        </div>
+    </div>
+    <div class="w-[100%] card card-small card-post mb-4 p-3 py-1 flex rounded-2xl shadow-md">
+        <div class="w-[100%] bg-gray-100 flex flex-col my-3 p-5 mb-1 rounded shadow-sm">
+            <div class="flex flex-col text-center mx-2 p-2 div">
+                <div>
+                    <i class="fa-solid fa-ranking-star"></i>
+                    <span class="font-bold" th:text="|${member.getNickname()}|"></span>님의 현재 랭킹은 <span
+                        class="font-bold" th:text="|${member.getCurrentRank()}위|"></span> 입니다.</span>
+                    <span class="font-bold" th:text="|(총점: ${member.getScore()})|"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-[100%] card card-small card-post mb-4 flex rounded-2xl shadow-md">
+        <div class="card-body">
+            <div class="flex flex-col my-auto items-center pt-1 mr-1">
+                <table class="table table-hover text-center">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">순위</th>
+                        <th scope="col" class="text-start">멤버 프로필</th>
+                        <th scope="col">닉네임</th>
+                        <th scope="col">총점</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--                                <tr class="card card-small card-post mb-4 flex rounded-2xl shadow-md w-[100%] flex-row">-->
+                    <tr class="p-3" th:each="orderedMember, loop : ${orderedMembers}">
                         <th scope="row" th:text="${orderedMember.currentRank}"></th>
                         <td class="profile w-full">
                             <div class="flex justify-between">
                                 <img class="picture" th:if="${member.memberImgPath}"
                                      th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
-                                <img class="picture" th:unless="${member.memberImgPath}" th:src="@{/gen/member.png}"/>
+                                <img class="picture" th:unless="${member.memberImgPath}"
+                                     th:src="@{/gen/member.png}"/>
 
                                 <button type="button"
                                         class="profile-btn btn btn-primary bg-blue-600 hover:bg-blue-700 mb-2">
@@ -115,17 +138,17 @@
                             <div class="profile-info active">
                                 <div class="card p-3">
                                     <div class="d-flex align-items-center">
-                                        <div class="m-1 w-100"><h4 class="mb-0 mt-0">Halo님의 프로필</h4>
+                                        <div class="m-1 w-100"><h4 class="mb-0 mt-0">Halo님의 활동현황</h4>
                                             <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
                                                 <div class="d-flex flex-column">
-                                                    <span class="articles">투표지</span>
-                                                    <span class="number1">24</span></div>
+                                                    <span class="totalArticle">등록투표지</span>
+                                                    <span class="numOne" th:text="${orderedMember.enrollCount}"></span></div>
                                                 <div class="d-flex flex-column">
-                                                    <span class="followers">총점수</span>
-                                                    <span class="number2">850</span></div>
+                                                    <span class="totalScore">총점수</span>
+                                                    <span class="numTwo" th:text="${orderedMember.score}"></span></div>
                                                 <div class="d-flex flex-column">
-                                                    <span class="rating">레밸</span>
-                                                    <span class="number3">8</span>
+                                                    <span class="level">레밸</span>
+                                                    <span class="numThree">8</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -133,11 +156,14 @@
                                 </div>
                             </div>
                         </td>
-                        <td th:text="${orderedMember.memberId}"></td>
-                        <td th:text="${orderedMember.score}"></td>
+                        <div class="mx-10">
+                            <td th:text="${orderedMember.nickname}"></td>
+                            <td th:text="${orderedMember.score}"></td>
+                        </div>
                     </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -145,7 +171,6 @@
 
 
 <script>
-
 $(".profile .profile-btn").mouseover((e) => {
     console.log("yes");
     var $target = $(e.target);
@@ -157,5 +182,4 @@ $(".profile .profile-btn").mouseleave((e) => {
     var $target = $(e.target);
     $target.parent().next().addClass("active");
 })
-
 </script>

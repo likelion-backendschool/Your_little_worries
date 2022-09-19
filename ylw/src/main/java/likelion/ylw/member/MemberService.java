@@ -67,17 +67,17 @@ public class MemberService {
 
     public void update(MemberUpdateForm memberUpdateForm, Member m, MultipartFile memberImg) {
         Optional<Member> om = memberRepository.findByMemberId(m.getMemberId());
-        profileImgRelPath = "member/" + UUID.randomUUID().toString()+".png";
+        profileImgRelPath = "member/" + UUID.randomUUID().toString() + ".png";
         profileImgFile = new File(genFileDirPath + "/" + profileImgRelPath);
 
         if (om.isPresent()) {
             Member member = om.get();
             Optional<String> op = Optional.ofNullable(memberUpdateForm.getPassword1());
 
-            if(op.isPresent()) {
+            if (op.isPresent()) {
                 member.setPassword(passwordEncoder.encode(memberUpdateForm.getPassword1()));
             }
-            if(!memberUpdateForm.getNickname().equals("")) {
+            if (!memberUpdateForm.getNickname().equals("")) {
                 member.setNickname(memberUpdateForm.getNickname());
             }
             System.out.println("--------------------------");
@@ -93,7 +93,7 @@ public class MemberService {
 
     public void delete(MemberDeleteForm memberDeleteForm, String memberId) {
         Optional<Member> om = memberRepository.findByMemberId(memberId);
-        if(om.isPresent()) {
+        if (om.isPresent()) {
             Member member = om.get();
 
             if (passwordEncoder.matches(memberDeleteForm.getPassword(), member.getPassword())) {
@@ -144,10 +144,10 @@ public class MemberService {
 
     // 인기투표지 선정
     public void evalPopularVoteScore(Member member) {
-            int count = member.getPopularVoteCount();
-            int baseScore = 1000;
-            member.setPopularVoteScore(count * baseScore);
-            memberRepository.save(member);
+        int count = member.getPopularVoteCount();
+        int baseScore = 1000;
+        member.setPopularVoteScore(count * baseScore);
+        memberRepository.save(member);
     }
 
     // 총점
@@ -164,9 +164,29 @@ public class MemberService {
     public void evalRank() {
         int i = 1;
         List<Member> orderedMembers = memberRepository.findAllByOrderByScoreDesc();
-        for(Member orderedMember : orderedMembers) {
+        for (Member orderedMember : orderedMembers) {
             orderedMember.setCurrentRank(i);
             i++;
         }
+    }
+
+    public void evalLevel(Member member) {
+        int score = member.getScore();
+        if (score > 20000) {
+            member.setCurrentLevel(7);
+        } else if (score >= 12000) {
+            member.setCurrentLevel(6);
+        } else if (score >= 7000) {
+            member.setCurrentLevel(5);
+        } else if (score >= 3000) {
+            member.setCurrentLevel(4);
+        } else if (score >= 1000) {
+            member.setCurrentLevel(3);
+        } else if (score >= 500) {
+            member.setCurrentLevel(2);
+        } else {
+            member.setCurrentLevel(1);
+        }
+        memberRepository.save(member);
     }
 }
