@@ -2,9 +2,11 @@ package likelion.ylw.comment;
 
 import likelion.ylw.article.Article;
 import likelion.ylw.article.ArticleService;
+import likelion.ylw.comment.report.CommentReportService;
 import likelion.ylw.comment.vote.CommentVoteService;
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
+import likelion.ylw.util.message.MessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,7 @@ public class CommentController {
     private final ArticleService articleService;
     private final MemberService memberService;
     private final CommentVoteService commentVoteService;
+    private final CommentReportService commentReportService;
 
     /**
      * 회원 댓글 생성하기
@@ -187,6 +190,26 @@ public class CommentController {
             }
         }
         commentVoteService.pushVoteBtn(comment, member);
+        result.put("result","success");
+        return result;
+    }
+
+    /**
+     * 댓글 신고하기
+     */
+    @PreAuthorize("isAuthenticated()")
+    @ResponseBody
+    @GetMapping("/report/{id}")
+    public Map<String, String> pushRecommendBtn(@PathVariable Integer id, Principal principal, Model model) {
+        Map<String,String> result = new HashMap<>();
+        Member member = this.memberService.findByMemberId(principal.getName());
+        Comment comment = this.commentService.getComment(id);
+
+        boolean isAlreadyReported = commentReportService.pushReportBtn(comment, member);
+        if(isAlreadyReported) {
+            result.put("result","failure");
+            return result;
+        }
         result.put("result","success");
         return result;
     }

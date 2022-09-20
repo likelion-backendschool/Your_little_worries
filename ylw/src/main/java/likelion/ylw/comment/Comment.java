@@ -1,6 +1,7 @@
 package likelion.ylw.comment;
 
 import likelion.ylw.article.Article;
+import likelion.ylw.comment.report.CommentReport;
 import likelion.ylw.comment.vote.CommentVote;
 import likelion.ylw.member.Member;
 import likelion.ylw.util.BaseTimeEntity;
@@ -39,6 +40,9 @@ public class Comment extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     Set<CommentVote> votes = new HashSet<>();
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    Set<CommentReport> reports = new HashSet<>();
 
     @ColumnDefault("false")
     private boolean isBlind;
