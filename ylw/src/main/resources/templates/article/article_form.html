@@ -4,76 +4,125 @@
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         layout:decorate="~{layout}">
 
-<div layout:fragment="content" class="main-content-container container-fluid px-4">
+<div layout:fragment="content" class="main-content-container container-fluid px-4 mb-3">
+
     <div class="page-header row no-gutters py-4 mb-4">
         <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
             <span class="text-uppercase page-subtitle">나만의 투표를 등록!</span>
             <h3 class="page-title">투표등록</h3>
         </div>
     </div>
+
     <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md" style="max-width: 80rem;">
+    </div>
+
+    <div class="container-fluid" style="max-width: 70rem;">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item p-3">
-                <div class="row">
-                    <div class="col">
-                        <form th:object="${articleForm}" method="post" onsubmit="return checkForms()">
-                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                            <input type="hidden" name="author" th:value="${#authentication.name}"/>
+            <!--        <li class="list-group-item p-3">-->
+            <div class="row">
+                <div class="col">
 
-                            <div class="form-row">
-                                <div class="form-group col-md-9">
-                                    <label for="subject" class="form-label">제목</label>
-                                    <input id="titleForm" th:if="${modifyToken}==1" type="text" th:field="*{title}" class="form-control" readonly/>
-                                    <input id="titleForm" th:unless="${modifyToken}==1" type="text" th:field="*{title}" class="form-control"/>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="category" class="form-label">카테고리</label>
-                                    <select id="categoryForm" class="form-control" th:name="category_id">
-                                        <option th:text="|==카테고리 선택==|" th:selected="${category_id}==0"></option>
-                                        <option th:each="category : ${categoryList}" th:value="${category.id}" th:text="${category.name}"
-                                                id="categorySelected" th:selected="${category.id} == ${category_id}"></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="content" class="form-label">상세 설명</label>
-                                <textarea id="contentForm" th:field="*{content}" class="form-control" rows="5"></textarea>
-                            </div>
+                    <form th:object="${articleForm}" method="post" onsubmit="return checkForms()">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="hidden" name="author" th:value="${#authentication.name}"/>
 
-                            <div th:if="${modifyToken}!=1" class="form-group">
-                                <label class="form-label">항목</label>
-                                <div id="append_column" class="btn btn-outline-info float-right">
-                                    <i class="material-icons">add</i>
+                        <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
+                            <div class="card-body">
+                                <div class="flex flex-col my-auto items-center pt-1 mr-1">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-9">
+                                            <label for="subject" class="form-label">제목</label>
+                                            <input id="titleForm" th:if="${modifyToken}==1" type="text"
+                                                   th:field="*{title}" class="form-control" readonly/>
+                                            <input id="titleForm" th:unless="${modifyToken}==1" type="text"
+                                                   th:field="*{title}" class="form-control"/>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label for="category" class="form-label">카테고리</label>
+                                            <select id="categoryForm" class="form-control text-center" th:name="category_id">
+                                                <option th:text="|==카테고리 선택==|"
+                                                        th:selected="${category_id}==0"></option>
+                                                <option th:each="category : ${categoryList}"
+                                                        th:value="${category.id}" th:text="${category.name}"
+                                                        id="categorySelected"
+                                                        th:selected="${category.id} == ${category_id}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div th:if="${modifyToken}!=1" id="itemContainer">
-                                <div class="input-group mb-3">
-                                    <input class="items form-control" type="text" name="items[]"  placeholder="내용을 입력해주세요"/>
-                                </div>
-                                <div class="input-group mb-3">
-                                    <input class="items form-control" type="text" name="items[]"  placeholder="내용을 입력해주세요"/>
+                        <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
+                            <div class="card-body">
+                                <div class="flex flex-col my-auto items-center pt-1 mr-1">
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <div class="form-group">
+                                                <label for="content" class="form-label mb-3">상세 설명</label>
+                                                <textarea id="contentForm" th:field="*{content}"
+                                                          style="width: 60rem;"
+                                                          class="form-control container-fluid" rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <input type="submit" value="등록하기" class="btn btn-primary my-2 float-right">
+                        </div>
+
+                        <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
+                            <div class="card-body">
+                                <div class="flex flex-col my-auto items-center pt-1 mr-1">
+                                    <div class="form-row">
+                                        <div class="form-group col">
+                                            <div th:if="${modifyToken}!=1" id="itemContainer">
+                                                <div class="mb-3">
+                                                    <label class="form-label">항목</label>
+                                                    <div id="append_column" class="btn btn-outline-info float-right">
+                                                        <i class="material-icons">add</i>
+                                                    </div>
+                                                </div>
+
+                                                <div class="container-fluid" style="width: 60rem;">
+                                                    <div class="input-group mb-3">
+                                                        <input class="items form-control" type="text" name="items[]" maxlength="30"
+                                                               placeholder="내용을 입력해주세요"/>
+                                                    </div>
+                                                    <div class="input-group mb-3">
+                                                        <input class="items form-control" type="text" name="items[]" maxlength="30"
+                                                               placeholder="내용을 입력해주세요"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+
+                        <div>
+                            <input type="submit" value="등록하기" class="btn btn-primary my-2 float-right">
+                        </div>
+
+                    </form>
+
                 </div>
-            </li>
+            </div>
+            <!--        </li>-->
         </ul>
     </div>
+
 </div>
 <script layout:fragment="script" type='text/javascript'>
     $("#append_column").on("click", function () {
-        if (document.querySelectorAll(".items").length > 4) {
-            alert("투표항목의 최대 개수는 5개입니다.")
+        if (document.querySelectorAll(".items").length > 9) {
+            alert("투표항목의 최대 개수는 10개입니다.")
             return false;
         }
 
-        const column = `<div class="input-group mb-3">
-                <input class="items form-control" type="text" name="items[]"  placeholder="내용을 입력해주세요"/>
+        const column = `<div class="input-group mb-3 container-fluid" style="width: 60rem;">
+                <input class="items form-control" type="text" name="items[]" maxlength="30" placeholder="내용을 입력해주세요"/>
                 <div id="delete" class="btn btn-outline-danger float-right ml-1" onclick="deleteColumnForm(this)">
                     <i class="material-icons">remove</i>
                 </div>
@@ -116,7 +165,7 @@
 
         for (const i = 0; i < itemValues.length; i++) {
             if (itemValues[i].value.trim() == "") {
-                alert((i+1) + "번 항목내용을 입력해주세요");
+                alert((i + 1) + "번 항목내용을 입력해주세요");
                 itemValues[i].focus();
                 return false;
             }

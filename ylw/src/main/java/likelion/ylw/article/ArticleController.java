@@ -96,6 +96,10 @@ public class ArticleController {
         model.addAttribute("article", article);
         model.addAttribute("articleItems", articleItems);
 
+        if (bindingResult.hasErrors()) {
+            return "article/article_vote";
+        }
+
         // Client IP
         String clientIp = requestService.getClientIp(request);
 
@@ -123,10 +127,6 @@ public class ArticleController {
                 return "article/article_vote";
             }
 
-            if (bindingResult.hasErrors()) {
-                return "article/article_vote";
-            }
-
             member.setParticipateCount(member.getParticipateCount()+1);
             memberRepository.save(member);
             memberService.evalParticipateScore(member);
@@ -145,7 +145,6 @@ public class ArticleController {
     }
 
     private void showMessageAndRedirect(MessageDto params, Model model) {
-        System.out.println("4");
         model.addAttribute("params", params);
     }
 
