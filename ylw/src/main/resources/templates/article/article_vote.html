@@ -3,6 +3,7 @@
         xmlns:th="http://thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         layout:decorate="~{layout}">
+
 <div layout:fragment="content" class="main-content-container container px-4 my-3">
     <div class="card card-small mb-3">
         <div class="card-body">
@@ -20,7 +21,7 @@
                 <input type="hidden" name="userName" sec:authorize="isAnonymous()"
                        th:value="|anonymous|">
 
-                <input id="ageForm" th:field="*{age}" class="form-control" type="number" placeholder="나이를 입력해주세요"/>
+                <input id="ageForm" th:field="*{age}" class="form-control" min="1" type="number" placeholder="나이를 입력해주세요"/>
 
                 <div class="input-group my-2">
                     <div class="input-group-prepend">
@@ -142,38 +143,38 @@
     }
 
     // 공백 체크
-    function checkForms() {
-        const ageForm = document.getElementById("ageForm").value;
-        if (ageForm.trim() == "") {
-            alert("나이을 입력해 주세요");
-            document.getElementById("ageForm").focus();
-            return false;
-        }
-
-        const genderForms = document.querySelectorAll('input[name="gender"]');
-        const genderValue = radioChecked(genderForms);
-        if (genderValue == null) {
-            alert("성별을 입력해 주세요");
-            return false;
-        }
-
-        const articleItemForms = document.querySelectorAll('input[name="articleItem"]');
-        const articleItemValue = radioChecked(articleItemForms);
-        if (articleItemValue == null) {
-            alert("항목을 선택해 주세요");
-            return false;
-        }
-
-    }
-
-    function radioChecked(radioForms) {
-        for (let i = 0; i < radioForms.length; i++) {
-            if (radioForms[i].checked) {
-                return radioForms[i].value;
-            }
-        }
-        return null;
-    }
+    // function checkForms() {
+    //     const ageForm = document.getElementById("ageForm").value;
+    //     if (ageForm.trim() == "") {
+    //         alert("나이을 입력해 주세요");
+    //         document.getElementById("ageForm").focus();
+    //         return false;
+    //     }
+    //
+    //     const genderForms = document.querySelectorAll('input[name="gender"]');
+    //     const genderValue = radioChecked(genderForms);
+    //     if (genderValue == null) {
+    //         alert("성별을 입력해 주세요");
+    //         return false;
+    //     }
+    //
+    //     const articleItemForms = document.querySelectorAll('input[name="articleItem"]');
+    //     const articleItemValue = radioChecked(articleItemForms);
+    //     if (articleItemValue == null) {
+    //         alert("항목을 선택해 주세요");
+    //         return false;
+    //     }
+    //
+    // }
+    //
+    // function radioChecked(radioForms) {
+    //     for (let i = 0; i < radioForms.length; i++) {
+    //         if (radioForms[i].checked) {
+    //             return radioForms[i].value;
+    //         }
+    //     }
+    //     return null;
+    // }
 
     $(document).ready(function () {
         if (document.getElementById("redirectForm") != null) { // 존재할 때
