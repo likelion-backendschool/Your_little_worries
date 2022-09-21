@@ -185,8 +185,9 @@ a {
                     </div>
                     <div class="text-center">
                         <form th:action="@{|/member/myPage|}" method="post" enctype="multipart/form-data" class="flex items-center justify-center mt-3">
-                            <div><input type="file" name="memberImg" accept="image/png, image/gif, image/jpeg" /></div>
-                            <button id="btn-img" type="submit" onclick="ImgUpdate()" class="text-center w-[80px] rounded-md bg-blue-600 text-white text-md hover:shadow hover:bg-black mt-3 pt-1">업로드</button>
+                            <div class="w-[290px] pt-3">
+                                <input type="file" name="memberImg" accept="image/png, image/gif, image/jpeg" /></div>
+                            <button id="btn-img" type="submit" onclick="ImgUpdate()" class="text-center w-[80px] rounded-md bg-[#14C38E] text-white text-md hover:shadow hover:bg-black mt-3 pt-1">업로드</button>
                         </form>
                     </div>
                 </div>
@@ -231,7 +232,7 @@ a {
                         </li>
                     </ul>
                     <div class="grid place-items-center">
-                        <a th:href="@{/member/edit/profile}" class="text-center w-[180px] h-9 rounded-md bg-blue-600 text-white text-md hover:shadow hover:bg-black mt-6 pt-1.5">수정하기</a>
+                        <a th:href="@{/member/edit/profile}" class="text-center w-[180px] h-9 rounded-md bg-[#14C38E] text-white text-md hover:shadow hover:bg-black mt-6 pt-2">수정하기</a>
                     </div>
                 </div>
             </div>

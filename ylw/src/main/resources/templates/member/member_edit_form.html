@@ -3,6 +3,9 @@
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+          integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .input-readOnly {
@@ -21,16 +24,13 @@
         #btn-nickname {
             cursor: pointer;
         }
-
-
     </style>
 </head>
 
 <div layout:fragment="content" class="main-content-container container px-4 rounded-2xl">
-    <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white shadow-lg rounded-2xl">
+    <div class="container mx-auto w-[700px] p-10 mt-10 mb-5 flex flex-col bg-white shadow-lg rounded-2xl">
 
         <div class="my-3 border-bottom">
-
             <div>
                 <div class="text-center text-2xl font-semibold mt-1 mb-2 pb-5">회원 정보 수정</div>
             </div>
@@ -46,14 +46,13 @@
                 <input type="text" th:value="${member.memberId}" class="form-control" th:readonly="readonly">
             </div>
 
-
             <div class="mb-3">
                 <label class="form-label">닉네임</label>
                 <div class="flex gap-1 h-[35px]">
                     <input type="text" th:value="${member.nickname}" class="form-control" th:readonly="readonly">
                     <input id="modify-nickname" type="text" th:field="*{nickname}" class="input-none form-control">
                     <div id="btn-nickname"
-                         class="text-center w-[50px] flex-none pt-1.5 rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black">
+                         class="text-center w-[50px] flex-none pt-1.5 rounded-md bg-emerald-700 text-white text-md hover:shadow hover:bg-black">
                         변경
                     </div>
                 </div>
@@ -64,7 +63,7 @@
                 <div class="flex gap-1">
                     <input id="modify-pw" type="password" th:field="*{password1}" class="input-readOnly form-control"/>
                     <div id="btn-pw"
-                         class="text-center w-[50px] flex-none rounded-md bg-blue-900 text-white text-md hover:shadow hover:bg-black pt-1.5">
+                         class="text-center w-[50px] flex-none rounded-md bg-emerald-700 text-white text-md hover:shadow hover:bg-black pt-1.5">
                         변경
                     </div>
                 </div>
@@ -80,13 +79,19 @@
             </div>
             <div class="text-center">
                 <button type="submit"
-                        class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
+                        class="mt-4 rounded-md p-3 w-[300px] text-white text-sm justify-center bg-[#14C38E] hover:bg-emerald-500 hover:shadow-lg">
                     저장하기
                 </button>
             </div>
             <div class="flex items-center justify-between pb-6 pt-[20px] flex">
-                <a class="flex pt-5 text-gray-400 text-center hover:text-gray-600 focus:text-gray-700 transition duration-200 ease-in-out inline-block"
+                <a class="flex pt-3 text-gray-400 text-center ml-auto hover:text-gray-600 focus:text-gray-700 transition duration-200 ease-in-out inline-block"
                    th:href="@{/member/delete}">회원 탈퇴 하기</a>
+            </div>
+            <div class="mb-3 flex mt-5 mr-2">
+                <a th:href="@{|/member/myPage|}">
+                    <i class="fa-solid fa-arrow-left-long pt-3"></i>
+                    <span class="mb-0">이전 페이지로</span>
+                </a>
             </div>
         </form>
     </div>

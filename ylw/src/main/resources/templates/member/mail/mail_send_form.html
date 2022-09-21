@@ -4,6 +4,9 @@
         layout:decorate="~{layout}"
 >
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+          integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -17,7 +20,7 @@
                     이메일을 형식에 맞게 작성해주세요.
                 </div>
             </div>
-            <div class="text-center text-xl text-2xl font-semibold mt-1 mb-12 pb-1">이메일 발송</div>
+            <div class="text-center text-xl text-2xl font-semibold mt-1 mb-12 pb-1">비밀번호 찾기</div>
             <div th:replace="form_errors :: formErrorsFragment"></div>
             <div class="mb-3">
                 <label class="form-label">가입 시 등록하신 이메일 주소를 입력해 주세요.</label>
@@ -29,9 +32,15 @@
             </div>
             <div class="text-center">
                 <button id="btn-popup" type="submit" onclick="delBtn()"
-                        class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
-                    발송하기
+                        class="mt-4 rounded-md p-3 w-[300px] bg-[#14C38E] hover:bg-emerald-500 text-white text-sm justify-center hover:shadow-lg">
+                    입력완료
                 </button>
+            </div>
+            <div class="mb-3 flex mt-5 mr-2">
+                <a th:href="@{|/member/login|}">
+                    <i class="fa-solid fa-arrow-left-long pt-3"></i>
+                    <span class="mb-0">이전 페이지로</span>
+                </a>
             </div>
         </form>
     </div>
