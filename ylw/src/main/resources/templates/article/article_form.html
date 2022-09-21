@@ -6,16 +6,16 @@
 
 <div layout:fragment="content" class="main-content-container container px-4">
 
-    <div class="page-header row no-gutters py-4 mb-4">
+    <div class="page-header row no-gutters py-2 mb-2 mt-2">
         <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
             <span class="text-uppercase page-subtitle">나만의 투표를 등록!</span>
             <h3 class="page-title">투표등록</h3>
         </div>
     </div>
 
+
     <div class="container-fluid" style="max-width: 70rem;">
         <ul class="list-group list-group-flush">
-            <!--        <li class="list-group-item p-3">-->
             <div class="row">
                 <div class="col">
 
@@ -26,9 +26,9 @@
                         <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
                             <div class="card-body">
                                 <div class="flex flex-col my-auto items-center pt-1 mr-1">
-                                    <div class="form-row container-fluid d-flex justify-content-center">
-                                        <div class="form-group col-md-8">
-                                            <label for="subject" class="form-label">제목</label>
+                                    <div class="form-row container-fluid mx-auto" style="max-width: 60rem;">
+                                        <div class="form-group col-md-9">
+                                            <label for="subject" class="form-label mb-3">제목</label>
                                             <input id="titleForm" th:if="${modifyToken}==1" type="text"
                                                    placeholder="제목을 입력해주세요."
                                                    th:field="*{title}" class="form-control" readonly/>
@@ -37,8 +37,9 @@
                                                    th:field="*{title}" class="form-control"/>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label for="category" class="form-label">카테고리</label>
-                                            <select id="categoryForm" class="form-control text-center" th:name="category_id">
+                                            <label for="category" class="form-label mb-3">카테고리</label>
+                                            <select id="categoryForm" class="form-control text-center"
+                                                    th:name="category_id">
                                                 <option th:text="|==카테고리 선택==|"
                                                         th:selected="${category_id}==0"></option>
                                                 <option th:each="category : ${categoryList}"
@@ -48,69 +49,47 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
-                            <div class="card-body">
-                                <div class="flex flex-col my-auto items-center pt-1 mr-1">
-                                    <div class="form-row">
-                                        <div class="form-group col">
-                                            <div class="form-group">
-                                                <label for="content" class="form-label mb-3">고민 내용</label>
-                                                <textarea id="contentForm" th:field="*{content}"
-                                                          placeholder="고민 내용을 입력해주세요."
-                                                          style="
-                                                          max-width: 58rem;"
-                                                          class="form-control container-fluid" rows="5"></textarea>
+                                    <div class="form-group col mt-3 mb-3">
+                                        <label for="content" class="form-label mb-3 ml-4">고민 내용</label>
+                                        <textarea id="contentForm" th:field="*{content}"
+                                                  placeholder="고민 내용을 입력해주세요."
+                                                  style="max-width: 58rem;"
+                                                  class="form-control container-fluid" rows="5"></textarea>
+                                    </div>
+
+                                    <div class="form-group col my-5">
+                                        <div th:if="${modifyToken}!=1" id="itemContainer">
+                                            <div class="form-group container-fluid">
+                                                <label class="form-label ml-2 ">선택지</label>
+                                                <div id="append_column" class="btn btn-outline-info float-right mr-2">
+                                                    <i class="material-icons">add</i>
+                                                </div>
                                             </div>
+
+                                            <div class="container-fluid" style="max-width: 60rem;">
+                                                <div class="input-group mb-3">
+                                                    <input class="items form-control" type="text" name="items[]"
+                                                           maxlength="30"
+                                                           placeholder="내용을 입력해주세요"/>
+                                                </div>
+                                                <div class="input-group mb-3">
+                                                    <input class="items form-control" type="text" name="items[]"
+                                                           maxlength="30"
+                                                           placeholder="내용을 입력해주세요"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="container-fluid" style="max-width: 60rem;">
+                                            <input type="submit" value="등록하기" class="btn btn-primary mb-4 float-right">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
-                            <div class="card-body">
-                                <div class="flex flex-col my-auto items-center pt-1 mr-1">
-                                    <div class="form-row">
-                                        <div class="form-group col">
-                                            <div th:if="${modifyToken}!=1" id="itemContainer">
-                                                <div class="mb-3">
-                                                    <label class="form-label">선택지</label>
-                                                    <div id="append_column" class="btn btn-outline-info float-right">
-                                                        <i class="material-icons">add</i>
-                                                    </div>
-                                                </div>
-
-                                                <div class="container-fluid" style="max-width: 60rem;">
-                                                    <div class="input-group mb-3">
-                                                        <input class="items form-control" type="text" name="items[]" maxlength="30"
-                                                               placeholder="내용을 입력해주세요"/>
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <input class="items form-control" type="text" name="items[]" maxlength="30"
-                                                               placeholder="내용을 입력해주세요"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <input type="submit" value="등록하기" class="btn btn-primary my-2 float-right">
-                        </div>
-
                     </form>
-
                 </div>
             </div>
-            <!--        </li>-->
         </ul>
     </div>
 
