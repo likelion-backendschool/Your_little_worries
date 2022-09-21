@@ -6,6 +6,6 @@
     font-style: normal;
 }
 
-html > body *:not(i, a) {
+html > body *:not(i, .material-icons) {
     font-family: "GmarketSansMedium" !important;
 }
