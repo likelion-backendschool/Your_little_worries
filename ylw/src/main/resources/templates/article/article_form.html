@@ -13,9 +13,6 @@
         </div>
     </div>
 
-    <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md" style="max-width: 80rem;">
-    </div>
-
     <div class="container-fluid" style="max-width: 70rem;">
         <ul class="list-group list-group-flush">
             <!--        <li class="list-group-item p-3">-->
@@ -29,12 +26,14 @@
                         <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
                             <div class="card-body">
                                 <div class="flex flex-col my-auto items-center pt-1 mr-1">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-9">
+                                    <div class="form-row container-fluid d-flex justify-content-center">
+                                        <div class="form-group col-md-8">
                                             <label for="subject" class="form-label">제목</label>
                                             <input id="titleForm" th:if="${modifyToken}==1" type="text"
+                                                   placeholder="제목을 입력해주세요."
                                                    th:field="*{title}" class="form-control" readonly/>
                                             <input id="titleForm" th:unless="${modifyToken}==1" type="text"
+                                                   placeholder="제목을 입력해주세요."
                                                    th:field="*{title}" class="form-control"/>
                                         </div>
                                         <div class="form-group col-md-3">
@@ -59,9 +58,11 @@
                                     <div class="form-row">
                                         <div class="form-group col">
                                             <div class="form-group">
-                                                <label for="content" class="form-label mb-3">상세 설명</label>
+                                                <label for="content" class="form-label mb-3">고민 내용</label>
                                                 <textarea id="contentForm" th:field="*{content}"
-                                                          style="width: 60rem;"
+                                                          placeholder="고민 내용을 입력해주세요."
+                                                          style="
+                                                          max-width: 58rem;"
                                                           class="form-control container-fluid" rows="5"></textarea>
                                             </div>
                                         </div>
@@ -77,13 +78,13 @@
                                         <div class="form-group col">
                                             <div th:if="${modifyToken}!=1" id="itemContainer">
                                                 <div class="mb-3">
-                                                    <label class="form-label">항목</label>
+                                                    <label class="form-label">선택지</label>
                                                     <div id="append_column" class="btn btn-outline-info float-right">
                                                         <i class="material-icons">add</i>
                                                     </div>
                                                 </div>
 
-                                                <div class="container-fluid" style="width: 60rem;">
+                                                <div class="container-fluid" style="max-width: 60rem;">
                                                     <div class="input-group mb-3">
                                                         <input class="items form-control" type="text" name="items[]" maxlength="30"
                                                                placeholder="내용을 입력해주세요"/>
@@ -121,7 +122,7 @@
             return false;
         }
 
-        const column = `<div class="input-group mb-3 container-fluid" style="width: 60rem;">
+        const column = `<div class="input-group mb-3 container-fluid" style="max-width: 60rem;">
                 <input class="items form-control" type="text" name="items[]" maxlength="30" placeholder="내용을 입력해주세요"/>
                 <div id="delete" class="btn btn-outline-danger float-right ml-1" onclick="deleteColumnForm(this)">
                     <i class="material-icons">remove</i>
