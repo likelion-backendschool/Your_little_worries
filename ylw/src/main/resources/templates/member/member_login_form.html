@@ -1,48 +1,115 @@
+<!--<html-->
+<!--        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--        xmlns:th="http://thymeleaf.org"-->
+<!--        layout:decorate="~{layout}">-->
+<!--<head>-->
+<!--    <script src="https://cdn.tailwindcss.com"></script>-->
+<!--</head>-->
+
+<!--<div layout:fragment="content" class="main-content-container container-fluid px-4">-->
+<!--    <div class="container mx-auto w-[700px] mt-5 p-10 bg-white rounded-2xl shadow-lg">-->
+<!--        <form th:action="@{/member/login}" method="post" class="flex flex-col">-->
+
+<!--            <div class="text-center text-2xl font-semibold mt-1 mb-12 pb-1">너의 자질구레한 고민들</div>-->
+<!--            <div th:if="${param.error}">-->
+<!--                <div class="alert alert-danger">-->
+<!--                    사용자ID 또는 비밀번호를 확인해 주세요.-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="mb-3 flex">-->
+<!--                <label class="form-label w-[100px]">로그인ID</label>-->
+<!--                <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none flex-grow" name="username" placeholder="아이디" />-->
+<!--            </div>-->
+<!--            <div class="mb-3 flex">-->
+<!--                <label class="form-label w-[100px]">비밀번호</label>-->
+<!--                <input type="password" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none flex-grow" name="password" placeholder="비밀번호" />-->
+<!--            </div>-->
+
+<!--            <div class="text-center mb-10">-->
+<!--                <button type="submit" class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">로그인</button>-->
+<!--            </div>-->
+
+<!--        </form>-->
+
+<!--        <div class="info_user">-->
+<!--            <ul class="list_user flex justify-center">-->
+<!--                <li><a th:href="@{/mail/send}" class="block mr-3">비밀번호 찾기</a></li>-->
+<!--                <li> | </li>-->
+<!--                <li><a th:href="@{/member/find/id}" class="block ml-3">아이디 찾기</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
+<!--        <div class="flex items-center justify-between pb-6 pt-[20px] flex">-->
+<!--            <p class="mb-0 mr-2">아직 계정이 없으신가요?</p>-->
+<!--            <a class="px-6 py-2 border-2 border-red-600 text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out inline-block" th:href="@{|/member/signup|}">회원가입</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</html>-->
 <html
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
-        layout:decorate="~{layout}">
+>
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+          integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
-
-<div layout:fragment="content" class="main-content-container container-fluid px-4">
-    <div class="container mx-auto w-[700px] mt-5 p-10 bg-white rounded-2xl shadow-lg">
+<body style="background-color: #e1e5eb;">
+<div class="container mx-auto w-[700px] mt-32">
+    <div class="flex flex-col items-center">
+        <a th:href="@{/}">
+        <img src="/images/logo.png" alt="logo-ylw" class="w-[190px]"/></a></div>
+    <div class="p-10 mt-[-32px] bg-white rounded-2xl shadow-md">
         <form th:action="@{/member/login}" method="post" class="flex flex-col">
-
-            <div class="text-center text-2xl font-semibold mt-1 mb-12 pb-1">너의 자질구레한 고민들</div>
-            <div th:if="${param.error}">
-                <div class="alert alert-danger">
-                    사용자ID 또는 비밀번호를 확인해 주세요.
+            <div>
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">
+                        사용자ID 또는 비밀번호를 확인해 주세요.
+                    </div>
+                </div>
+                <div class="mb-3 flex mt-5 mr-2">
+                    <i class="fa-regular fa-user w-[18px] mt-2"></i>
+                    <label class="form-label w-[80px] pt-1 ml-1">아이디</label>
+                    <input type="text"
+                           class="form-control block max-w-lg flex-grow px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none flex-grow"
+                           name="username" placeholder="아이디를 입력해주세요."/>
+                </div>
+                <div class="mb-3 flex mt-5 mr-2">
+                    <i class="fa-solid fa-key w-[18px] mt-2"></i>
+                    <label class="form-label w-[80px] pt-1 ml-1">비밀번호</label>
+                    <input type="password"
+                           class="form-control block max-w-lg flex-grow px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none flex-grow"
+                           name="password" placeholder="비밀번호를 입력해주세요."/>
+                </div>
+                <div class="text-center mb-10 w-full">
+                    <button type="submit"
+                            class="mt-4 rounded-md p-3 w-full bg-blue-600 text-white font-bold text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
+                        로그인
+                    </button>
                 </div>
             </div>
-            <div class="mb-3 flex">
-                <label class="form-label w-[100px]">로그인ID</label>
-                <input type="text" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none flex-grow" name="username" placeholder="아이디" />
-            </div>
-            <div class="mb-3 flex">
-                <label class="form-label w-[100px]">비밀번호</label>
-                <input type="password" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none flex-grow" name="password" placeholder="비밀번호" />
-            </div>
-
-            <div class="text-center mb-10">
-                <button type="submit" class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">로그인</button>
-            </div>
-
         </form>
 
-        <div class="info_user">
-            <ul class="list_user flex justify-center">
-                <li><a th:href="@{/mail/send}" class="block mr-3">비밀번호 찾기</a></li>
-                <li> | </li>
-                <li><a th:href="@{/member/find/id}" class="block ml-3">아이디 찾기</a></li>
-            </ul>
-        </div>
-
-        <div class="flex items-center justify-between pb-6 pt-[20px] flex">
-            <p class="mb-0 mr-2">아직 계정이 없으신가요?</p>
-            <a class="px-6 py-2 border-2 border-red-600 text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out inline-block" th:href="@{|/member/signup|}">회원가입</a>
+        <div class="flex items-center justify-between pt-[5px] flex">
+            <div>
+                <i class="fa-solid fa-user-plus mr-1"></i>
+                <span class="mb-0">아직 계정이 없으신가요?</span>
+            </div>
+            <a class="px-6 py-2 border-2 rounded-md border-red-600 text-red-600 font-bold hover:text-white hover:bg-red-600 focus:text-red-800 transition duration-200 ease-in-out inline-block"
+               th:href="@{|/member/signup|}">회원가입</a>
         </div>
     </div>
+    <div class="info_user">
+        <ul class="list_user flex justify-center mt-7 text-gray-500">
+            <li><a th:href="@{/mail/send}" class="block mr-5">비밀번호 찾기</a></li>
+            <li> |</li>
+            <li><a th:href="@{/member/find/id}" class="block ml-5">아이디 찾기</a></li>
+        </ul>
+    </div>
 </div>
+</body>
 </html>
+
+
+
