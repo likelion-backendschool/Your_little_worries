@@ -1,55 +1,108 @@
+<!--<html-->
+<!--        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--        xmlns:th="http://thymeleaf.org"-->
+<!--        layout:decorate="~{layout}">-->
+<!--&lt;!&ndash;<html layout:decorate="~{layout}">&ndash;&gt;-->
+<!--<head>-->
+<!--    <script src="https://cdn.tailwindcss.com"></script>-->
+<!--</head>-->
+
+<!--<div layout:fragment="content" class="main-content-container container px-4">-->
+<!--    <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white rounded-2xl shadow-lg">-->
+
+<!--        <div class="my-3 border-bottom">-->
+
+<!--            <div>-->
+<!--                <div class="text-center text-2xl font-semibold mt-1 mb-2 pb-3">회원가입</div>-->
+<!--                <div class="text-center pb-5">YLW 홈페이지에 오신 것을 환영합니다.</div>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <div>회원 정보를 입력해주세요.</div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <form th:action="@{|/member/signup|}" th:object="${memberCreateForm}" method="post" enctype="multipart/form-data">-->
+<!--            <div th:replace="form_errors :: formErrorsFragment"></div>-->
+<!--            <div class="mb-3">-->
+<!--                <label class="form-label">사용자 ID</label>-->
+<!--                <input type="text" th:field="*{memberId}" class="form-control">-->
+<!--            </div>-->
+<!--            <div class="mb-3">-->
+<!--                <label class="form-label">닉네임</label>-->
+<!--                <input type="text" th:field="*{nickname}" class="form-control">-->
+<!--            </div>-->
+<!--            <div class="mb-3">-->
+<!--                <label class="form-label">비밀번호</label>-->
+<!--                <input type="password" th:field="*{password1}" class="form-control">-->
+<!--            </div>-->
+<!--            <div class="mb-3">-->
+<!--                <label class="form-label">비밀번호 확인</label>-->
+<!--                <input type="password" th:field="*{password2}" class="form-control">-->
+<!--            </div>-->
+<!--            <div class="mb-3">-->
+<!--                <label class="form-label">이메일</label>-->
+<!--                <input type="email" th:field="*{email}" class="form-control">-->
+<!--            </div>-->
+<!--            <div class="text-center">-->
+<!--                <button type="submit"-->
+<!--                        class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">-->
+<!--                    가입하기-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</html>-->
 <html
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
-        layout:decorate="~{layout}">
-<!--<html layout:decorate="~{layout}">-->
+>
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<div layout:fragment="content" class="main-content-container container px-4">
-    <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white rounded-2xl shadow-lg">
-
-        <div class="my-3 border-bottom">
-
-            <div>
-                <div class="text-center text-2xl font-semibold mt-1 mb-2 pb-3">회원가입</div>
-                <div class="text-center pb-5">YLW 홈페이지에 오신 것을 환영합니다.</div>
-            </div>
-            <div>
+<body class="flex items-center justify-center" style="background-color: #f5f6f8;">
+<div class="container mx-auto w-[700px] my-10 flex flex-col">
+    <div class="flex flex-col items-center">
+        <a th:href="@{/}">
+            <img src="/images/logo.png" style="" alt="logo-ylw" class="w-[190px]"/>
+        </a>
+    </div>
+    <div class="p-10 mt-[-32px] bg-white rounded-2xl shadow-md">
+        <div class="my-3 border-b">
                 <div>회원 정보를 입력해주세요.</div>
-            </div>
         </div>
-
-        <form th:action="@{|/member/signup|}" th:object="${memberCreateForm}" method="post" enctype="multipart/form-data">
+        <form th:action="@{|/member/signup|}" th:object="${memberCreateForm}" method="post"
+              enctype="multipart/form-data">
             <div th:replace="form_errors :: formErrorsFragment"></div>
-            <div class="mb-3">
-                <label class="form-label">사용자 ID</label>
-                <input type="text" th:field="*{memberId}" class="form-control">
+            <div class="mt-10 mb-14 flex flex-col">
+                <label class="form-label font-bold mb-2">사용자 ID</label>
+                <input type="text" th:field="*{memberId}" class="form-control text-gray-700 border w-full h-[35px]" placeholder="사용하실 아이디를 입력해주세요.">
             </div>
-            <div class="mb-3">
-                <label class="form-label">닉네임</label>
-                <input type="text" th:field="*{nickname}" class="form-control">
+            <div class="mb-14 flex flex-col">
+                <label class="form-label font-bold mb-2">닉네임</label>
+                <input type="text" th:field="*{nickname}" class="form-control  text-gray-700 border w-full h-[35px]" placeholder="닉네임을 입력해주세요.">
             </div>
-            <div class="mb-3">
-                <label class="form-label">비밀번호</label>
-                <input type="password" th:field="*{password1}" class="form-control">
+            <div class="mb-14 flex flex-col">
+                <label class="form-label font-bold mb-2">비밀번호</label>
+                <input type="password" th:field="*{password1}" class="form-control text-gray-700 border w-full h-[35px]" placeholder="비밀번호를 입력해주세요.">
             </div>
-            <div class="mb-3">
-                <label class="form-label">비밀번호 확인</label>
-                <input type="password" th:field="*{password2}" class="form-control">
+            <div class="mb-14 flex flex-col">
+                <label class="form-label font-bold mb-2">비밀번호 확인</label>
+                <input type="password" th:field="*{password2}" class="form-control text-gray-700 border w-full h-[35px]" placeholder="비밀번호를 다시 입력해주세요.">
             </div>
-            <div class="mb-3">
-                <label class="form-label">이메일</label>
-                <input type="email" th:field="*{email}" class="form-control">
+            <div class="mb-14 flex flex-col">
+                <label class="form-label font-bold mb-2">이메일</label>
+                <input type="email" th:field="*{email}" class="form-control text-gray-700 border w-full h-[35px]" placeholder="이메일을 입력해주세요.">
             </div>
-            <div class="text-center">
+            <div class="text-center w-full">
                 <button type="submit"
-                        class="mt-4 rounded-md p-3 w-[300px] bg-blue-600 text-white text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
+                        class="mt-4 rounded-md p-3 w-full bg-[#14C38E] hover:bg-emerald-500 text-white font-bold text-sm justify-center hover:shadow-lg">
                     가입하기
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+</body>
 </html>

@@ -15,8 +15,14 @@
         <form th:action="@{/mail/reset}" method="post">
             <i class="fa-solid fa-envelope-circle-check fa-5x"></i>
             <div class="text-center text-xl text-2xl font-semibold mt-1 mb-12 pb-1">이메일 발송 완료</div>
-            <div> 입력하신 이메일 주소로 비밀번호 재설정을 위한 이메일이 성공적으로 발송되었습니다. </div>
-            <div> 이메일 인증을 통해 비밀번호를 설정해주시기 바랍니다. </div>
+            <div> 입력하신 메일 주소로 비밀번호 재설정을 위한 이메일이 성공적으로 발송되었습니다. </div>
+            <div> 메일 인증을 통해 비밀번호를 설정해주시기 바랍니다. </div>
+            <div class="mb-3 flex mt-5 mr-2">
+                <a th:href="@{|/mail/send|}">
+                    <i class="fa-solid fa-arrow-left-long pt-3"></i>
+                    <span class="mb-0">이전 페이지로</span>
+                </a>
+            </div>
         </form>
     </div>
 </div>
