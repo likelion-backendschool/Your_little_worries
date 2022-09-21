@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+
+<aside th:fragment="headerFragment" class="header-navbar d-lg-flex p-0 bg-white border-top collapse">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+                    <li class="nav-item">
+                        <a class="nav-link" th:with="link='/article/create'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">
+                            <i class="material-icons">edit</i> 투표등록</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown"><i class="material-icons">vertical_split</i> 카테고리</a>
+                        <div class="dropdown-menu dropdown-menu-small py-0">
+                            <a class="dropdown-item " th:with="link='/article/list?category=1'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">일상</a>
+                            <a class="dropdown-item " th:with="link='/article/list?category=2'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">데이트</a>
+                            <a class="dropdown-item " th:with="link='/article/list?category=3'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">음식</a>
+                            <a class="dropdown-item " th:with="link='/article/list?category=4'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">관계</a>
+                            <a class="dropdown-item " th:with="link='/article/list?category=5'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">직장</a>
+                            <a class="dropdown-item " th:with="link='/article/list?category=6'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">패션</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:with="link='/notice/list'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">
+                            <i class="material-icons">receipt_long</i> 공지사항</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</aside>
+</html>

@@ -41,12 +41,16 @@ public class ArticleItemService {
             articleItem.setFemaleTotal(articleItem.getFemaleTotal()+1);
         }
 
-        switch (age) {
-            case 10 -> articleItem.setTotal10(articleItem.getTotal10()+1);
-            case 20 -> articleItem.setTotal20(articleItem.getTotal20()+1);
-            case 30 -> articleItem.setTotal30(articleItem.getTotal30()+1);
-            case 40 -> articleItem.setTotal40(articleItem.getTotal40()+1);
-            default -> articleItem.setTotalOver50(articleItem.getTotalOver50()+1);
+        if (age < 20) {
+            articleItem.setTotal10(articleItem.getTotal10()+1);
+        } else if (20 <= age && age < 30) {
+            articleItem.setTotal20(articleItem.getTotal20()+1);
+        } else if (30 <= age && age < 40) {
+            articleItem.setTotal30(articleItem.getTotal30()+1);
+        } else if (40 <= age && age < 50) {
+            articleItem.setTotal40(articleItem.getTotal40()+1);
+        } else {
+            articleItem.setTotalOver50(articleItem.getTotalOver50()+1);
         }
         articleItemRepository.save(articleItem);
     }

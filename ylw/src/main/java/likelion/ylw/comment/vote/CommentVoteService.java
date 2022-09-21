@@ -30,6 +30,7 @@ public class CommentVoteService {
             commentVoteRepository.save(commentVote);
         }
     }
+
     /**
      * 회원이 좋아요 누른 댓글 조회
      */

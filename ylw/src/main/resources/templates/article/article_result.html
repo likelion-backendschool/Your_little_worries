@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 </head>
-<div layout:fragment="content" class="main-content-container container-fluid px-4">
+<div layout:fragment="content" class="main-content-container container px-4">
 
     <!-- Page Header start-->
     <div class="page-header row no-gutters py-4">
@@ -307,7 +307,7 @@
                         <!--*/-->
                         <div class="item">
                             <!--/*비회원 댓글 모두 신고 표시*/-->
-                            <button th:if="${comment.author == null}" type="button" class="btn btn-white btn-sm">
+                            <button th:if="${comment.author == null}" th:myId="${comment.id}" th:onclick="pushReportBtn(event, this.getAttribute('myId'))" type="button" class="btn btn-white btn-sm">
                                     <span class="text-danger">
                                         <i class="material-icons">report</i>
                                     </span>
@@ -315,7 +315,7 @@
                             </button>
                             <!--/*회원 댓글 중 본인 제외하고 모두 신고 표시*/-->
                             <th:block th:unless="${comment.author == null}">
-                                <button th:if="${#authentication.name != comment.author.getMemberId()}" type="button" class="btn btn-white btn-sm">
+                                <button th:if="${#authentication.name != comment.author.getMemberId()}" th:myId="${comment.id}" th:onclick="pushReportBtn(event, this.getAttribute('myId'))" type="button" class="btn btn-white btn-sm">
                                     <span class="text-danger">
                                         <i class="material-icons">report</i>
                                     </span>
@@ -661,6 +661,7 @@
 </script>
 </div>
 </html>
+th:data-uri="@{|/comment/report/${comment.id}|}"
 
 <script type="text/javascript" th:inline="javascript">
     const btnShareTw = document.querySelector('#shareTw');
@@ -716,6 +717,36 @@
     }
 
     /**
+     *  댓글 신고
+     */
+    function pushReportBtn(event, commentId) {
+        if(![[${#authentication.name != 'anonymousUser'}]]) {
+            alert("로그인 후 이용해주세요");
+            return false;
+        }
+        fetch(`/comment/report/${commentId}`, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(res => {
+                if (res.url === "http://localhost:8080/member/login"){
+                    location.href = "http://localhost:8080/member/login";
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.result === "success") {
+                    alert("신고가 접수되었습니다.");
+                } else if (data.result === "failure") {
+                    alert("이미 신고한 댓글입니다.");
+                }
+            })
+            .catch(err => {
+                alert("다시 시도해 주세요.");
+            });
+    }
+    /**
      *  댓글 좋아요
      */
     function pushVoteBtn(event, commentId) {
@@ -754,7 +785,7 @@
                 }
             })
             .catch(err => {
-                alert(err);
+                alert("다시 시도해 주세요.");
             });
     }
     /**
