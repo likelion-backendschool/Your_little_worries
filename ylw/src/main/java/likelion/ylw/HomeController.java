@@ -39,11 +39,11 @@ public class HomeController {
         List<Category> categoryList = categoryService.getList();
         Object[] articleLists = IntStream.rangeClosed(1, categoryList.size()).mapToObj(i -> {
             Category category = categoryService.findById(i);
-            List<Article> articleList = articleService.findByCategoryTop8(category);
+            List<Article> articleList = articleService.findByCategoryTop3(category);
             return articleList;
         }).toArray();
 
-        List<Article> newArticleList = articleService.findTop8();
+        List<Article> newArticleList = articleService.findTop6();
         List<Article> popularArticleList = articleService.findByViewCountTop6();
 
         Notice recentNotice = noticeService.getNoticeByTop1();
