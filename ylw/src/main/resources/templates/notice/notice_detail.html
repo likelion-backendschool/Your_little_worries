@@ -17,11 +17,11 @@
             <div style="display: none" id="hiddenContent" th:text="${notice.content}"></div>
             <div id="viewer"></div>
         </div>
-        <div class="row my-3 mr-2">
+        <div class="row my-3 mr-1">
             <div class="ml-3 col mt-auto">
                 <a class="" th:href="@{/notice/list}"><span>목록으로</span></a>
             </div>
-            <div sec:authorize="isAuthenticated()" class="col text-right"
+            <div sec:authorize="isAuthenticated()" class="col text-right pr-0"
                  th:if="${notice.author != null and #authentication.getPrincipal().getUsername() == notice.author.memberId}">
                 <a href="javascript:void(0);" th:data-uri="@{|/notice/delete/${notice.id}|}"
                    class="delete btn btn-primary mr-2"
