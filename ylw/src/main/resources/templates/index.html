@@ -21,20 +21,20 @@
             </div>
         </div>
         <div class="d-flex align-content-start flex-wrap">
-            <div class="col-sm-6 col-lg-4" th:each="article, loop : ${popularArticleList}">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4" th:each="article, loop : ${popularArticleList}">
                 <div class="card card-small card-post card-post--1 mb-4">
                     <div class="card-post__image" th:style="'background-image: url('+ @{|/images/content-management/${article.category.id}.jpg|} + ');'">
-                        <a th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-light"
+                        <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-secondary"
                            th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 2" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-success"
+                        <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 2" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-success"
                            th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 3" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-warning"
+                        <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 3" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-warning"
                            th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 4" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-danger"
+                        <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 4" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-danger"
                            th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 5" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-dark"
+                        <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 5" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-dark"
                            th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 6" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-info"
+                        <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 6" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-info"
                            th:text="${article.category.name}"></a>
                         <div class="card-post__author d-flex">
                             <img class="card-post__author-avatar card-post__author-avatar--small"
@@ -73,38 +73,36 @@
             </div>
         </div>
         <div class="d-flex align-content-start flex-wrap">
-            <div class="col-sm-6 col-lg-4" th:each="article, loop : ${newArticleList}">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4" th:each="article, loop : ${newArticleList}">
                 <div class="card card-small card-post card-post--1 mb-4">
-                    <div class="card-post__image" th:style="'background-image: url('+ @{|/images/content-management/${article.category.id}.jpg|} + ');'">
-                        <a th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-light"
-                           th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 2" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-success"
-                           th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 3" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-warning"
-                           th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 4" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-danger"
-                           th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 5" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-dark"
-                           th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 6" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-info"
-                           th:text="${article.category.name}"></a>
-                        <div class="card-post__author d-flex">
-                            <img class="card-post__author-avatar card-post__author-avatar--small"
-                                 th:if="${article.author.memberImgPath}"
-                                 th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
-                            <img class="card-post__author-avatar card-post__author-avatar--small"
-                                 th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
-                        </div>
-                    </div>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-secondary"
+                       th:text="${article.category.name}"></a>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 2" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-success"
+                       th:text="${article.category.name}"></a>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 3" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-warning"
+                       th:text="${article.category.name}"></a>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 4" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-danger"
+                       th:text="${article.category.name}"></a>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 5" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-dark"
+                       th:text="${article.category.name}"></a>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 6" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-info"
+                       th:text="${article.category.name}"></a>
                     <div class="card-body pb-2">
                         <h5 class="card-title txt_line" th:text="${article.title}">
                         </h5>
                         <p class="card-text txt_multi" th:text="${article.content}"></p>
                         <div class="d-flex flex-row justify-content-between">
-                            <div class="text-muted"
+                            <div class="text-muted d-flex align-items-center"
                                  th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
-                            <div class="card-post__author-name"
-                                 th:text="${article.author.nickname}"></div>
+                            <div class="d-flex align-items-center">
+                                <img class="card-post__author-avatar card-post__author-avatar--small"
+                                     th:if="${article.author.memberImgPath}"
+                                     th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                                <img class="card-post__author-avatar card-post__author-avatar--small"
+                                     th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
+                                <div class="card-post__author-name ml-2" style="line-height: 15px;"
+                                     th:text="${article.author.nickname}"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-2">
@@ -125,38 +123,36 @@
             </div>
         </div>
         <div class="d-flex align-content-start flex-wrap">
-            <div class="col-sm-6 col-lg-4 col-xl-3" th:each="article : ${articleListArray[loop.index]}">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-4" th:each="article : ${articleListArray[loop.index]}">
                 <div class="card card-small card-post card-post--1 mb-4">
-                    <div class="card-post__image" th:style="'background-image: url('+ @{|/images/content-management/${article.category.id}.jpg|} + ');'">
-                        <a th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-light"
-                           th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 2" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-success"
-                           th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 3" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-warning"
-                           th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 4" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-danger"
-                           th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 5" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-dark"
-                           th:text="${article.category.name}"></a>
-                        <a th:if="${article.category.id} == 6" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-info"
-                           th:text="${article.category.name}"></a>
-                        <div class="card-post__author d-flex">
-                            <img class="card-post__author-avatar card-post__author-avatar--small"
-                                 th:if="${article.author.memberImgPath}"
-                                 th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
-                            <img class="card-post__author-avatar card-post__author-avatar--small"
-                                 th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
-                        </div>
-                    </div>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-secondary"
+                       th:text="${article.category.name}"></a>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 2" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-success"
+                       th:text="${article.category.name}"></a>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 3" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-warning"
+                       th:text="${article.category.name}"></a>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 4" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-danger"
+                       th:text="${article.category.name}"></a>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 5" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-dark"
+                       th:text="${article.category.name}"></a>
+                    <a style="top: 8px; right: 8px;" th:if="${article.category.id} == 6" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-info"
+                       th:text="${article.category.name}"></a>
                     <div class="card-body pb-2">
                         <h5 class="card-title txt_line" th:text="${article.title}">
                         </h5>
                         <p class="card-text txt_multi" th:text="${article.content}"></p>
-                        <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row align-items-center justify-content-between">
                             <div class="text-muted"
                                  th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
-                            <div class="card-post__author-name"
-                                 th:text="${article.author.nickname}"></div>
+                            <div class="d-flex align-items-center">
+                                <img class="card-post__author-avatar card-post__author-avatar--small"
+                                     th:if="${article.author.memberImgPath}"
+                                     th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                                <img class="card-post__author-avatar card-post__author-avatar--small"
+                                     th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
+                                <div class="card-post__author-name ml-2" style="line-height: 15px;"
+                                     th:text="${article.author.nickname}"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-2">

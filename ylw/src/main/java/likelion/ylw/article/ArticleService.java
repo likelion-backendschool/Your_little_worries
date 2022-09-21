@@ -62,16 +62,16 @@ public class ArticleService {
         return articleList;
     }
 
-    public List<Article> findByCategoryTop8(Category category) {
-        return articleRepository.findTop8ByCategoryOrderByIdDesc(category);
+    public List<Article> findByCategoryTop3(Category category) {
+        return articleRepository.findTop3ByCategoryOrderByIdDesc(category);
     }
 
     public List<Article> findByViewCountTop6() {
         return articleRepository.findTop6ByOrderByViewCountDesc();
     }
 
-    public List<Article> findTop8() {
-        return articleRepository.findTop8ByOrderByIdDesc();
+    public List<Article> findTop6() {
+        return articleRepository.findTop6ByOrderByIdDesc();
     }
 
     public List<Article> findByAuthor(Member member) {
