@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="d-flex align-content-start flex-wrap">
-            <div class="col-sm-6 col-lg-4 col-xl-3" th:each="article, loop : ${popularArticleList}">
+            <div class="col-sm-6 col-lg-4" th:each="article, loop : ${popularArticleList}">
                 <div class="card card-small card-post card-post--1 mb-4">
                     <div class="card-post__image" th:style="'background-image: url('+ @{|/images/content-management/${article.category.id}.jpg|} + ');'">
                         <a th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-light"
@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="d-flex align-content-start flex-wrap">
-            <div class="col-sm-6 col-lg-4 col-xl-3" th:each="article, loop : ${newArticleList}">
+            <div class="col-sm-6 col-lg-4" th:each="article, loop : ${newArticleList}">
                 <div class="card card-small card-post card-post--1 mb-4">
                     <div class="card-post__image" th:style="'background-image: url('+ @{|/images/content-management/${article.category.id}.jpg|} + ');'">
                         <a th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-light"
