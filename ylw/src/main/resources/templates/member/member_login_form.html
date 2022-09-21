@@ -8,12 +8,12 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
 
-<body style="background-color: #e1e5eb;">
-<div class="container mx-auto w-[700px] mt-32">
+<body class="flex items-center justify-center" style="background-color: #e1e5eb;">
+<div class="container w-[700px] -translate-y-1/4">
     <div class="flex flex-col items-center">
         <a th:href="@{/}">
-        <img src="/images/logo.png" alt="logo-ylw" class="w-[190px]"/></a></div>
-    <div class="p-10 mt-[-32px] bg-white rounded-2xl shadow-md">
+        <img src="/images/logo.png" style="" alt="logo-ylw" class="w-[190px]"/></a></div>
+    <div class="p-10 mt-[-32px] mx-[20px] bg-white rounded-2xl shadow-md">
         <form th:action="@{/member/login}" method="post" class="flex flex-col">
             <div>
                 <div th:if="${param.error}">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="text-center mb-10 w-full">
                     <button type="submit"
-                            class="mt-4 rounded-md p-3 w-full bg-blue-600 text-white font-bold text-sm justify-center hover:bg-blue-700 hover:shadow-lg">
+                            class="mt-4 rounded-md p-3 w-full bg-[#14C38E] text-white font-bold text-sm justify-center hover:bg-green-700 hover:shadow-lg">
                         로그인
                     </button>
                 </div>
