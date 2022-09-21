@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js h-100" lang="en">
+<html class="no-js h-100" lang="ko">
 
 <head>
     <meta charset="utf-8">
@@ -20,25 +20,25 @@
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
     <link rel="stylesheet" href="/styles/color.css">
     <link rel="stylesheet" href="/styles/font.css">
+    <link rel="stylesheet" href="/styles/custom-normalize.css">
 </head>
 
 <body class="h-100">
-<div class="container-fluid">
-    <div class="row">
-        <!-- Main Sidebar -->
-        <sidebar th:replace="sidebar :: sidebarFragment"></sidebar>
-        <!-- End Main Sidebar -->
-        <main class="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
-            <div class="main-navbar sticky-top bg-white">
-                <!-- Main Navbar -->
-                <navbar th:replace="navbar :: navbarFragment"></navbar>
-            </div>
-            <!-- / .main-navbar -->
-            <th:block layout:fragment="content"></th:block>
-            <footer th:replace="footer :: footerFragment"></footer>
-        </main>
-    </div>
-</div>
+
+<main class="main-content col-lg-12 col-md-12 col-sm-12 pt-0 px-0" style="min-height: 100%; position: relative; padding-bottom: 3.75rem">
+    <!-- Main Navbar -->
+    <navbar th:replace="navbar :: navbarFragment"></navbar>
+
+    <!-- Main Headerbar -->
+    <sidebar th:replace="header :: headerFragment"></sidebar>
+
+    <!-- Main Content -->
+    <th:block layout:fragment="content"></th:block>
+
+    <!-- Main Footer -->
+    <footer th:replace="footer :: footerFragment"></footer>
+</main>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"

@@ -2,18 +2,15 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
-<head>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
 
-<div layout:fragment="content" class="main-content-container container-fluid px-0">
-    <div class="alert alert-accent alert-dismissible fade show mb-0" role="alert" th:if="${recentNotice != null}">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">×</span>
+<div layout:fragment="content" class="main-content-container container">
+    <div class="alert alert-accent alert-dismissible fade show mb-0 align-middle h-100" role="alert" th:if="${recentNotice != null}">
+        <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true" class="align-middle py-auto">×</span>
         </button>
-        <i class="fa fa-info mx-2"></i>
-        <a class="text-white" th:href="@{|/notice/detail/${recentNotice.id}|}">
-            <strong th:text="${recentNotice.title}"></strong>
+        <i class="fa fa-info mx-2 align-middle"></i>
+        <a class="text-white h-100" th:href="@{|/notice/detail/${recentNotice.id}|}">
+            <strong class="py-auto" th:text="${recentNotice.title}"></strong>
         </a>
     </div>
     <section class="border-bottom px-4">
@@ -24,7 +21,7 @@
             </div>
         </div>
         <div class="d-flex align-content-start flex-wrap">
-            <div class="col-sm-6 col-lg-4 col-xl-3" th:each="article, loop : ${popularArticleList}">
+            <div class="col-sm-6 col-lg-4" th:each="article, loop : ${popularArticleList}">
                 <div class="card card-small card-post card-post--1 mb-4">
                     <div class="card-post__image" th:style="'background-image: url('+ @{|/images/content-management/${article.category.id}.jpg|} + ');'">
                         <a th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-light"
@@ -58,7 +55,7 @@
                                  th:text="${article.author.nickname}"></div>
                         </div>
                     </div>
-                    <div class="card-footer border-top d-flex justify-content-between pt-2 px-3 pb-2">
+                    <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-2">
                         <a class="btn btn-accent" th:href="@{|/article/vote/${article.id}|}">
                             <i class="material-icons">how_to_vote</i> 투표하기</a>
                         <a class="btn btn-outline-accent" th:href="@{|/article/result/${article.id}|}">
@@ -76,7 +73,7 @@
             </div>
         </div>
         <div class="d-flex align-content-start flex-wrap">
-            <div class="col-sm-6 col-lg-4 col-xl-3" th:each="article, loop : ${newArticleList}">
+            <div class="col-sm-6 col-lg-4" th:each="article, loop : ${newArticleList}">
                 <div class="card card-small card-post card-post--1 mb-4">
                     <div class="card-post__image" th:style="'background-image: url('+ @{|/images/content-management/${article.category.id}.jpg|} + ');'">
                         <a th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-light"
@@ -110,7 +107,7 @@
                                  th:text="${article.author.nickname}"></div>
                         </div>
                     </div>
-                    <div class="card-footer border-top d-flex justify-content-between pt-2 px-3 pb-2">
+                    <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-2">
                         <a class="btn btn-accent" th:href="@{|/article/vote/${article.id}|}">
                             <i class="material-icons">how_to_vote</i> 투표하기</a>
                         <a class="btn btn-outline-accent" th:href="@{|/article/result/${article.id}|}">
@@ -162,7 +159,7 @@
                                  th:text="${article.author.nickname}"></div>
                         </div>
                     </div>
-                    <div class="card-footer border-top d-flex justify-content-between pt-2 px-3 pb-2">
+                    <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-2">
                         <a class="btn btn-accent" th:href="@{|/article/vote/${article.id}|}">
                             <i class="material-icons">how_to_vote</i> 투표하기</a>
                         <a class="btn btn-outline-accent" th:href="@{|/article/result/${article.id}|}">

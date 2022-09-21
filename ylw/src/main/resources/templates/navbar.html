@@ -4,80 +4,87 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 
-<nav th:fragment="navbarFragment" class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
-    <form th:action="@{/article/search}" method="get" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
-        <div class="input-group input-group-seamless ml-3">
-            <div class="input-group-prepend">
-                <div class="input-group-text">
-                    <i class="fas fa-search"></i>
-                </div>
-            </div>
-            <input type="text" id="kw" name="kw" class="navbar-search form-control"  placeholder="투표지를 찾아보세요" aria-label="Search">
-        </div>
-    </form>
-    <ul class="navbar-nav border-left flex-row flex">
-        <li class="nav-item border-right dropdown notifications">
-            <a class="nav-link nav-link-icon text-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <div class="nav-link-icon__wrapper">
-                    <i class="material-icons">&#xE7F4;</i>
-                    <span class="badge badge-pill badge-danger">2</span>
+<nav th:fragment="navbarFragment" class="main-navbar bg-white">
+    <div class="container p-0">
+        <!-- Main Navbar -->
+        <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
+            <a class="navbar-brand" href="/" style="line-height: 25px;">
+                <div class="d-table m-auto">
+                    <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-width: 25px;" src="/images/shards-dashboards-logo.svg" alt="Shards Dashboard">
+                    <span class="d-none d-md-inline ml-1">YLW</span>
                 </div>
             </a>
-            <div class="dropdown-menu dropdown-menu-small" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">
-                    <div class="notification__icon-wrapper">
-                        <div class="notification__icon">
-                            <i class="material-icons">&#xE6E1;</i>
+            <form th:action="@{/article/search}" method="get" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+                <div class="input-group input-group-seamless ml-3">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fas fa-search"></i>
                         </div>
                     </div>
-                    <div class="notification__content">
-                        <span class="notification__category">Analytics</span>
-                        <p>Your website’s active users count increased by
-                            <span class="text-success text-semibold">28%</span> in the last week. Great job!</p>
-                    </div>
-                </a>
-                <a class="dropdown-item" href="#">
-                    <div class="notification__icon-wrapper">
-                        <div class="notification__icon">
-                            <i class="material-icons">&#xE8D1;</i>
+                    <input type="text" id="kw" name="kw" class="navbar-search form-control"  placeholder="투표지를 찾아보세요" aria-label="Search">
+                </div>
+            </form>
+            <ul class="navbar-nav border-left flex-row border-right ml-auto">
+                <li class="nav-item border-right dropdown notifications">
+                    <a class="nav-link nav-link-icon text-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="nav-link-icon__wrapper">
+                            <i class="material-icons"></i>
+                            <span class="badge badge-pill badge-danger">2</span>
                         </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-small" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">
+                            <div class="notification__icon-wrapper">
+                                <div class="notification__icon">
+                                    <i class="material-icons"></i>
+                                </div>
+                            </div>
+                            <div class="notification__content">
+                                <span class="notification__category">Analytics</span>
+                                <p>Your website’s active users count increased by <span class="text-success text-semibold">28%</span> in the last week. Great job!</p>
+                            </div>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <div class="notification__icon-wrapper">
+                                <div class="notification__icon">
+                                    <i class="material-icons"></i>
+                                </div>
+                            </div>
+                            <div class="notification__content">
+                                <span class="notification__category">Sales</span>
+                                <p>Last week your store’s sales count decreased by <span class="text-danger text-semibold">5.52%</span>. It could have been worse!</p>
+                            </div>
+                        </a>
+                        <a class="dropdown-item notification__all text-center" href="#"> View all Notifications </a>
                     </div>
-                    <div class="notification__content">
-                        <span class="notification__category">Sales</span>
-                        <p>Last week your store’s sales count decreased by
-                            <span class="text-danger text-semibold">5.52%</span>. It could have been worse!</p>
+                </li>
+                <a class="nav-link w-[130px] text-center pt-6 d-flex align-items-center justify-content-center" sec:authorize="isAnonymous()" th:href="@{/member/login}"><i class="fa-solid fa-circle-user"></i> 로그인</a>
+                <li sec:authorize="isAuthenticated()" class="nav-item dropdown d-flex align-items-center">
+                    <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+<!--                        <img class="user-avatar rounded-circle mr-2" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />-->
+                        <span class="d-none d-md-inline-block" th:text="${#authentication.name}"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-small">
+                        <a class="dropdown-item" th:href="@{|/member/myPage|}">
+                            <i class="material-icons">&#xE7FD;</i> 마이페이지</a>
+                        <a class="dropdown-item" href="components-blog-posts.html">
+                            <i class="material-icons">vertical_split</i> 내 게시물 보기</a>
+                        <a class="dropdown-item" th:href="@{/article/create}">
+                            <i class="material-icons">note_add</i> 투표지 등록하기</a>
+                        <a class="dropdown-item" th:href="@{|/member/rank|}">
+                            <i class="material-icons">note_add</i> 내 랭킹 보기</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" th:href="@{|/member/logout|}">
+                            <i class="material-icons text-danger">&#xE879;</i> 로그아웃 </a>
                     </div>
+                </li>
+            </ul>
+            <nav class="nav">
+                <a href="#" class="nav-link nav-link-icon toggle-sidebar  d-inline d-lg-none text-center " data-toggle="collapse" data-target=".header-navbar" aria-expanded="false" aria-controls="header-navbar">
+                    <i class="material-icons"></i>
                 </a>
-                <a class="dropdown-item notification__all text-center" href="#"> View all Notifications </a>
-            </div>
-        </li>
-        <!-- 로그인 시 프로필 표시 -->
-        <a class="nav-link w-[130px] text-center pt-6" sec:authorize="isAnonymous()" th:href="@{/member/login}"><i class="fa-solid fa-circle-user"></i> 로그인</a>
-        <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-<!--                <img class="user-avatar rounded-circle mr-2" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />-->
-
-                <span class="d-none d-md-inline-block" th:text="${#authentication.name}"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-small">
-                <a class="dropdown-item" th:href="@{|/member/myPage|}">
-                    <i class="material-icons">&#xE7FD;</i> 마이페이지</a>
-                <a class="dropdown-item" href="components-blog-posts.html">
-                    <i class="material-icons">vertical_split</i> 내 게시물 보기</a>
-                <a class="dropdown-item" th:href="@{/article/create}">
-                    <i class="material-icons">note_add</i> 투표지 등록하기</a>
-                <a class="dropdown-item" th:href="@{|/member/rank|}">
-                    <i class="material-icons">note_add</i> 내 랭킹 보기</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-danger" th:href="@{|/member/logout|}">
-                    <i class="material-icons text-danger">&#xE879;</i> 로그아웃 </a>
-            </div>
-        </li>
-    </ul>
-    <nav class="nav">
-        <a href="#" class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center border-left" data-toggle="collapse" data-target=".header-navbar" aria-expanded="false" aria-controls="header-navbar">
-            <i class="material-icons">&#xE5D2;</i>
-        </a>
-    </nav>
+            </nav>
+        </nav>
+    </div>
 </nav>
 </html>
