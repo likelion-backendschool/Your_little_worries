@@ -8,6 +8,7 @@ import likelion.ylw.member.MemberRepository;
 import likelion.ylw.member.MemberService;
 import likelion.ylw.util.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -132,4 +133,10 @@ public class ArticleService {
         };
     }
 
+    public Page<Article> getPageList(int page, Integer category_id) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createdDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+        return articleRepository.findAllByCategoryId(category_id ,pageable);
+    }
 }
