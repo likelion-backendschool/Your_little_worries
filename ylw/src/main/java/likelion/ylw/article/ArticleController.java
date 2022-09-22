@@ -11,6 +11,7 @@ import likelion.ylw.comment.vote.CommentVoteService;
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberRepository;
 import likelion.ylw.member.MemberService;
+import likelion.ylw.notice.Notice;
 import likelion.ylw.stats.StatsCollection;
 import likelion.ylw.stats.StatsCollectionForm;
 import likelion.ylw.stats.StatsCollectionService;
@@ -54,12 +55,13 @@ public class ArticleController {
     private static int MINIMUM_VOTES = 30;
 
     @GetMapping("/list")
-    public String list(Model model, @RequestParam("category") Integer category_id) {
+    public String list(Model model, @RequestParam("category") Integer category_id,
+                       @RequestParam(value="page", defaultValue="0") int page) {
         Category category = categoryService.findById(category_id);
-        List<Article> articleList = articleService.findByCategory(category);
+        Page<Article> paging = articleService.getPageList(page, category_id);
 
-        model.addAttribute("articleList", articleList);
         model.addAttribute("category", category);
+        model.addAttribute("paging", paging);
 
         return "article/article_list";
     }

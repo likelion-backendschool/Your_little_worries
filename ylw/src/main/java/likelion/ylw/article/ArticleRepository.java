@@ -2,6 +2,8 @@ package likelion.ylw.article;
 
 import likelion.ylw.category.Category;
 import likelion.ylw.member.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +26,6 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     List<Article> findByAuthor(Member member);
 
     List<Article> findAll(Specification<Article> spec);
+
+    Page<Article> findAllByCategoryId(Integer Category_id, Pageable pageable);
 }
