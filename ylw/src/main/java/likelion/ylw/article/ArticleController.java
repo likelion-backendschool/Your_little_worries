@@ -30,7 +30,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -72,7 +74,7 @@ public class ArticleController {
                        Principal principal) {
         Article article = articleService.findById(id);
         if (principal != null) {
-            // 로그인 회원의 좋아요 목록
+//             로그인 회원의 좋아요 목록
             Member member = memberService.findByMemberId(principal.getName());
             boolean exist = articleRecommendService.existsByMemberAndArticle(member, article);
             model.addAttribute("exist", exist);
@@ -229,21 +231,36 @@ public class ArticleController {
         return String.format("redirect:/article/vote/%d", article.getId());
     }
 
+//    @PreAuthorize("isAuthenticated()")
+//    @GetMapping("/recommend/{id}")
+//    public String pushRecommendBtn(@PathVariable Integer id, Principal principal, MessageDto params, Model model) {
+//        Member member = memberService.findByMemberId(principal.getName());
+//        Article article = articleService.findById(id);
+//
+//        // 본인 글에 추천하는 경우
+//        if (article.getAuthor() != null) {
+//            if (article.getAuthor().getMemberId().equals(principal.getName())) {
+//
+//            }
+//        }
+//        articleRecommendService.pushVoteBtn(article, member);
+//
+//        return String.format("redirect:/article/vote/%d", id);
+//    }
+
+    @ResponseBody
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/recommend/{id}")
-    public String pushRecommendBtn(@PathVariable Integer id, Principal principal, MessageDto params, Model model) {
+    public Map<String, String> pushRecommendBtn(@PathVariable Integer id, Principal principal) {
         Member member = memberService.findByMemberId(principal.getName());
         Article article = articleService.findById(id);
 
-        // 본인 글에 추천하는 경우
-        if (article.getAuthor() != null) {
-            if (article.getAuthor().getMemberId().equals(principal.getName())) {
-
-            }
-        }
+        Map<String,String> result = new HashMap<>();
+//      이미 추천한 경우
         articleRecommendService.pushVoteBtn(article, member);
 
-        return String.format("redirect:/article/vote/%d", id);
+        result.put("result", "success");
+        return result;
     }
 
     /**
