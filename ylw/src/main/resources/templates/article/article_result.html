@@ -198,16 +198,16 @@
                 </form>
                 <!--/*   비회원용 댓글 form*/-->
                 <form sec:authorize="isAnonymous()" th:action="@{|/comment/non-create/${article.getId()}|}" th:object="${nonMemberCommentForm}" method="post">
-                    <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
-                        <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+                    <div class="alert alert-danger" role="alert" th:if="${commentFormErrors != null}">
+                        <div th:each="err : ${commentFormErrors}" th:text="${err.defaultMessage}" />
                     </div>
                     <div class="mb-2">
                         <label for="tempNickname" class="form-label m-0 pl-1">임시 닉네임</label>
-                        <input type="name" class="form-control" name="tempNickname" id="tempNickname" placeholder="닉네임">
+                        <input type="text" class="form-control"  th:field="*{tempNickname}" placeholder="닉네임" >
                     </div>
                     <div class="mb-3">
                         <label for="tempPassword" class="form-label m-0 pl-1">임시 비밀번호</label>
-                        <input type="password" class="form-control" name="tempPassword" id="tempPassword" placeholder="비밀번호">
+                        <input type="password" class="form-control" th:field="*{tempPassword}"  placeholder="비밀번호" >
                     </div>
                     <div>
                         <label for="content" class="form-label m-0 pl-1">내용</label>

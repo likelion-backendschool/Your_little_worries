@@ -1,11 +1,15 @@
 package likelion.ylw.comment;
 
 import likelion.ylw.article.Article;
+import likelion.ylw.article.ArticleItem;
+import likelion.ylw.article.ArticleItemService;
 import likelion.ylw.article.ArticleService;
 import likelion.ylw.comment.report.CommentReportService;
 import likelion.ylw.comment.vote.CommentVoteService;
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
+import likelion.ylw.stats.statsResult.StatsResult;
+import likelion.ylw.stats.statsResult.StatsResultService;
 import likelion.ylw.util.message.MessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,10 +20,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,6 +41,8 @@ public class CommentController {
     private final MemberService memberService;
     private final CommentVoteService commentVoteService;
     private final CommentReportService commentReportService;
+    private final StatsResultService statsResultService;
+    private final ArticleItemService articleItemService;
 
     /**
      * 회원 댓글 생성하기
@@ -64,16 +72,15 @@ public class CommentController {
      */
     @PostMapping("/non-create/{id}")
     public String createComment(Model model, @PathVariable("id") Integer id, @Valid NonMemberCommentForm nonMemberCommentForm,
-                                BindingResult bindingResult, @RequestParam(value="page", defaultValue="0") int page) {
+                                BindingResult bindingResult, @RequestParam(value="page", defaultValue="0") int page, RedirectAttributes redirectAttributes) {
 
         Article article = this.articleService.findById(id);
 
         // form 검증
         if (bindingResult.hasErrors()) {
-            Page<Comment> commentList = commentService.getCommentByArticleId(article, page);
-            model.addAttribute("article", article);
-            model.addAttribute("commentList",commentList);
-            return "article/article_result";
+            redirectAttributes.addFlashAttribute("nonMemberCommentForm", nonMemberCommentForm);
+            redirectAttributes.addFlashAttribute("commentFormErrors", bindingResult.getAllErrors());
+            return String.format("redirect:/article/result/%s", id);
         }
         // 댓글 등록
         this.commentService.create(article, nonMemberCommentForm);
@@ -86,9 +93,7 @@ public class CommentController {
     @PostMapping("/modify/{id}")
     public String modifyComment(@Valid CommentForm commentForm, BindingResult bindingResult,
                                 @PathVariable("id") Integer id, Principal principal) {
-//        if (bindingResult.hasErrors()) {
-//            return String.format("redirect:/article/result/%s", id);
-//        }
+
         Comment comment = this.commentService.getComment(id);
 
         //수정 권한 체크
@@ -102,13 +107,15 @@ public class CommentController {
      * 비회원 댓글 수정하기
      */
     @PostMapping("/non-modify/{id}")
-    public String modifyComment(@Valid NonMemberCommentForm nonMemberCommentForm, BindingResult bindingResult,
+    public String modifyComment(@Valid String content, BindingResult bindingResult,
                                 @PathVariable("id") Integer id) {
-//        if (bindingResult.hasErrors()) {
-//            return String.format("redirect:/article/result/%s", id);
-//        }
+
         Comment comment = this.commentService.getComment(id);
 
+        // form 검증
+        if (bindingResult.hasErrors()) {
+            return String.format("redirect:/article/result/%s", comment.getArticle().getId());
+        }
         //수정 권한 체크
         boolean isTempMember = commentService.getResultByTempMember(nonMemberCommentForm.getTempNickname(), nonMemberCommentForm.getTempPassword());
         if (!isTempMember) {
