@@ -67,7 +67,7 @@ public class StatsResultService {
             }
             // 기대값 구해줌
             long sum = Arrays.stream(observed).sum();
-            double avg = (double) sum/row;
+            double avg = (double) sum/row; // 항목별 총투표수 / 항목개수
             Arrays.fill(expected, avg);
 
             ChiSquareTest t = new ChiSquareTest();
@@ -93,7 +93,7 @@ public class StatsResultService {
      * StatsItemResult리스트를 이중배열로 변환해줌
      */
     public long[][] listTo2DArray(List<ArticleItem> ArticleItems) {
-        long[][] counts = new long[ArticleItems.size()][COLUMN];
+        long[][] counts = new long[ArticleItems.size()][COLUMN]; // [항목수][결과수]
         int index = 0;
         for (ArticleItem articleItem : ArticleItems) {
             long[] count = { articleItem.getTotal(), articleItem.getMaleTotal(), articleItem.getFemaleTotal(),

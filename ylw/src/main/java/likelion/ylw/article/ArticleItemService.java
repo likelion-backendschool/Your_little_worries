@@ -63,4 +63,52 @@ public class ArticleItemService {
         }
         return sum;
     }
+
+    public String getMaxVoteArticleItemContent(Article article) {
+        List<ArticleItem> articleItems = articleItemRepository.findArticleItemByArticleId(article.getId());
+        int maxTotal = 0;
+        int maxId = 0;
+        for (ArticleItem articleItem : articleItems) {
+            int total = articleItem.getTotal();
+            if(total > maxTotal) {
+                maxTotal= total;
+                maxId = articleItem.getId();
+            }
+        }
+        ArticleItem maxArticleItem = articleItemRepository.findById(maxId).get();
+        return maxArticleItem.getContent();
+    }
+
+    public int getMaxVoteArticleItemTotal(Article article) {
+        List<ArticleItem> articleItems = articleItemRepository.findArticleItemByArticleId(article.getId());
+        int maxTotal = 0;
+        int maxId = 0;
+        for (ArticleItem articleItem : articleItems) {
+            int total = articleItem.getTotal();
+            if(total > maxTotal) {
+                maxTotal= total;
+                maxId = articleItem.getId();
+            }
+        }
+        ArticleItem maxArticleItem = articleItemRepository.findById(maxId).get();
+        return maxArticleItem.getTotal();
+    }
+
+    public int getMaxVoteArticleItemTotalSum(Article article) {
+        List<ArticleItem> articleItems = articleItemRepository.findArticleItemByArticleId(article.getId());
+        int sum = 0;
+        for (ArticleItem articleItem : articleItems) {
+            sum += articleItem.getTotal();
+        }
+        return sum;
+    }
+
+    public String getPercentage(Article article) {
+        int totalSum = getMaxVoteArticleItemTotalSum(article);
+        int maxArticleItemTotal = getMaxVoteArticleItemTotal(article);
+        double percentage = (maxArticleItemTotal/(double)totalSum)*100;
+        percentage = Math.round((percentage*100)/100.0);
+        String result = Double.toString(percentage);
+        return result;
+    }
 }

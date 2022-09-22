@@ -1,4 +1,3 @@
-
 <html
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
@@ -11,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 </head>
 <div layout:fragment="content" class="main-content-container container px-4">
-
     <!-- Page Header start-->
     <div class="page-header row no-gutters py-4">
         <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
@@ -20,7 +18,6 @@
         </div>
     </div>
     <!-- Page Header end-->
-
     <div class="row">
         <!-- total 결과 그래프 start -->
         <div class="col-lg-8 col-md-12 col-sm-12 mb-4">
@@ -36,8 +33,8 @@
                     <div style="height: 500px" th:if="${3 < #lists.size(articleItemList) && #lists.size(articleItemList) <= 6}">
                         <canvas th:id="totalResult" ></canvas>
                     </div>
-                    <div style="height: 700px" th:if="${#lists.size(articleItemList) > 6}">
-                        <canvas th:id="totalResult" ></canvas>
+                    <div style="height: 500px" th:if="${#lists.size(articleItemList) > 6}">
+                        <canvas th:id="totalResult"></canvas>
                     </div>
                 </div>
             </div>
@@ -55,12 +52,14 @@
                     </div>
                 </div>
             </div>
+
             <div class="stats-small stats-small--1 card card-small rounded-2xl shadow-md">
                 <div class="card-body ">
                     <div th:each="articleItem,stat : ${articleItemList}">
-                        <div class="stats-small__data text-center border-bottom  rounded mb-2">
-                            <span class="stats-small__label pb-1 text-uppercase" th:text="${(stat.index+1+'.')+articleItem.content}"></span>
-                            <h4><span class=" count" th:text="${articleItem.total}"></span></h4>
+                        <div class="stats-small__data text-center border-bottom rounded mb-2">
+                            <span class="stats-small__label pb-1 text-uppercase"
+                                  th:text="${(stat.index+1+'.')+articleItem.content}"></span>
+                            <h4><span class="count" th:text="${articleItem.total}"></span></h4>
                         </div>
                     </div>
                     <div>
@@ -69,9 +68,10 @@
                                 <span>총 투표수 30을 넘어야 통계 결과를 얻을 수 있습니다.</span>
                             </h6>
                         </th:block>
+
                         <th:block th:unless="${rejectResultPage}">
                             <h6 class="font-weight-bold border p-2 bg-info rounded bg-light ">
-                                <span th:text="${statsResult.result} ? '통계 계산을 통해 해당 투표지에는 선호도 차이가 있음이 증명되었습니다.' : '통계 계산을 통해 해당 투표지에는 선호도 차이가 없음이 증명되었습니다.'"></span>
+                                <span th:text="${statsResult.result} ? '통계 계산을 통해 나온 투표 결과에 선호도 차이가 있다고 볼 수 있습니다' : '통계 계산을 통해 나온 투표 결과에 선호도 차이가 없다고 볼 수 있습니다.'"></span>
                             </h6>
                         </th:block>
                     </div>
@@ -81,11 +81,27 @@
         <!-- 결과 수치 end -->
     </div>
 
+    <div  th:if="${statsResult.result}" class="col-lg-11 col-md-12 col-sm-12 mb-4">
+        <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
+            <h6 class="font-weight-bold border p-2 bg-light rounded w-full text-center mt-2 mx-2">
+                <span th:text="|선택지('${maxArticleItemContent}') 이(가) ${maxArticleItemTotal}표(${percentage}%) 로 주된 의견이라 볼 수 있습니다|"></span>
+            </h6>
+        </div>
+    </div>
+
+    <div th:if="${rejectResultPage}" class="col-lg-11 col-md-12 col-sm-12 mb-4">
+        <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
+            <h6 class="font-weight-bold border p-2 bg-light rounded w-full text-center mt-2 mx-2">
+                <span th:text="|선택지('${maxArticleItemContent}') 이(가) ${maxArticleItemTotal}표로 우세합니다|"></span>
+            </h6>
+        </div>
+    </div>
+
     <!-- 성별에 대한 결과 start -->
     <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
         <div class="card card-small rounded-2xl shadow-md">
             <h5 class="card-header border-bottom text-center font-weight-bold">
-                남녀 투표 결과
+                남녀별 투표 결과
             </h5>
             <div class="card-body row d-flex py-0 mb-3 justify-content-around">
                 <div class="col-lg-12 d-flex justify-content-center">
@@ -98,21 +114,21 @@
                             <div class="col-lg-5 col-md-5 col-sm-5 col-5 text-center border rounded p-3 m-2">
                                 <h6><span class="badge badge-secondary py-2 px-4 font">남자</span></h6>
                                 <div th:if="${statsResult.male}" id="maleResult"></div>
-                                <div th:unless="${statsResult.male}" class="font-weight-bold">해당 없음</div>
+                                <div th:unless="${statsResult.male}" class="font-weight-bold">선호도 차이x</div>
                             </div>
-                            <div class="col-lg-5 col-md-5 col-sm-5 col-5 text-center border rounded p-3 m-2" >
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-5 text-center border rounded p-3 m-2">
                                 <h6><span class="badge badge-secondary py-2 px-4">여자</span></h6>
                                 <div th:if="${statsResult.female}" id="femaleResult"></div>
-                                <div th:unless="${statsResult.female}" class="font-weight-bold">해당 없음</div>
+                                <div th:unless="${statsResult.female}" class="font-weight-bold">선호도 차이x</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div th:each="num : ${#numbers.sequence(1,2)}" >
+                <div th:each="num : ${#numbers.sequence(1,2)}">
                     <div class="col-lg-12 col-md-12 col-sm-12 mb-5">
                         <h6 class="m-0 text-center font-weight-bold" th:if="${num == 1}" th:text="남자"></h6>
                         <h6 class="m-0 text-center font-weight-bold" th:if="${num != 1}" th:text="여자"></h6>
-                        <canvas th:id="genderResult+${num}" ></canvas>
+                        <canvas th:id="genderResult+${num}" width="230px"></canvas>
                     </div>
                 </div>
             </div>
@@ -136,36 +152,37 @@
                             <div class="col-lg-2 col-md-4 col-sm-4 col-6 text-center border rounded p-3 m-2">
                                 <h6><span class="badge badge-secondary">10대</span></h6>
                                 <div th:if="${statsResult.age10}" id="age10Result"></div>
-                                <div th:unless="${statsResult.age10}" class="font-weight-bold">해당 없음</div>
+                                <div th:unless="${statsResult.age10}" class="font-weight-bold">선호도 차이x</div>
                             </div>
                             <div class="col-lg-2 col-md-4 col-sm-4 col-6 text-center border rounded p-3 m-2 ">
                                 <h6><span class="badge badge-secondary">20대</span></h6>
                                 <div th:if="${statsResult.age20}" id="age20Result"></div>
-                                <div th:unless="${statsResult.age20}" class="font-weight-bold">해당 없음</div>
+                                <div th:unless="${statsResult.age20}" class="font-weight-bold">선호도 차이x</div>
                             </div>
                             <div class="col-lg-2 col-md-4 col-sm-4 col-6 text-center border rounded p-3 m-2">
                                 <h6><span class="badge badge-secondary">30대</span></h6>
                                 <div th:if="${statsResult.age30}" id="age30Result"></div>
-                                <div th:unless="${statsResult.age30}" class="font-weight-bold">해당 없음</div>
+                                <div th:unless="${statsResult.age30}" class="font-weight-bold">선호도 차이x</div>
                             </div>
                             <div class="col-lg-2 col-md-4 col-sm-4 col-6 text-center border rounded p-3 m-2">
                                 <h6><span class="badge badge-secondary">40대</span></h6>
                                 <div th:if="${statsResult.age40}" id="age40Result"></div>
-                                <div th:unless="${statsResult.age40}" class="font-weight-bold">해당 없음</div>
+                                <div th:unless="${statsResult.age40}" class="font-weight-bold">선호도 차이x</div>
                             </div>
                             <div class="col-lg-2 col-md-4 col-sm-4 col-6 text-center border rounded p-3 m-2">
                                 <h6><span class="badge badge-secondary">50대 이상</span></h6>
                                 <div th:if="${statsResult.ageOver50}" id="ageOver50Result"></div>
-                                <div th:unless="${statsResult.ageOver50}" class="font-weight-bold">해당 없음</div>
+                                <div th:unless="${statsResult.ageOver50}" class="font-weight-bold">선호도 차이x</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div th:each="num : ${#numbers.sequence(1,5)}" >
+                <div th:each="num : ${#numbers.sequence(1,5)}">
                     <div class="col-lg-12 col-md-12 col-sm-12 mb-5">
                         <h6 class="m-0 text-center font-weight-bold" th:if="${num != 5}" th:text="${num*10}+대"></h6>
-                        <h6 class="m-0 text-center font-weight-bold" th:if="${num == 5}" th:text="${num*10}+'대 이상'"></h6>
-                        <canvas th:id="ageResult+${num}" ></canvas>
+                        <h6 class="m-0 text-center font-weight-bold" th:if="${num == 5}"
+                            th:text="${num*10}+'대 이상'"></h6>
+                        <canvas th:id="ageResult+${num}" width="230px"></canvas>
                     </div>
                 </div>
             </div>
@@ -175,10 +192,10 @@
     <!-- 나이에 대한 결과 end -->
     <!-- sns start-->
     <div class="ml-3">
-            <button type="button" id="shareTw" class="link-icon twitter"></button>
-            <button type="button" id="shareFb" class="link-icon facebook"></button>
-            <button type="button" id="shareKt" class="link-icon kakao"></button>
-            <button type="button" id="shareKs" class="link-icon kakaoStory"></button>
+        <button type="button" id="shareTw" class="link-icon twitter"></button>
+        <button type="button" id="shareFb" class="link-icon facebook"></button>
+        <button type="button" id="shareKt" class="link-icon kakao"></button>
+        <button type="button" id="shareKs" class="link-icon kakaoStory"></button>
     </div>
     <!-- sns end-->
     <!--/*    댓글 start   */-->
@@ -194,7 +211,8 @@
                     </div>
                     <div>
                         <label for="content" class="form-label m-0 pl-1">내용</label>
-                        <textarea th:field="*{content}" class="form-control comment-form" onkeydown='counter()' rows="3" placeholder="내용을 입력하세요." ></textarea>
+                        <textarea th:field="*{content}" class="form-control comment-form" onkeydown='counter()' rows="3"
+                                  placeholder="내용을 입력하세요."></textarea>
                         <span class="float-right text-muted">(0/200)</span>
                     </div>
                     <input type="submit" th:value="저장하기" class="btn btn-primary btn-block font-weight-bold my-1"/>
@@ -214,7 +232,8 @@
                     </div>
                     <div>
                         <label for="content" class="form-label m-0 pl-1">내용</label>
-                        <textarea th:field="*{content}" id="content" class="form-control comment-form" onkeydown='counter()' rows="3" placeholder="내용을 입력하세요." ></textarea>
+                        <textarea th:field="*{content}" id="content" class="form-control comment-form"
+                                  onkeydown='counter()' rows="3" placeholder="내용을 입력하세요."></textarea>
                         <span class="float-right text-muted">(0/200)</span>
                     </div>
                     <input type="submit" th:value="저장하기" class="btn btn-primary btn-block font-weight-bold my-1"/>
@@ -226,26 +245,38 @@
                     <div class="blog-comments__avatar d-flex justify-content-between mr-3">
                         <div class="item d-flex">
                             <!--/*회원 비회원 공통 부분 start*/-->
-                            <div th:if="${comment.author != null}" th:text="${comment.author.getNickname()}" class="font-weight-bold">익명</div>
-                            <div th:if="${comment.tempNickname != null}" th:text="${comment.getTempNickname()}" class="font-weight-bold">익명</div>
-                            <div th:text="${#temporals.format(comment.getCreatedDate, 'yyyy-MM-dd HH:mm:ss')}" class="small text-muted ml-2 mt-1">1 분전</div>
+                            <div th:if="${comment.author != null}" th:text="${comment.author.getNickname()}"
+                                 class="font-weight-bold">익명
+                            </div>
+                            <div th:if="${comment.tempNickname != null}" th:text="${comment.getTempNickname()}"
+                                 class="font-weight-bold">익명
+                            </div>
+                            <div th:text="${#temporals.format(comment.getCreatedDate, 'yyyy-MM-dd HH:mm:ss')}"
+                                 class="small text-muted ml-2 mt-1">1 분전
+                            </div>
                             <div th:text="${comment.getModifiedDate()}" class="d-none"></div>
 
                             <!--/*  추천 start*/-->
                             <th:block th:if="${#authentication.name != 'anonymousUser'}">
                                 <th:block th:if="${#sets.contains(votedComments, comment)}">
-                                    <a href="javascript:void(0);" th:myId="${comment.id}" th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button" class="material-icons text-dark  ml-2 px-1 float-right">
+                                    <a href="javascript:void(0);" th:myId="${comment.id}"
+                                       th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button"
+                                       class="material-icons text-dark  ml-2 px-1 float-right">
                                         thumb_up_alt
                                     </a>
                                 </th:block>
                                 <th:block th:unless="${#sets.contains(votedComments, comment)}">
-                                    <a href="javascript:void(0);" th:myId="${comment.id}" th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button" class="material-icons text-dark  ml-2 px-1 float-right">
+                                    <a href="javascript:void(0);" th:myId="${comment.id}"
+                                       th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button"
+                                       class="material-icons text-dark  ml-2 px-1 float-right">
                                         thumb_up_off_alt
                                     </a>
                                 </th:block>
                             </th:block>
                             <th:block th:if="${#authentication.name == 'anonymousUser'}">
-                                <a href="javascript:void(0);" th:myId="${comment.id}" th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button" class="material-icons text-dark  ml-2 px-1 float-right">
+                                <a href="javascript:void(0);" th:myId="${comment.id}"
+                                   th:onclick="pushVoteBtn(event, this.getAttribute('myId'))" type="button"
+                                   class="material-icons text-dark  ml-2 px-1 float-right">
                                     thumb_up_off_alt
                                 </a>
                             </th:block>
@@ -254,13 +285,17 @@
                             <!--/*회원 비회원 공통 부분 end*/-->
                             <!--/*회원이 보는 댓글 버튼 start*/-->
                             <div th:if="${comment.author != null}" class="d-inline">
-                                <a th:if="${#authentication.name == comment.author.getMemberId()}" href="javascript:void(0);" th:myContent="${comment.content}" th:onclick="createCommentModifyForm(event, this.getAttribute('myContent'))"  type="button" class="btn-link pl-1">
+                                <a th:if="${#authentication.name == comment.author.getMemberId()}"
+                                   href="javascript:void(0);" th:myContent="${comment.content}"
+                                   th:onclick="createCommentModifyForm(event, this.getAttribute('myContent'))"
+                                   type="button" class="btn-link pl-1">
                                     <span class="text-success">
                                         <i class="material-icons">edit</i>
                                     </span>
                                     수정
                                 </a>
-                                <a th:if="${#authentication.name == comment.author.getMemberId()}" th:href="@{|/comment/delete/${comment.id}|}" type="button" class="btn-link">
+                                <a th:if="${#authentication.name == comment.author.getMemberId()}"
+                                   th:href="@{|/comment/delete/${comment.id}|}" type="button" class="btn-link">
                                     <span class="text-light">
                                         <i class="material-icons">delete</i>
                                     </span>
@@ -270,22 +305,24 @@
                             <!--/*회원이 보는 댓글 버튼 end*/-->
                             <!--/*비회원이 보는 댓글 버튼 start*/-->
                             <div th:if="${#authentication.name == 'anonymousUser'}" class="d-inline">
-                                <a href="javascript:void(0);" th:onclick="createCommentValidForm(event, 'check')" class="btn-link pl-1" >
+                                <a href="javascript:void(0);" th:onclick="createCommentValidForm(event, 'check')"
+                                   class="btn-link pl-1">
                                     <span class="text-success">
                                         <i class="material-icons">edit</i>
                                     </span>
                                     수정
                                 </a>
-                                <a href="javascript:void(0);" type="button" th:onclick="createCommentValidForm(event, 'delete')" class="btn-link"  >
+                                <a href="javascript:void(0);" type="button"
+                                   th:onclick="createCommentValidForm(event, 'delete')" class="btn-link">
                                     <span class="text-light">
                                         <i class="material-icons">delete</i>
                                     </span>
                                     삭제
                                 </a>
                                 <!--/*-->
-                                        ==========================
-                                               toast layout
-                                        ==========================
+                                ==========================
+                                toast layout
+                                ==========================
                                 <!--*/-->
                                 <div class="toast-valid d-none position-absolute p-1 rounded shadow-sm" style="z-index:1;background-color:#b4b5b6">
                                     <div>
@@ -294,31 +331,40 @@
                                         <input type="password" name="tempPassword" value="" placeholder="비밀번호를 입력해주세요" class="border form-control-sm input-sm" required>
                                     </div>
                                     <div class="btn-group-sm mt-1  float-right">
-                                        <button type="button" class="btn btn-secondary border-0" th:myContent="${comment.content}" th:myId="${comment.id}" th:onclick="sendCommentValidForm(event, this.getAttribute('myContent'),this.getAttribute('myId'))">
+                                        <button type="button" class="btn btn-secondary border-0"
+                                                th:myContent="${comment.content}" th:myId="${comment.id}"
+                                                th:onclick="sendCommentValidForm(event, this.getAttribute('myContent'),this.getAttribute('myId'))">
                                             확인
                                         </button>
-                                        <button type="button" onclick="nonClearCommentModifyForm()" class="btn btn-secondary border-0 text-center">취소</button>
+                                        <button type="button" onclick="nonClearCommentModifyForm()"
+                                                class="btn btn-secondary border-0 text-center">취소
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             <!--/*비회원이 보는 댓글 버튼 end*/-->
                         </div>
                         <!--/*-->
-                                ==========================
-                                           신고
-                                ==========================
+                        ==========================
+                        신고
+                        ==========================
                         <!--*/-->
                         <div class="item">
                             <!--/*비회원 댓글 모두 신고 표시*/-->
-                            <button th:if="${comment.author == null}" th:myId="${comment.id}" th:onclick="pushReportBtn(event, this.getAttribute('myId'))" type="button" class="btn btn-white btn-sm">
+                            <button th:if="${comment.author == null}" th:myId="${comment.id}"
+                                    th:onclick="pushReportBtn(event, this.getAttribute('myId'))" type="button"
+                                    class="btn btn-white btn-sm">
                                     <span class="text-danger">
                                         <i class="material-icons">report</i>
                                     </span>
-                                    신고
+                                신고
                             </button>
                             <!--/*회원 댓글 중 본인 제외하고 모두 신고 표시*/-->
                             <th:block th:unless="${comment.author == null}">
-                                <button th:if="${#authentication.name != comment.author.getMemberId()}" th:myId="${comment.id}" th:onclick="pushReportBtn(event, this.getAttribute('myId'))" type="button" class="btn btn-white btn-sm">
+                                <button th:if="${#authentication.name != comment.author.getMemberId()}"
+                                        th:myId="${comment.id}"
+                                        th:onclick="pushReportBtn(event, this.getAttribute('myId'))" type="button"
+                                        class="btn btn-white btn-sm">
                                     <span class="text-danger">
                                         <i class="material-icons">report</i>
                                     </span>
@@ -328,14 +374,15 @@
                         </div>
                     </div>
                     <!--/*-->
-                            ==========================
-                                    댓글 수정 폼
-                            ==========================
+                    ==========================
+                    댓글 수정 폼
+                    ==========================
                     <!--*/-->
                     <div class="blog-comments__content ml-3">
                         <!--/*회원 댓글 수정폼*/-->
-                        <form th:if="${#authentication.name != 'anonymousUser'}" th:action="@{|/comment/modify/${comment.id}|}" method="post">
-                            <p class="m-0 my-1 mb-2 font-weight-light" >[[${comment.content}]]</p>
+                        <form th:if="${#authentication.name != 'anonymousUser'}"
+                              th:action="@{|/comment/modify/${comment.id}|}" method="post">
+                            <p class="m-0 my-1 mb-2 font-weight-light">[[${comment.content}]]</p>
                         </form>
                         <!--/*비회원 댓글 수정폼*/-->
                         <form th:if="${#authentication.name == 'anonymousUser'}" th:action="@{|/comment/non-modify/${comment.id}|}" method="post">
@@ -346,7 +393,7 @@
             </div>
             <!--/*-->
             ==========================
-                    댓글 페이징
+            댓글 페이징
             ==========================
             <!--*/-->
             <div class="card-footer border-top">
@@ -355,7 +402,7 @@
                         <!-- 페이징처리 시작 -->
                         <div th:if="${!commentList.isEmpty()}">
                             <ul class="pagination justify-content-center">
-                                <li class="page-item" th:classappend="${!commentList.hasPrevious} ? 'disabled'" >
+                                <li class="page-item" th:classappend="${!commentList.hasPrevious} ? 'disabled'">
                                     <a class="page-link"
                                        th:href="@{|?page=0|}">
                                         <span class="text-primary">
@@ -366,7 +413,7 @@
                                 <li class="page-item" th:classappend="${!commentList.hasPrevious} ? 'disabled'">
                                     <a class="page-link"
                                        th:href="@{|?page=${commentList.number-1}|}">
-                                        <span class="text-primary" >
+                                        <span class="text-primary">
                                             <i class="material-icons">keyboard_arrow_left</i>
                                         </span>
                                     </a>
@@ -379,15 +426,15 @@
                                 </li>
                                 <li class="page-item" th:classappend="${!commentList.hasNext} ? 'disabled'">
                                     <a class="page-link" th:href="@{|?page=${commentList.number+1}|}">
-                                        <span class="text-primary" >
+                                        <span class="text-primary">
                                             <i class="material-icons">keyboard_arrow_right</i>
                                         </span>
                                     </a>
                                 </li>
-                                <li class="page-item" th:classappend="${!commentList.hasNext} ? 'disabled'" >
+                                <li class="page-item" th:classappend="${!commentList.hasNext} ? 'disabled'">
                                     <a class="page-link"
                                        th:href="@{|?page=${commentList.totalPages-1}|}">
-                                        <span class="text-primary" >
+                                        <span class="text-primary">
                                             <i class="material-icons">last_page</i>
                                         </span>
                                     </a>
@@ -401,8 +448,8 @@
         </div>
     </div>
     <!--/*    댓글 end    */-->
-<!--    html밖에다가 하면 적용이 잘 안됨-->
-<script type="text/javascript" th:inline="javascript">
+    <!--    html밖에다가 하면 적용이 잘 안됨-->
+    <script type="text/javascript" th:inline="javascript">
 
     Chart.register(ChartDataLabels); // 차트에 value 보이게 설정
 
@@ -661,7 +708,11 @@
         });
     }
 
-</script>
+
+
+
+
+    </script>
 </div>
 </html>
 th:data-uri="@{|/comment/report/${comment.id}|}"
@@ -703,6 +754,10 @@ th:data-uri="@{|/comment/report/${comment.id}|}"
             }
         },
     });
+
+
+
+
 </script>
 
 <script th:inline="javascript">
@@ -942,4 +997,8 @@ th:data-uri="@{|/comment/report/${comment.id}|}"
                 alert(err);
             });
     }
+
+
+
+
 </script>
