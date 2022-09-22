@@ -252,6 +252,7 @@ public class ArticleController {
                                 @RequestParam(value="page", defaultValue="0") int page, Principal principal) {
 
         Article article = articleService.findById(id);
+        statsResultService.calculate(article);
         // 최소 투표수 체크
         int total = articleItemService.getVoteTotal(article);
         if (total < MINIMUM_VOTES) {
@@ -269,7 +270,9 @@ public class ArticleController {
 
         StatsResult statsResult = statsResultService.getStatsResultByArticle(article);
         List<ArticleItem> articleItemList = articleItemService.findArticleItemByArticleId(id);
-
+        String maxArticleItemContent = articleItemService.getMaxVoteArticleItemContent(article);
+        int maxArticleItemTotal = articleItemService.getMaxVoteArticleItemTotal(article);
+        String percentage = articleItemService.getPercentage(article);
         long[][] articleItem2dArr = statsResultService.listTo2DArray(articleItemList);
         articleItem2dArr = statsResultService.transpose(articleItem2dArr);
 
@@ -278,6 +281,9 @@ public class ArticleController {
         model.addAttribute("statsResult", statsResult);
 
         model.addAttribute("articleItemList", articleItemList);
+        model.addAttribute("maxArticleItemContent", maxArticleItemContent);
+        model.addAttribute("maxArticleItemTotal", maxArticleItemTotal);
+        model.addAttribute("percentage", percentage);
         model.addAttribute("articleItem2dArr", articleItem2dArr);
 
 
