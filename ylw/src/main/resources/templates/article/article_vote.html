@@ -2,7 +2,8 @@
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
         xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-        layout:decorate="~{layout}">
+        layout:decorate="~{layout}"
+>
 
 <div layout:fragment="content" class="main-content-container container px-4">
 
@@ -24,11 +25,14 @@
 
                     <div class="position-absolute d-flex flex-column" style="top: 10px; right: 20px;">
                         <div class="d-flex flex-row justify-content-end">
-                            <a th:id="thumb_up"
+
+                            <i th:id="recommend"
                                th:data-uri="@{|/article/recommend/${article.id}|}"
                                style="font-size: 35px; cursor: pointer;"
-                               class="recommend material-icons text-dark mr-2">thumb_up_off_alt</a>
-                            <div class="mx-2 d-flex justify-content-center" style="font-size: 28px"
+                               class="fa-thumbs-up mr-2"
+                               th:classappend="${exist == true} ? 'fa-solid' : 'fa-regular'"></i>
+
+                            <div th:id="recommendCount" class="mx-2 d-flex justify-content-center" style="font-size: 28px"
                                  th:text="${#sets.size(article.recommends)}"></div>
                         </div>
                         <div class="font-weight-light">
@@ -136,11 +140,10 @@
                                             </button>
                                         </div>
                                     </div>
-
-
                                 </div>
-                                <div sec:authorize="isAuthenticated()"
-                                     th:id="isExist" style="display: none" th:text="${exist}"></div>
+
+                                <input sec:authorize="isAuthenticated()" style="display: none"
+                                       id="username" th:value="${#authentication.getPrincipal().getUsername()}"/>
 
                                 <!-- 경고 메시지 띄우기 시작-->
                                 <div id="redirectForm" style="display: none"
@@ -173,18 +176,55 @@
     /**
      *  추천
      */
-    const recommend_elements = document.getElementsByClassName("recommend");
-    Array.from(recommend_elements).forEach(function (element) {
-        element.addEventListener('click', function () {
+    const recommend_elements = document.getElementById("recommend");
+    let exist = [[ ${exist}]];
 
-            if (document.getElementById("isExist") != null && document.getElementById("isExist").innerText == "true") {
-                if (confirm("추천을 취소하시겠습니까?")) {
-                    location.href = this.dataset.uri;
-                }
-            } else {
-                location.href = this.dataset.uri;
+    recommend_elements.addEventListener('click', function () {
+        console.log(exist);
+
+        if(![[${#authentication.name != 'anonymousUser'}]]) {
+            alert("로그인 후 이용해주세요");
+            return false;
+        }
+
+        // 이미 추천
+        if (exist == true) {
+            if (confirm("추천을 취소하시겠습니까?")) {
+                fetch(recommend_elements.dataset.uri, {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.result == "success") {
+                            console.log("성공");
+                            exist = false;
+                            document.getElementById("recommendCount").innerText--;
+                            recommend_elements.classList.toggle("fa-solid")
+                            recommend_elements.classList.toggle("fa-regular")
+
+                        }
+                    });
             }
-        });
+        } else {
+            fetch(recommend_elements.dataset.uri,{
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.result == "success") {
+                        console.log("성공");
+                        exist = true;
+                        document.getElementById("recommendCount").innerText++;
+                        recommend_elements.classList.toggle("fa-solid")
+                        recommend_elements.classList.toggle("fa-regular")
+                    }
+                });
+        }
+
     });
 
 
@@ -196,11 +236,6 @@
     function getGender(__gender) {
         const genderSelected = __gender.value;
         $("#genderSelect").val(genderSelected);
-    }
-
-    // 최소 투표조건에 맞지 않으면 결과창에 못 들어간다는
-    if ([[${message}]] != null) {
-        alert([[${message}]]);
     }
 
     // 공백 체크
