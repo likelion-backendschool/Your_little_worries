@@ -86,8 +86,11 @@ public class MemberController {
     public String my_page(Principal principal, Model model) {
         List<Member> members = memberService.findAll();
         Member member = memberService.findByMemberId(principal.getName());
-        memberService.evalLevel(member);
+        memberService.evalEnrollScore(member);
+        memberService.evalParticipateScore(member);
+        memberService.evalPopularVoteScore(member);
         memberService.evalTotalScore(member);
+        memberService.evalLevel(member);
         List<Article> myArticles = articleService.findByAuthor(member);
         model.addAttribute("members", members);
         model.addAttribute("member",member);
