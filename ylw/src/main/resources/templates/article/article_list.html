@@ -26,7 +26,13 @@
                     </a>
                 </li>
                 <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                    th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                    th:if="${
+                            (( paging.number == 0 ) and ( page <= paging.number+4 )) or
+                            (( paging.number == 1 ) and ( page <= paging.number+3 and page >= paging.number-1)) or
+                            (( paging.number > 1 and paging.number < paging.totalPages-2 ) and ( page <= paging.number+2 and page >= paging.number-2 )) or
+                            (( paging.number == paging.totalPages-2 ) and ( page >= paging.number-3 and page <= paging.number+1 )) or
+                            (( paging.number == paging.totalPages-1 ) and ( page >= paging.number-4 ))
+                          }"
                     th:classappend="${page == paging.number} ? 'active'"
                     class="page-item">
                     <a th:text="${page+1}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
@@ -48,28 +54,30 @@
         <input type="hidden" id="page" name="page" th:value="${paging.number}">
     </form>
 
-    <div th:each="article,loop : ${paging}">
-        <div class="card card-small card-post mb-4">
-            <div class="card-body">
-                <h5 class="card-title" th:text="${article.title}"></h5>
-                <p class="card-text text-muted" th:text="${article.content}"></p>
-            </div>
-            <div class="card-footer border-top d-flex">
-                <div class="card-post__author d-flex">
-                    <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small"
-                         th:if="${article.author.memberImgPath}"
-                         th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
-                    <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small"
-                         th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
-                    <div class="d-flex flex-column justify-content-center ml-3">
-                        <span class="card-post__author-name" th:text="${article.author.nickname}"></span>
-                        <small class="text-muted"
-                               th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd')}"></small>
-                    </div>
+    <div class="d-flex align-content-start flex-wrap">
+        <div class="col-12 col-md-6" th:each="article,loop : ${paging}">
+            <div class="card card-small card-post mb-4">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${article.title}"></h5>
+                    <p class="card-text text-muted" th:text="${article.content}"></p>
                 </div>
-                <div class="my-auto ml-auto">
-                    <a class="btn btn-sm btn-accent ml-auto" th:href="@{|/article/vote/${article.id}|}">
-                        <i class="material-icons">file_copy</i> 투표하기</a>
+                <div class="card-footer border-top d-flex">
+                    <div class="card-post__author d-flex">
+                        <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small"
+                             th:if="${article.author.memberImgPath}"
+                             th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                        <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small"
+                             th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
+                        <div class="d-flex flex-column justify-content-center ml-3">
+                            <span class="card-post__author-name" th:text="${article.author.nickname}"></span>
+                            <small class="text-muted"
+                                   th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd')}"></small>
+                        </div>
+                    </div>
+                    <div class="my-auto ml-auto">
+                        <a class="btn btn-sm btn-accent ml-auto" th:href="@{|/article/vote/${article.id}|}">
+                            <i class="material-icons">file_copy</i> 투표하기</a>
+                    </div>
                 </div>
             </div>
         </div>

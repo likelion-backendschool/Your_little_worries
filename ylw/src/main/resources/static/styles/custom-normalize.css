@@ -22,6 +22,11 @@
     }
 }
 
+@media (max-width: 768px) {
+    .main-content {
+        padding-bottom: 300px !important;
+    }
+}
 
 
 
