@@ -38,6 +38,9 @@
     <th:block layout:fragment="content"></th:block>
 
     <footer th:replace="footer :: footerFragment"></footer>
+    <a id="back-to-top" href="#" class="btn btn-info  rounded shadow  back-to-top" role="button">
+        <i class="material-icons" style="font-size:32px">keyboard_arrow_up</i>
+    </a>
 </main>
 <!-- Main Footer -->
 
@@ -53,10 +56,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 <script src="https://unpkg.com/shards-ui@latest/dist/js/shards.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sharrre/2.0.1/jquery.sharrre.min.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script src="/scripts/extras.1.1.0.min.js"></script>
 <script src="/scripts/shards-dashboards.1.1.0.min.js"></script>
 <script src="/scripts/app/app-blog-new-post.1.1.0.js"></script>
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script src="/scripts/app/app-util.js"></script>
+
 <th:block layout:fragment="script"></th:block>
+
 </body>
 </html>

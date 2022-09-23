@@ -96,7 +96,6 @@
             </h6>
         </div>
     </div>
-
     <!-- 성별에 대한 결과 start -->
     <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
         <div class="card card-small rounded-2xl shadow-md">
@@ -215,7 +214,7 @@
                                   placeholder="내용을 입력하세요."></textarea>
                         <span class="float-right text-muted">(0/200)</span>
                     </div>
-                    <input type="submit" th:value="저장하기" class="btn btn-primary btn-block font-weight-bold my-1"/>
+                    <input type="submit" th:value="저장하기" class="commentFormBtn btn btn-primary btn-block font-weight-bold my-1"/>
                 </form>
                 <!--/*   비회원용 댓글 form*/-->
                 <form sec:authorize="isAnonymous()" th:action="@{|/comment/non-create/${article.getId()}|}" th:object="${nonMemberCommentForm}" method="post">
@@ -224,11 +223,11 @@
                     </div>
                     <div class="mb-2">
                         <label for="tempNickname" class="form-label m-0 pl-1">임시 닉네임</label>
-                        <input type="text" class="form-control"  th:field="*{tempNickname}" placeholder="닉네임" >
+                        <input type="text" class="form-control"  th:field="*{tempNickname}" placeholder="닉네임" maxlength="20" >
                     </div>
                     <div class="mb-3">
                         <label for="tempPassword" class="form-label m-0 pl-1">임시 비밀번호</label>
-                        <input type="password" class="form-control" th:field="*{tempPassword}"  placeholder="비밀번호" >
+                        <input type="password" class="form-control" th:field="*{tempPassword}"  placeholder="비밀번호" maxlength="20">
                     </div>
                     <div>
                         <label for="content" class="form-label m-0 pl-1">내용</label>
@@ -236,7 +235,7 @@
                                   onkeydown='counter()' rows="3" placeholder="내용을 입력하세요."></textarea>
                         <span class="float-right text-muted">(0/200)</span>
                     </div>
-                    <input type="submit" th:value="저장하기" class="btn btn-primary btn-block font-weight-bold my-1"/>
+                    <input type="submit" th:value="저장하기" class="commentFormBtn btn btn-primary btn-block font-weight-bold my-1"/>
                 </form>
             </div>
             <!--/*    댓글 form end*/-->
@@ -246,10 +245,10 @@
                         <div class="item d-flex">
                             <!--/*회원 비회원 공통 부분 start*/-->
                             <div th:if="${comment.author != null}" th:text="${comment.author.getNickname()}"
-                                 class="font-weight-bold">익명
+                                 class="font-weight-bold" style="font-size:16px">익명
                             </div>
                             <div th:if="${comment.tempNickname != null}" th:text="${comment.getTempNickname()}"
-                                 class="font-weight-bold">익명
+                                 class="font-weight-bold" style="font-size:16px">익명
                             </div>
                             <div th:text="${#temporals.format(comment.getCreatedDate, 'yyyy-MM-dd HH:mm:ss')}"
                                  class="small text-muted ml-2 mt-1">1 분전
@@ -419,10 +418,16 @@
                                     </a>
                                 </li>
                                 <li th:each="page: ${#numbers.sequence(0, commentList.totalPages-1)}"
-                                    th:if="${page >= commentList.number-5 and page <= commentList.number+5}"
+                                    th:if="${
+                                        (( commentList.number == 0 ) and ( page <= commentList.number+4 )) or
+                                        (( commentList.number == 1 ) and ( page <= commentList.number+3 and page >= commentList.number-1)) or
+                                        (( commentList.number > 1 and commentList.number < commentList.totalPages-2 ) and ( page <= commentList.number+2 and page >= commentList.number-2 )) or
+                                        (( commentList.number == commentList.totalPages-2 ) and ( page >= commentList.number-3 and page <= commentList.number+1 )) or
+                                        (( commentList.number == commentList.totalPages-1 ) and ( page >= commentList.number-4 ))
+                                      }"
                                     th:classappend="${page == commentList.number} ? 'active'"
                                     class="page-item">
-                                    <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                    <a th:text="${page+1}" class="page-link" th:href="@{|?page=${page}|}"></a>
                                 </li>
                                 <li class="page-item" th:classappend="${!commentList.hasNext} ? 'disabled'">
                                     <a class="page-link" th:href="@{|?page=${commentList.number+1}|}">
@@ -447,6 +452,12 @@
             </div>
         </div>
     </div>
+    <style>
+        .back-to-top {
+
+        }
+    </style>
+
     <!--/*    댓글 end    */-->
     <!--    html밖에다가 하면 적용이 잘 안됨-->
     <script type="text/javascript" th:inline="javascript">
@@ -715,7 +726,6 @@
     </script>
 </div>
 </html>
-
 <script type="text/javascript" th:inline="javascript">
     const btnShareTw = document.querySelector('#shareTw');
 
@@ -1002,7 +1012,15 @@
         localStorage.setItem('resultY', this.scrollY);
     }
     if (localStorage.getItem('resultY')) {
-        window.scrollTo({top:localStorage.getItem('resultY')});
-        localStorage.removeItem('resultY');
+        // 페이징 링크인 경우 댓글 상단부분으로 화면전환
+        if (window.location.search.includes("page")) {
+            const commentFormBtn = document.querySelector('.commentFormBtn');
+            const commentFormBtnOffset = commentFormBtn.getBoundingClientRect();
+            window.scrollTo({top: commentFormBtnOffset.top});
+        } else {
+            window.scrollTo({top: localStorage.getItem('resultY')});
+            localStorage.removeItem('resultY');
+        }
+
     }
 </script>
