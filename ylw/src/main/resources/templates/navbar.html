@@ -10,7 +10,7 @@
         <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
             <a class="navbar-brand" href="/" style="line-height: 25px;">
                 <div class="d-table m-auto">
-                    <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-width: 170px; transform: translate(14px, -1px);" src="/images/logo-row.png" alt="Shards Dashboard">
+                    <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-width: 170px; transform: translate(34px, -1px);" src="/images/logo-row.png" alt="Shards Dashboard">
                 </div>
             </a>
             <form th:action="@{/article/search}" method="get" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
@@ -23,44 +23,17 @@
                     <input type="text" id="kw" name="kw" class="navbar-search form-control"  placeholder="투표지를 찾아보세요" aria-label="Search">
                 </div>
             </form>
-            <ul class="navbar-nav border-left flex-row border-right ml-auto">
-                <li class="nav-item border-right dropdown notifications">
-                    <a class="nav-link nav-link-icon text-center" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="nav-link-icon__wrapper">
-                            <i class="material-icons"></i>
-                            <span class="badge badge-pill badge-danger">2</span>
-                        </div>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-small" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">
-                            <div class="notification__icon-wrapper">
-                                <div class="notification__icon">
-                                    <i class="material-icons"></i>
-                                </div>
-                            </div>
-                            <div class="notification__content">
-                                <span class="notification__category">Analytics</span>
-                                <p>Your website’s active users count increased by <span class="text-success text-semibold">28%</span> in the last week. Great job!</p>
-                            </div>
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <div class="notification__icon-wrapper">
-                                <div class="notification__icon">
-                                    <i class="material-icons"></i>
-                                </div>
-                            </div>
-                            <div class="notification__content">
-                                <span class="notification__category">Sales</span>
-                                <p>Last week your store’s sales count decreased by <span class="text-danger text-semibold">5.52%</span>. It could have been worse!</p>
-                            </div>
-                        </a>
-                        <a class="dropdown-item notification__all text-center" href="#"> View all Notifications </a>
-                    </div>
-                </li>
-                <a class="nav-link w-[130px] text-center pt-6 d-flex align-items-center justify-content-center" sec:authorize="isAnonymous()" th:href="@{/member/login}"><i class="fa-solid fa-circle-user"></i> 로그인</a>
+            <ul class="navbar-nav flex-row ml-auto mr-3">
+                <div class="d-flex" sec:authorize="isAnonymous()">
+                    <a class="btn-login nav-link d-flex align-items-center justify-content-center" th:href="@{/member/login}">로그인</a>
+                    <a class="btn-signup nav-link d-flex align-items-center justify-content-center" th:href="@{/member/signup}">회원가입</a>
+                </div>
                 <li sec:authorize="isAuthenticated()" class="nav-item dropdown d-flex align-items-center">
-                    <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-<!--                        <img class="user-avatar rounded-circle mr-2" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />-->
+                    <a class="nav-link dropdown-toggle text-nowrap px-3 d-flex align-items-center" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <img class="user-avatar rounded-circle mr-2" th:if="${#authentication.principal.memberImgPath}"
+                             th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />
+                        <img class="user-avatar rounded-circle mr-2" th:unless="${#authentication.principal.memberImgPath}"
+                             th:src="@{/gen/member.png}"/>
                         <span class="d-none d-md-inline-block" th:text="${#authentication.name}"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-small">

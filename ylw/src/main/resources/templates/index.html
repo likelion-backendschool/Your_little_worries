@@ -4,16 +4,16 @@
         layout:decorate="~{layout}">
 
 <div layout:fragment="content" class="main-content-container container">
-    <div class="alert alert-accent alert-dismissible fade show mb-0 align-middle h-100" role="alert" th:if="${recentNotice != null}">
+    <div class="alert alert-accent alert-dismissible fade show mb-0 align-middle h-100 w-100vw position-sticky" role="alert" th:if="${recentNotice != null}">
         <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true" class="align-middle py-auto">×</span>
+            <span aria-hidden="true" class="align-middle py-auto lh-3 d-flex justify-content-center align-items-center" style="">×</span>
         </button>
         <i class="fa fa-info mx-2 align-middle"></i>
         <a class="text-white h-100" th:href="@{|/notice/detail/${recentNotice.id}|}">
             <strong class="py-auto" th:text="${recentNotice.title}"></strong>
         </a>
     </div>
-    <section class="border-bottom px-4">
+    <section class="border-bottom px-4 pb-2">
         <div class="page-header row no-gutters py-4">
             <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                 <span class="text-uppercase page-subtitle">카테고리별 인기 투표</span>
@@ -47,7 +47,7 @@
                     <div class="card-body pb-2">
                         <h5 class="card-title txt_line" th:text="${article.title}">
                         </h5>
-                        <p class="card-text txt_multi" th:text="${article.content}"></p>
+                        <p class="card-text txt_multi mb-3" th:text="${article.content}"></p>
                         <div class="d-flex flex-row justify-content-between">
                             <div class="text-muted"
                                  th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
@@ -55,7 +55,7 @@
                                  th:text="${article.author.nickname}"></div>
                         </div>
                     </div>
-                    <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-2">
+                    <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-3">
                         <a class="btn btn-accent" th:href="@{|/article/vote/${article.id}|}">
                             <i class="material-icons">how_to_vote</i> 투표하기</a>
                         <a class="btn btn-outline-accent" th:href="@{|/article/result/${article.id}|}">
@@ -65,7 +65,7 @@
             </div>
         </div>
     </section>
-    <section class="border-bottom px-4">
+    <section class="border-bottom px-4 pb-2">
         <div class="page-header row no-gutters py-4">
             <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                 <span class="text-uppercase page-subtitle">가장 최근 투표</span>
@@ -90,7 +90,7 @@
                     <div class="card-body pb-2">
                         <h5 class="card-title txt_line" th:text="${article.title}">
                         </h5>
-                        <p class="card-text txt_multi" th:text="${article.content}"></p>
+                        <p class="card-text txt_multi mb-3" th:text="${article.content}"></p>
                         <div class="d-flex flex-row justify-content-between">
                             <div class="text-muted d-flex align-items-center"
                                  th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
@@ -105,7 +105,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-2">
+                    <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-3">
                         <a class="btn btn-accent" th:href="@{|/article/vote/${article.id}|}">
                             <i class="material-icons">how_to_vote</i> 투표하기</a>
                         <a class="btn btn-outline-accent" th:href="@{|/article/result/${article.id}|}">
@@ -115,7 +115,7 @@
             </div>
         </div>
     </section>
-    <section th:each="category, loop : ${categoryList}" class="border-bottom px-4">
+    <section th:each="category, loop : ${categoryList}" class="border-bottom px-4 pb-2">
         <div class="page-header row no-gutters py-4">
             <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                 <span class="text-uppercase page-subtitle">카테고리</span>
@@ -140,7 +140,7 @@
                     <div class="card-body pb-2">
                         <h5 class="card-title txt_line" th:text="${article.title}">
                         </h5>
-                        <p class="card-text txt_multi" th:text="${article.content}"></p>
+                        <p class="card-text txt_multi mb-3" th:text="${article.content}"></p>
                         <div class="d-flex flex-row align-items-center justify-content-between">
                             <div class="text-muted"
                                  th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
@@ -155,7 +155,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-2">
+                    <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-3">
                         <a class="btn btn-accent" th:href="@{|/article/vote/${article.id}|}">
                             <i class="material-icons">how_to_vote</i> 투표하기</a>
                         <a class="btn btn-outline-accent" th:href="@{|/article/result/${article.id}|}">
