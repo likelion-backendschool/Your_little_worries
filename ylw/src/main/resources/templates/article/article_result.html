@@ -20,7 +20,7 @@
     <!-- Page Header end-->
     <div class="row">
         <!-- total 결과 그래프 start -->
-        <div class="col-lg-8 col-md-12 col-sm-12 mb-4">
+        <div class="col-lg-8 col-md-12 col-sm-12 ">
             <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
                 <div class="card-header border-bottom">
                     <h3 class="m-1">[[${article.title}]]</h3>
@@ -33,7 +33,7 @@
                     <div style="height: 500px" th:if="${3 < #lists.size(articleItemList) && #lists.size(articleItemList) <= 6}">
                         <canvas th:id="totalResult" ></canvas>
                     </div>
-                    <div style="height: 500px" th:if="${#lists.size(articleItemList) > 6}">
+                    <div style="height: 700px" th:if="${#lists.size(articleItemList) > 6}">
                         <canvas th:id="totalResult"></canvas>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
         </div>
         <!-- total 결과 그래프 end -->
         <!-- 결과 수치 start -->
-        <div class="col-lg-4 col-md-12 col-sm-12 mb-4">
+        <div class="col-lg-4 col-md-12 col-sm-12 ">
             <div class="stats-small stats-small--1 card card-small mb-4 rounded-2xl shadow-md">
                 <div class="card-body py-4 d-flex">
                     <div class="d-flex flex-column m-auto">
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <div class="stats-small stats-small--1 card card-small rounded-2xl shadow-md">
+            <div class="stats-small stats-small--1 card card-small rounded-2xl shadow-md mb-4">
                 <div class="card-body ">
                     <div th:each="articleItem,stat : ${articleItemList}">
                         <div class="stats-small__data text-center border-bottom rounded mb-2">
@@ -81,7 +81,7 @@
         <!-- 결과 수치 end -->
     </div>
 
-    <div  th:if="${statsResult.result}" class="col-lg-11 col-md-12 col-sm-12 mb-4">
+    <div th:if="${statsResult.result}" class="col-lg-12 col-md-12 col-sm-12 mb-4">
         <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
             <h6 class="font-weight-bold border p-2 bg-light rounded w-full text-center mt-2 mx-2">
                 <span th:text="|선택지('${maxArticleItemContent}') 이(가) ${maxArticleItemTotal}표(${percentage}%) 로 주된 의견이라 볼 수 있습니다|"></span>
@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    <div th:if="${rejectResultPage}" class="col-lg-11 col-md-12 col-sm-12 mb-4">
+    <div th:if="${rejectResultPage}" class="col-lg-12 col-md-12 col-sm-12 mb-4">
         <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
             <h6 class="font-weight-bold border p-2 bg-light rounded w-full text-center mt-2 mx-2">
                 <span th:text="|선택지('${maxArticleItemContent}') 이(가) ${maxArticleItemTotal}표로 우세합니다|"></span>
@@ -108,7 +108,7 @@
 
                     <div class="container my-4">
                         <div th:if="${rejectResultPage}" class="row justify-content-around font-weight-bold">
-                            <div>투표 수가 너무 적어서 계산을 할 수 없어요.</div>
+                            <div>투표수가 너무 적어서 계산을 할 수 없어요.</div>
                         </div>
                         <div th:unless="${rejectResultPage}" class="row justify-content-around">
                             <div class="col-lg-5 col-md-5 col-sm-5 col-5 text-center border rounded p-3 m-2">
@@ -146,7 +146,7 @@
 
                     <div class="container my-4">
                         <div th:if="${rejectResultPage}" class="row justify-content-around font-weight-bold">
-                            <div>투표 수가 너무 적어서 계산을 할 수 없어요.</div>
+                            <div>투표수가 너무 적어서 계산을 할 수 없어요.</div>
                         </div>
                         <div th:unless="${rejectResultPage}" class="row justify-content-around">
                             <div class="col-lg-2 col-md-4 col-sm-4 col-6 text-center border rounded p-3 m-2">
@@ -715,7 +715,6 @@
     </script>
 </div>
 </html>
-th:data-uri="@{|/comment/report/${comment.id}|}"
 
 <script type="text/javascript" th:inline="javascript">
     const btnShareTw = document.querySelector('#shareTw');
@@ -754,15 +753,9 @@ th:data-uri="@{|/comment/report/${comment.id}|}"
             }
         },
     });
-
-
-
-
 </script>
 
 <script th:inline="javascript">
-
-
     // 글자 수 체크
     function counter() {
         let content = document.querySelector('.comment-form');
@@ -1001,4 +994,15 @@ th:data-uri="@{|/comment/report/${comment.id}|}"
 
 
 
+</script>
+
+<script type="text/javascript">
+    // form 요청 이후 스크롤 유지
+    window.onbeforeunload = (event) => {
+        localStorage.setItem('resultY', this.scrollY);
+    }
+    if (localStorage.getItem('resultY')) {
+        window.scrollTo({top:localStorage.getItem('resultY')});
+        localStorage.removeItem('resultY');
+    }
 </script>

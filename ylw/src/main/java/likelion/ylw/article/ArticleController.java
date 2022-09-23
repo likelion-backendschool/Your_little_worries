@@ -289,9 +289,11 @@ public class ArticleController {
 
         StatsResult statsResult = statsResultService.getStatsResultByArticle(article);
         List<ArticleItem> articleItemList = articleItemService.findArticleItemByArticleId(id);
+
         String maxArticleItemContent = articleItemService.getMaxVoteArticleItemContent(article);
         int maxArticleItemTotal = articleItemService.getMaxVoteArticleItemTotal(article);
         String percentage = articleItemService.getPercentage(article);
+
         long[][] articleItem2dArr = statsResultService.listTo2DArray(articleItemList);
         articleItem2dArr = statsResultService.transpose(articleItem2dArr);
 
