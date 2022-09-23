@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ArticleItemRepository extends JpaRepository<ArticleItem, Integer> {
     List<ArticleItem> findArticleItemByArticleId(Integer articleId);
+
+    ArticleItem findMaxArticleItemByArticleId(int maxId);
 }

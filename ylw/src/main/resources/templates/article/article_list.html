@@ -16,6 +16,33 @@
         </div>
     </div>
 
+    <div th:each="article,loop : ${paging}">
+        <div class="card card-small card-post mb-4">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${article.title}"></h5>
+                <p class="card-text text-muted" th:text="${article.content}"></p>
+            </div>
+            <div class="card-footer border-top d-flex">
+                <div class="card-post__author d-flex">
+                    <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small"
+                         th:if="${article.author.memberImgPath}"
+                         th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                    <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small"
+                         th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
+                    <div class="d-flex flex-column justify-content-center ml-3">
+                        <span class="card-post__author-name" th:text="${article.author.nickname}"></span>
+                        <small class="text-muted"
+                               th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd')}"></small>
+                    </div>
+                </div>
+                <div class="my-auto ml-auto">
+                    <a class="btn btn-sm btn-accent ml-auto" th:href="@{|/article/vote/${article.id}|}">
+                        <i class="material-icons">file_copy</i> 투표하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 페이징처리 시작 -->
     <div class="">
         <div th:if="${!paging.isEmpty()}">
