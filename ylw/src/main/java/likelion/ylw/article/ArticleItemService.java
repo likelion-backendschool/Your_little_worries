@@ -66,7 +66,7 @@ public class ArticleItemService {
 
     public String getMaxVoteArticleItemContent(Article article) {
         List<ArticleItem> articleItems = articleItemRepository.findArticleItemByArticleId(article.getId());
-        int maxTotal = 0;
+        int maxTotal = -1;
         int maxId = 0;
         for (ArticleItem articleItem : articleItems) {
             int total = articleItem.getTotal();
@@ -81,7 +81,7 @@ public class ArticleItemService {
 
     public int getMaxVoteArticleItemTotal(Article article) {
         List<ArticleItem> articleItems = articleItemRepository.findArticleItemByArticleId(article.getId());
-        int maxTotal = 0;
+        int maxTotal = -1;
         int maxId = 0;
         for (ArticleItem articleItem : articleItems) {
             int total = articleItem.getTotal();
