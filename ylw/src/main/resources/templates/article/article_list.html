@@ -9,7 +9,7 @@
         <div class="col-12 col-sm-4 text-center text-sm-left mb-4 mb-sm-0">
             <span class="text-uppercase page-subtitle">카테고리</span>
             <h3 class="page-title" th:text="${category.name}"></h3>
-            <a class="btn btn-lg btn-accent mt-3" th:href="@{/article/create(category = ${category.id})}">
+            <a class="btn btn-lg btn-accent mt-3 ml-3" th:href="@{/article/create(category = ${category.id})}">
                 <i class="material-icons">edit</i>
                 <span th:text="|${category.name} 투표등록|"></span>
             </a>

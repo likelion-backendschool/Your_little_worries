@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="d-flex align-content-start flex-wrap">
-      <div class="col-sm-6 col-lg-4 col-xl-3" th:each="article : ${articleList}">
+      <div class="col-12 col-sm-12 col-md-6 col-lg-4" th:each="article : ${articleList}">
         <div class="card card-small card-post card-post--1 mb-4">
           <div class="card-post__image" th:style="'background-image: url('+ @{|/images/content-management/${article.category.id}.jpg|} + ');'">
             <a th:if="${article.category.id} == 1" th:href="@{|/article/list?category=${article.category.id}|}" class="card-post__category badge badge-pill badge-light"
@@ -49,7 +49,7 @@
                    th:text="${article.author.nickname}"></div>
             </div>
           </div>
-          <div class="card-footer border-top d-flex justify-content-between pt-2 px-3 pb-2">
+          <div class="card-footer d-flex justify-content-between pt-2 px-3 pb-2">
             <a class="btn btn-accent" th:href="@{|/article/vote/${article.id}|}">
               <i class="material-icons">how_to_vote</i> 투표하기</a>
             <a class="btn btn-outline-accent" th:href="@{|/article/result/${article.id}|}">
