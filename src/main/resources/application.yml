@@ -13,9 +13,9 @@ spring:
       restart:
         enabled: true
   datasource:
-    url: jdbc:mariadb://{dbIp:127.0.0.1}:3306/ylw?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
-    username: {dbId:root}
-    password: {dbPw:}
+    url: jdbc:mariadb://db-c0vhj.cdb.ntruss.com:3306/ylw?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
+    username: lldj
+    password: qwe123!@#
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
