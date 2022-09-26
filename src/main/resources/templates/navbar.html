@@ -10,7 +10,7 @@
         <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
             <a class="navbar-brand" href="/" style="line-height: 25px;">
                 <div class="d-table m-auto">
-                    <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-width: 170px; transform: translate(34px, -1px);" src="/images/logo-row.png" alt="Shards Dashboard">
+                    <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-width: 170px;" src="/images/logo-row.png" alt="Shards Dashboard">
                 </div>
             </a>
             <form th:action="@{/article/search}" method="get" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
@@ -24,7 +24,7 @@
                 </div>
             </form>
             <ul class="navbar-nav flex-row ml-auto mr-3">
-                <div class="d-flex" sec:authorize="isAnonymous()">
+                <div class="d-none-540px d-flex" sec:authorize="isAnonymous()">
                     <a class="btn-login nav-link d-flex align-items-center justify-content-center" th:href="@{/member/login}">로그인</a>
                     <a class="btn-signup nav-link d-flex align-items-center justify-content-center" th:href="@{/member/signup}">회원가입</a>
                 </div>
@@ -43,8 +43,6 @@
 <!--                            <i class="material-icons">vertical_split</i> 내 게시물 보기</a>-->
                         <a class="dropdown-item" th:href="@{/article/create}">
                             <i class="material-icons">note_add</i> 투표지 등록하기</a>
-                        <a class="dropdown-item" th:href="@{|/member/rank|}">
-                            <i class="material-icons">note_add</i> 내 랭킹 보기</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-danger" th:href="@{|/member/logout|}">
                             <i class="material-icons text-danger">&#xE879;</i> 로그아웃 </a>
