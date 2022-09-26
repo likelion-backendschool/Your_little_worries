@@ -1,0 +1,17 @@
+spring:
+  sendgrid:
+    api-key: {sendgridApiKey}
+    email: uyeop1114@gmail.com
+    url: http://ylw.nunus.site:8080/email/auth
+  datasource:
+    url: jdbc:mariadb://{dbIp}:3306/ylw?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
+    username: {dbId}
+    password: {dbPw}
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+custom:
+  genFileDirPath: /temp/ylwImg/member
+kakao:
+  api-key: {kakaoApiKey}

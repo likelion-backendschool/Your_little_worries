@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    thymeleaf:
+      cache: false
+      prefix: file:src/main/resources/templates/
+    devtools:
+      livereload:
+        enabled: true
+      restart:
+        enabled: true
+  datasource:
+    url: jdbc:mariadb://localhost:3306/ylw?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
+    username: root
+    password:
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+custom:
+  genFileDirPath: c:/temp/ylwImg/member
