@@ -46,6 +46,21 @@ public class InitDB {
         Member member4 = memberService.create("member4","1234","member4@test.com", "나멤버");
         Member member5 = memberService.create("member5","1234","member5@test.com", "최멤버");
         Member member6 = memberService.create("member6","1234","member6@test.com", "하멤버");
+        Member member7 = memberService.create("member7","1234","member7@test.com", "기멤버");
+        Member member8 = memberService.create("member8","1234","member8@test.com", "나멤버");
+        Member member9 = memberService.create("member9","1234","member9@test.com", "다멤버");
+        Member member10 = memberService.create("member10","1234","member10@test.com", "라멤버");
+        Member member11 = memberService.create("member11","1234","member11@test.com", "사멤버");
+        Member member12 = memberService.create("member12","1234","member12@test.com", "아멤버");
+        Member member13 = memberService.create("member13","1234","member13@test.com", "자멤버");
+        Member member14 = memberService.create("member14","1234","member14@test.com", "차멤버");
+        Member member15 = memberService.create("member15","1234","member15@test.com", "카멤버");
+        Member member16 = memberService.create("member16","1234","member16@test.com", "타멤버");
+        Member member17 = memberService.create("member17","1234","member17@test.com", "파멤버");
+        Member member18 = memberService.create("member18","1234","member18@test.com", "고멤버");
+        Member member19 = memberService.create("member19","1234","member19@test.com", "바멤버");
+        Member member20 = memberService.create("member20","1234","member20@test.com", "우멤버");
+        Member member21 = memberService.create("member21","1234","member21@test.com", "여멤버");
     }
 
     @Test

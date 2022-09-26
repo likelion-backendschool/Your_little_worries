@@ -43,7 +43,7 @@ dependencies {
 	implementation group: 'com.sendgrid', name: 'sendgrid-java', version: '4.9.3'
 	implementation 'org.commonmark:commonmark:0.18.2'
 	implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
-
+	implementation 'org.apache.tika:tika-core:2.4.1'
 }
 
 tasks.named('test') {
