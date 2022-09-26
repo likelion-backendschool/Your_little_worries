@@ -1,7 +1,0 @@
-spring:
-  sendgrid:
-    api-key: [sendgrid api-key 넣어주세요]
-    email: [이메일 넣어주세요]
-    url: http://localhost:8080/email/auth
-kakao:
-  api-key: [kakao api-key 넣어주세요]

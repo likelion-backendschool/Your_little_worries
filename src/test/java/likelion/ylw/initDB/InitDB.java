@@ -9,7 +9,6 @@ import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
 import likelion.ylw.notice.NoticeService;
 import likelion.ylw.stats.statsResult.StatsResultService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class InitDB {
     @Autowired
     private CategoryService categoryService;
     @Autowired
-    private static MemberService memberService;
+    private MemberService memberService;
 
     @Autowired
     private ArticleItemService articleItemService;
@@ -37,9 +36,9 @@ public class InitDB {
     @Autowired
     private StatsResultService statsResultService;
 
-    @BeforeAll
+    @Test
     @DisplayName("유저 6명 생성")
-    static void t1() {
+    void t1() {
         Member member1 = memberService.create("member1","1234","member1@test.com", "김멤버");
         Member member2 = memberService.create("member2","1234","member2@test.com", "이멤버");
         Member member3 = memberService.create("member3","1234","member3@test.com", "박멤버");
