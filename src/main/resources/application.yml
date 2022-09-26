@@ -1,26 +1,3 @@
 spring:
-  sendgrid:
-    api-key: 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
-    email: uyeop1114@gmail.com
-    url: http://ylw.nunus.site:8080/email/auth
   profiles:
-    thymeleaf:
-      cache: false
-      prefix: file:src/main/resources/templates/
-    devtools:
-      livereload:
-        enabled: true
-      restart:
-        enabled: true
-  datasource:
-    url: jdbc:mariadb://db-c0vhj.cdb.ntruss.com:3306/ylw?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
-    username: lldj
-    password: qwe123!@#
-    driver-class-name: org.mariadb.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-custom:
-  genFileDirPath: /temp/ylwImg/member
-kakao:
-  api-key: 242f01a3af5936797443874ee2bff51c
+    active: dev, base-addi
