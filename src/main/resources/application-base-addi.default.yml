@@ -3,5 +3,10 @@ spring:
     api-key: [sendgrid api-key 넣어주세요]
     email: [이메일 넣어주세요]
     url: http://localhost:8080/email/auth
+  datasource:
+    url: jdbc:mariadb://localhost:3306/ylw?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
+    username: [DB아이디]
+    password: [DB비밀번호]
+    driver-class-name: org.mariadb.jdbc.Driver
 kakao:
   api-key: [kakao api-key 넣어주세요]
