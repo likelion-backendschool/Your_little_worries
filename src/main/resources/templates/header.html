@@ -9,6 +9,28 @@
         <div class="row">
             <div class="col">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+                    <li class="nav-item d-block-768px" sec:authorize="isAnonymous()">
+                        <form th:action="@{/article/search}" method="get" class="nav-link pt-2 pb-0">
+                            <div class="input-group input-group-seamless">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                </div>
+                                <input type="text" id="kw" name="kw" class="navbar-search form-control"  placeholder="투표지를 찾아보세요" aria-label="Search">
+                            </div>
+                        </form>
+                    </li>
+                    <li class="nav-item d-block-540px" sec:authorize="isAnonymous()">
+                        <a class="nav-link" th:href="@{/member/login}">
+                            <i class="material-icons">login</i> 로그인</a>
+                        </a>
+                    </li>
+                    <li class="nav-item d-block-540px" sec:authorize="isAnonymous()">
+                        <a class="nav-link" th:href="@{/member/login}">
+                            <i class="material-icons">person_add</i> 회원가입</a>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" th:with="link='/article/create'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">
                             <i class="material-icons">edit</i> 투표등록</a>
@@ -27,6 +49,10 @@
                     <li class="nav-item">
                         <a class="nav-link" th:with="link='/notice/list'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">
                             <i class="material-icons">receipt_long</i> 공지사항</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:with="link='/member/rank'" th:classappend="${#httpServletRequest.requestURI == link} ? 'active' : ''" th:href="${link}">
+                            <i class="material-icons">military_tech</i> 랭킹보기</a>
                     </li>
                 </ul>
             </div>

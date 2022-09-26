@@ -22,7 +22,7 @@
     </form>
 
     <div class="d-flex align-content-start flex-wrap">
-        <div class="col-12 col-md-6" th:each="article,loop : ${paging}">
+        <div class="col-12 col-lg-6" th:each="article,loop : ${paging}">
             <div class="card card-small card-post mb-4">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${article.title}"></h5>
@@ -44,6 +44,8 @@
                     <div class="my-auto ml-auto">
                         <a class="btn btn-sm btn-accent ml-auto" th:href="@{|/article/vote/${article.id}|}">
                             <i class="material-icons">file_copy</i> 투표하기</a>
+                        <a class="btn btn-sm btn-accent btn-outline-accent ml-auto" th:href="@{|/article/result/${article.id}|}">
+                            <i class="material-icons">summarize</i> 결과보기</a>
                     </div>
                 </div>
             </div>

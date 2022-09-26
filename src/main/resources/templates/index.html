@@ -121,6 +121,9 @@
                 <span class="text-uppercase page-subtitle">카테고리</span>
                 <h3 class="page-title" th:text="${category.name}"></h3>
             </div>
+            <div class="ml-auto d-flex align-items-end">
+                <a class="" th:href="@{|/article/list?category=${category.id}|}">더 둘러보기</a>
+            </div>
         </div>
         <div class="d-flex align-content-start flex-wrap">
             <div class="col-12 col-sm-12 col-md-6 col-lg-4" th:each="article : ${articleListArray[loop.index]}">

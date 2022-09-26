@@ -1,3 +1,9 @@
+@media (min-width: 540px) {
+    .d-block-540px {
+        display: none !important;
+    }
+}
+
 @media (min-width: 576px) {
     .container {
         max-width: 540px !important;
@@ -7,6 +13,10 @@
 @media (min-width: 768px) {
     .container {
         max-width: 720px !important;
+    }
+
+    .d-block-768px {
+        display: none !important;
     }
 }
 
@@ -25,6 +35,12 @@
 @media (max-width: 768px) {
     .main-content {
         padding-bottom: 300px !important;
+    }
+}
+
+@media (max-width: 540px) {
+    .d-none-540px {
+        display: none !important;
     }
 }
 
@@ -57,12 +73,25 @@
     max-width: 1.7rem !important;
 }
 
-.badge-success {
+.badge-info {
     background-color: #6A2C70 !important;
 }
 
-.badge-success:hover {
+.badge-info:hover {
     background-color: #4b1a50 !important;
+}
+
+.badge-secondary {
+    background-color: #7FBCD2 !important;
+}
+
+
+.badge-success {
+    background-color: #1C3879 !important;
+}
+
+.badge-success:hover {
+    background-color: #192f69 !important;
 }
 
 
