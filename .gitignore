@@ -40,9 +40,7 @@ out/
 /.nb-gradle/
 
 ### VS Code ###
-
 .vscode/
 
 ### my ignore ###
-sendgrid.env
 application-base-addi.yml

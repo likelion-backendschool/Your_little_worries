@@ -1,7 +1,5 @@
 <html
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        xmlns:th="http://thymeleaf.org"
-        layout:decorate="~{layout}">
+        xmlns:th="http://thymeleaf.org">
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
           integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
@@ -27,8 +25,9 @@
     </style>
 </head>
 
-<div layout:fragment="content" class="main-content-container container px-4 rounded-2xl">
-    <div class="container mx-auto w-[700px] p-10 mt-10 mb-5 flex flex-col bg-white shadow-lg rounded-2xl">
+<body style="background-color: #f5f6f8;">
+<!--<div layout:fragment="content" class="main-content-container container px-4 rounded-2xl">-->
+    <div class="container mx-auto w-[700px] p-10 mt-28 mb-5 flex flex-col bg-white shadow-md rounded-2xl">
 
         <div class="my-3 border-bottom">
             <div>
@@ -95,7 +94,7 @@
             </div>
         </form>
     </div>
-</div>
+</body>
 </html>
 
 <script>
