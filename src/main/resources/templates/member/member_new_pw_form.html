@@ -1,40 +1,42 @@
 <html
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         xmlns:th="http://thymeleaf.org"
-        layout:decorate="~{layout}"
 >
 
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<div layout:fragment="content" class="main-content-container container px-4">
-    <div class="container mx-auto w-[700px] p-10 mt-10 flex flex-col bg-white rounded-2xl shadow-lg">
-        <form th:action="@{/mail/reset/password}" th:object="${pwForm}" method="post">
-            <div class="text-xl text-2xl font-semibold mt-1 mb-12 pb-1">비밀번호 재설정</div>
-            <div th:replace="form_errors :: formErrorsFragment"></div>
-            <div class="mb-3">
-                <label class="form-label">새 비밀번호</label>
-                <input
-                        type="password"
-                        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                        th:field="*{password1}"
-                        placeholder="비밀번호"
-                />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">새 비밀번호 확인</label>
-                <input
-                        type="password"
-                        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                        th:field="*{password2}"
-                        placeholder="비밀번호 확인"
-                />
-            </div>
-            <div class="text-center">
-                <button type="submit" class="mt-4 rounded-md p-3 w-[450px] text-white text-sm justify-center bg-[#14C38E] hover:bg-emerald-500 hover:shadow-lg justify-center">확인</button>
-            </div>
-        </form>
-    </div>
+
+<body style="background-color: #f5f6f8;">
+<div class="container mx-auto w-[700px] p-10 mt-28 flex flex-col bg-white rounded-2xl shadow-md">
+    <form th:action="@{/mail/reset/password}" th:object="${pwForm}" method="post">
+        <div class="text-xl text-2xl font-semibold mt-1 mb-12 pb-1">비밀번호 재설정</div>
+        <div th:replace="form_errors :: formErrorsFragment"></div>
+        <div class="mb-3">
+            <label class="form-label">새 비밀번호</label>
+            <input
+                    type="password"
+                    class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    th:field="*{password1}"
+                    placeholder="비밀번호"
+            />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">새 비밀번호 확인</label>
+            <input
+                    type="password"
+                    class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    th:field="*{password2}"
+                    placeholder="비밀번호 확인"
+            />
+        </div>
+        <div class="text-center">
+            <button type="submit"
+                    class="mt-4 rounded-md p-3 w-[450px] text-white text-sm justify-center bg-[#14C38E] hover:bg-emerald-500 hover:shadow-lg justify-center">
+                확인
+            </button>
+        </div>
+    </form>
 </div>
+</body>
 </html>
