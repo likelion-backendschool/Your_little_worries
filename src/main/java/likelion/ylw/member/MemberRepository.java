@@ -13,4 +13,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     Optional<Member> findByEmail(String email);
 
     List<Member> findAllByOrderByScoreDesc();
+
+    List<Member> findTop20ByOrderByScoreDesc();
 }

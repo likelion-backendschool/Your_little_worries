@@ -1,5 +1,6 @@
 package likelion.ylw.member;
 
+import likelion.ylw.util.AppConfig;
 import likelion.ylw.util.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.*;
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -69,8 +71,24 @@ public class Member extends BaseTimeEntity {
     private Integer currentLevel;
 
     private String memberImgPath;
-//    private LocalDateTime createdDate;
 
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
+    public void removeProfileImgOnStorage() {
+        if (memberImgPath == null || memberImgPath.trim().length() == 0) return;
+
+        String profileImgPath = getProfileImgPath();
+
+        new File(profileImgPath).delete();
+    }
+
+    private String getProfileImgPath() {
+
+        return AppConfig.GET_FILE_DIR_PATH + "/" + memberImgPath;
+    }
+
+    public String getMemberImgUrl() {
+        if (memberImgPath == null) return null;
+
+        return "/gen/" + memberImgPath;
+    }
+
 }

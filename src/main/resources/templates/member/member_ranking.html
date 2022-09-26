@@ -6,80 +6,92 @@
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-    .included {
-      position: relative;
-    }
+        .included {
+            position: relative;
+        }
 
-    .picture {
-      border: 1px solid black;
-      border-radius: 50%;
-      width: 100px;
-    }
+        .picture {
+            border: 2px solid black;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            object-fit:cover;
+        }
 
-    .profile-none {
-      display: none;
-      position: absolute;
-    }
-
-    .popover-title {
-      display: none;
-    }
-
-    .popover {
-      max-width: 500px;
-    }
-
-    .popover-header {
-      display: none;
-    }
-
-    .popover-body {
-      padding: 0px;
-    }
+        .dot {
+            width: 1px;
+            height: 5px;
+            background-color: #4E5057;
+            border-radius: 50%;
+            padding:4px;
+            margin: 10px;
+        }
 
 
-    .card {
-      width: 400px;
-      border: none;
-      border-radius: 10px;
-      background-color: #fff;
-    }
+        .profile-none {
+            display: none;
+            position: absolute;
+        }
 
-    .stats {
-      background: #f2f5f8 !important;
-      color: #000 !important;
-    }
+        .popover-title {
+            display: none;
+        }
 
-    .articles {
-      font-size: 10px;
-      color: #a1aab9;
-    }
+        .popover {
+            max-width: 500px;
+        }
 
-    .number1 {
-      font-weight: 500;
-    }
+        .popover-header {
+            display: none;
+        }
 
-    .followers {
-      font-size: 10px;
-      color: #a1aab9;
-    }
+        .popover-body {
+            padding: 0px;
+        }
 
-    .number2 {
-      font-weight: 500;
-    }
 
-    .rating {
-      font-size: 10px;
-      color: #a1aab9;
-    }
+        .card {
+            width: 400px;
+            border: none;
+            border-radius: 10px;
+            background-color: #fff;
+        }
 
-    .number3 {
-      font-weight: 500;
-    }
+        .stats {
+            background: #f2f5f8 !important;
+            color: #000 !important;
+        }
 
-    .profile-info.active {
-        display: none;
-    }
+        .articles {
+            font-size: 10px;
+            color: #a1aab9;
+        }
+
+        .number1 {
+            font-weight: 500;
+        }
+
+        .followers {
+            font-size: 10px;
+            color: #a1aab9;
+        }
+
+        .number2 {
+            font-weight: 500;
+        }
+
+        .rating {
+            font-size: 10px;
+            color: #a1aab9;
+        }
+
+        .number3 {
+            font-weight: 500;
+        }
+
+        .profile-info.active {
+            display: none;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
           integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
@@ -87,6 +99,9 @@
 </head>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js%22%3E"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 <div layout:fragment="content" class="main-content-container container px-4">
 
     <div class="page-header row no-gutters py-4">
@@ -95,25 +110,13 @@
             <h3 class="page-title">랭킹 조회</h3>
         </div>
     </div>
-    <div class="w-[100%] card card-small card-post mb-4 p-3 py-1 flex rounded-2xl shadow-md">
-        <div class="w-[100%] bg-gray-100 flex flex-col my-3 p-5 mb-1 rounded shadow-sm">
-            <div class="flex flex-col text-center mx-2 p-2 div">
-                <div>
-                    <i class="fa-solid fa-ranking-star"></i>
-                    <span class="font-bold" th:text="|${member.getNickname()}|"></span>님의 현재 랭킹은 <span
-                        class="font-bold" th:text="|${member.getCurrentRank()}위|"></span> 입니다.</span>
-                    <span class="font-bold" th:text="|(총점: ${member.getScore()})|"></span>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="w-[100%] card card-small card-post mb-4 flex rounded-2xl shadow-md">
         <div class="card-body">
             <div class="flex flex-col my-auto items-center pt-1 mr-1">
                 <table class="table table-hover text-center">
                     <thead class="thead-dark">
                     <tr>
-                        <th scope="col">순위</th>
+                        <th scope="col" width="10%">순위</th>
                         <th scope="col" class="text-start">멤버 프로필</th>
                         <th scope="col">닉네임</th>
                         <th scope="col">총점</th>
@@ -125,20 +128,20 @@
                         <th scope="row" th:text="${orderedMember.currentRank}"></th>
                         <td class="profile w-full">
                             <div class="flex justify-between">
-                                <img class="picture" th:if="${member.memberImgPath}"
-                                     th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
-                                <img class="picture" th:unless="${member.memberImgPath}"
+                                <img class="picture" th:if="${orderedMember.memberImgPath}"
+                                     th:src="@{/gen/} + ${orderedMember.memberImgPath}"/>
+                                <img class="picture" th:unless="${orderedMember.memberImgPath}"
                                      th:src="@{/gen/member.png}"/>
 
                                 <button type="button"
-                                        class="profile-btn btn btn-primary bg-blue-600 hover:bg-blue-700 mb-2">
+                                        class="profile-btn w-40 py-3 mt-2 h-50 btn btn-primary bg-[#14C38E] hover:bg-emerald-600 mb-2">
                                     자세히
                                 </button>
                             </div>
-                            <div class="profile-info active">
+                            <div class="profile-info active ml-11">
                                 <div class="card p-3">
                                     <div class="d-flex align-items-center">
-                                        <div class="m-1 w-100"><h4 class="mb-0 mt-0">Halo님의 활동현황</h4>
+                                        <div class="m-1 w-100"><h4 class="mb-0 mt-0" th:text="|${orderedMember.nickname}님의 활동현황|"></h4>
                                             <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
                                                 <div class="d-flex flex-column">
                                                     <span class="totalArticle">등록투표지</span>
@@ -147,8 +150,8 @@
                                                     <span class="totalScore">총점수</span>
                                                     <span class="numTwo" th:text="${orderedMember.score}"></span></div>
                                                 <div class="d-flex flex-column">
-                                                    <span class="level">레밸</span>
-                                                    <span class="numThree">8</span>
+                                                    <span class="level">레벨</span>
+                                                    <span class="numThree" th:text="${orderedMember.currentLevel}"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -163,6 +166,19 @@
                     </tr>
                     </tbody>
                 </table>
+                <div class="connotBox flex-col h-[100px] mt-10">
+                    <div class="dot col"></div>
+                    <div class="dot col"></div>
+                    <div class="dot col"></div>
+                </div>
+                <div class="flex flex-col text-center mx-2 p-2 mb-10 div">
+                    <div>
+                        <i class="fa-solid fa-ranking-star"></i>
+                        <span class="font-bold" th:text="|${member.getNickname()}|"></span>님의 현재 랭킹은 <span
+                            class="font-bold" th:text="|${member.getCurrentRank()}위|"></span> 입니다.</span>
+                        <span class="font-bold" th:text="|(총점: ${member.getScore()})|"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -171,15 +187,8 @@
 
 
 <script>
-$(".profile .profile-btn").mouseover((e) => {
-    console.log("yes");
-    var $target = $(e.target);
-    $target.parent().next().removeClass("active");
-})
-
-$(".profile .profile-btn").mouseleave((e) => {
-    console.log("no");
-    var $target = $(e.target);
-    $target.parent().next().addClass("active");
-})
+    $(".profile .profile-btn").click((e) => {
+        var $target = $(e.target);
+        $target.parent().next().toggleClass("active");
+    })
 </script>

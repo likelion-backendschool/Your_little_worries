@@ -2,6 +2,7 @@ package likelion.ylw.member;
 
 import likelion.ylw.member.mail.NotFoundEmailException;
 import likelion.ylw.util.DataNotFoundException;
+import likelion.ylw.util.Util;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +23,6 @@ import java.util.UUID;
 public class MemberService {
     @Value("${custom.genFileDirPath}")
     private String genFileDirPath;
-    String profileImgRelPath;
-    File profileImgFile;
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -36,6 +35,7 @@ public class MemberService {
             member.setPassword(passwordEncoder.encode(password));
             member.setEmail(email);
             member.setNickname(nickname);
+//            memberService.setMemberImgByUrl(member, "https://i.imgur.com/64exPCm.png");
             memberRepository.save(member);
             return member;
         } catch (DataIntegrityViolationException e) {
@@ -65,10 +65,8 @@ public class MemberService {
         throw new NotFoundEmailException("해당 이메일에 가입된 정보가 없습니다.");
     }
 
-    public void update(MemberUpdateForm memberUpdateForm, Member m, MultipartFile memberImg) {
+    public void update(MemberUpdateForm memberUpdateForm, Member m) {
         Optional<Member> om = memberRepository.findByMemberId(m.getMemberId());
-        profileImgRelPath = "member/" + UUID.randomUUID().toString() + ".png";
-        profileImgFile = new File(genFileDirPath + "/" + profileImgRelPath);
 
         if (om.isPresent()) {
             Member member = om.get();
@@ -107,18 +105,68 @@ public class MemberService {
     }
 
     public void updateImage(Member member, MultipartFile memberImg) {
-        profileImgRelPath = "member" + UUID.randomUUID().toString() + ".png";
-        profileImgFile = new File(genFileDirPath + "/" + profileImgRelPath);
+//        String profileImgDirName = "member";
+//        String fileName = UUID.randomUUID().toString() + ".png";
+//        String profileImgDirPath = genFileDirPath + "/" + profileImgDirName;
+//        String profileImgFilePath = profileImgDirPath + "/" + fileName;
+//
+//        new File(profileImgDirPath).mkdirs();
+//        try {
+//            memberImg.transferTo(new File(profileImgFilePath));
+//            String profileImgRelPath = profileImgDirName + "/" + fileName;
+//
+//            member.setMemberImgPath(profileImgRelPath);
+//            memberRepository.save(member);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        profileImgFile.mkdirs();
+
+        removeProfileImg(member);
+        String profileImgRelPath = saveProfileImg(memberImg);
+
+        member.setMemberImgPath(profileImgRelPath);
+        memberRepository.save(member);
+    }
+
+    private String getCurrentProfileImgDirName() {
+
+        return "member/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd");
+    }
+
+//    public void setMemberImgByUrl(Member member, String url) {
+//        String filePath = Util.file.downloadImg(url, genFileDirPath + "/" + getCurrentProfileImgDirName() + "/" + UUID.randomUUID());
+//        member.setMemberImgPath(getCurrentProfileImgDirName() + "/" + new File(filePath).getName());
+//        memberRepository.save(member);
+//    }
+
+    private String saveProfileImg(MultipartFile profileImg) {
+        String profileImgDirName = getCurrentProfileImgDirName();
+
+        String ext = Util.file.getExt(profileImg.getOriginalFilename());
+
+        String fileName = UUID.randomUUID() + "." + ext;
+        String profileImgDirPath = genFileDirPath + "/" + profileImgDirName;
+        String profileImgFilePath = profileImgDirPath + "/" + fileName;
+
+        new File(profileImgDirPath).mkdirs();
+
         try {
-            memberImg.transferTo(profileImgFile);
-            member.setMemberImgPath(profileImgRelPath);
-            memberRepository.save(member);
+            profileImg.transferTo(new File(profileImgFilePath));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        return profileImgDirName + "/" + fileName;
     }
+
+    public void removeProfileImg(Member member) {
+        member.removeProfileImgOnStorage();
+        member.setMemberImgPath(null);
+        memberRepository.save(member);
+    }
+
+
 
     public List<Member> findAll() {
         return memberRepository.findAll();
@@ -158,7 +206,7 @@ public class MemberService {
     }
 
     public List<Member> getRankingList() {
-        return memberRepository.findAllByOrderByScoreDesc();
+        return memberRepository.findTop20ByOrderByScoreDesc();
     }
 
     public void evalRank() {

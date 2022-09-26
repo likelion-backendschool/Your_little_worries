@@ -24,6 +24,7 @@ public class MemberController {
     private final MemberService memberService;
     private final ArticleService articleService;
     private final PasswordEncoder passwordEncoder;
+    private final MemberRepository memberRepository;
 
     // 회원가입 폼 (memberId, 닉네임, 비밀번호, 프로필 이미지 입력)
     @GetMapping("/signup")
@@ -86,11 +87,8 @@ public class MemberController {
     public String my_page(Principal principal, Model model) {
         List<Member> members = memberService.findAll();
         Member member = memberService.findByMemberId(principal.getName());
-        memberService.evalEnrollScore(member);
-        memberService.evalParticipateScore(member);
-        memberService.evalPopularVoteScore(member);
-        memberService.evalTotalScore(member);
         memberService.evalLevel(member);
+        memberService.evalTotalScore(member);
         List<Article> myArticles = articleService.findByAuthor(member);
         model.addAttribute("members", members);
         model.addAttribute("member",member);
@@ -136,7 +134,7 @@ public class MemberController {
             model.addAttribute("member", member);
             return "member/member_edit_form";
         }
-        memberService.update(memberUpdateForm, member, memberUpdateForm.getMemberImg());
+        memberService.update(memberUpdateForm, member);
         return "redirect:/member/myPage";
     }
 
@@ -197,5 +195,9 @@ public class MemberController {
 
         return "member/member_ranking";
     }
-}
 
+    @GetMapping("/profile/img/{id}")
+    public String showProfileImg(@PathVariable Integer id) {
+        return "redirect:" + memberRepository.findById(id).orElse(null).getMemberImgUrl();
+    }
+}

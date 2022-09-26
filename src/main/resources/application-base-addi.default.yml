@@ -1,7 +1,7 @@
 spring:
   sendgrid:
-    api-key: [sendgrid api-key 넣어주세요]
-    email: [이메일 넣어주세요]
+    api-key: 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
+    email: uyeop1114@gmail.com
     url: http://localhost:8080/email/auth
 kakao:
-  api-key: [kakao api-key 넣어주세요]
+  api-key: 242f01a3af5936797443874ee2bff51c

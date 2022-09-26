@@ -21,7 +21,7 @@ public class MailController {
     private boolean isExist = false;
 
     @GetMapping("/auth/2377655")
-    public String send() throws IOException {
+    public String send(PwForm pwForm) throws IOException {
         return "member/member_new_pw_form";
     }
 

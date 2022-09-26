@@ -10,153 +10,153 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-.profile-img {
-  border-radius: 50%;
-  width:280px;
-  height:280px;
-  object-fit:cover;
-}
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s, visibility 0.3s;
-}
+        .profile-img {
+            border-radius: 50%;
+            width:280px;
+            height:280px;
+            object-fit:cover;
+        }
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
 
-.con {
-  margin-left: auto;
-  margin-right: auto;
-}
+        .con {
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-.con {
-  max-width: 1200px;
-}
+        .con {
+            max-width: 1200px;
+        }
 
-.popup.active {
-  opacity: 1;
-  visibility: visible;
-}
+        .popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
 
-.popup__content {
-  min-width: 200px;
-  min-height: 200px;
-  background-color: white;
-  border: 2px solid black;
-  transform: translateY(-100%);
-  transition: transform 0.3s;
-}
+        .popup__content {
+            min-width: 200px;
+            min-height: 200px;
+            background-color: white;
+            border: 2px solid black;
+            transform: translateY(-100%);
+            transition: transform 0.3s;
+        }
 
-.popup__body {
-  padding: 0 10px;
-}
+        .popup__body {
+            padding: 0 10px;
+        }
 
-.popup__head {
-  padding: 10px;
-}
+        .popup__head {
+            padding: 10px;
+        }
 
-.popup__btn-close {
-  width: 30px;
-  height: 30px;
-  margin-left: auto;
-  position: relative;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
+        .popup__btn-close {
+            width: 30px;
+            height: 30px;
+            margin-left: auto;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
 
-.popup__btn-close:hover {
-  transform: rotate(185deg);
-}
+        .popup__btn-close:hover {
+            transform: rotate(185deg);
+        }
 
-.popup__btn-close::before,
-.popup__btn-close::after {
-  content: "";
-  background-color: black;
-  position: absolute;
-  top: 40%;
-  left: 0;
-  width: 100%;
-  height: 20%;
-  transform: rotate(45deg);
-  transition: box-shadow 0.3s;
-}
+        .popup__btn-close::before,
+        .popup__btn-close::after {
+            content: "";
+            background-color: black;
+            position: absolute;
+            top: 40%;
+            left: 0;
+            width: 100%;
+            height: 20%;
+            transform: rotate(45deg);
+            transition: box-shadow 0.3s;
+        }
 
-.popup__btn-close::after {
-  transform: rotate(-45deg);
-}
+        .popup__btn-close::after {
+            transform: rotate(-45deg);
+        }
 
-.popup__btn-close:hover::before,
-.popup__btn-close:hover::after {
-  box-shadow: 0 0 3px black;
-}
+        .popup__btn-close:hover::before,
+        .popup__btn-close:hover::after {
+            box-shadow: 0 0 3px black;
+        }
 
-a {
- text-decoration: none;
- color: black;
-}
+        a {
+            text-decoration: none;
+            color: black;
+        }
 
-.bg-purple {
-    background-color: purple;
-}
+        .bg-purple {
+            background-color: purple;
+        }
 
-.bg-red {
-    background-color: red;
-}
+        .bg-red {
+            background-color: red;
+        }
 
-.bg-blue {
-    background-color: blue;
-}
+        .bg-blue {
+            background-color: blue;
+        }
 
-.bg-green {
-    background-color: green;
-}
+        .bg-green {
+            background-color: green;
+        }
 
-.bg-gold {
-    background-color: #f9a602;
-}
+        .bg-gold {
+            background-color: #f9a602;
+        }
 
-.bg-brown {
-    background-color: brown;
-}
+        .bg-brown {
+            background-color: brown;
+        }
 
-.bg-gray {
-    background-color: gray;
-}
+        .bg-gray {
+            background-color: gray;
+        }
 
-.purple {
-  color: purple;
-}
+        .purple {
+            color: purple;
+        }
 
-.red {
-  color: red;
-}
+        .red {
+            color: red;
+        }
 
-.blue {
-  color: blue;
-}
+        .blue {
+            color: blue;
+        }
 
-.gold {
-  color: #f9a602;
-}
+        .gold {
+            color: #f9a602;
+        }
 
-.green {
-  color: green;
-}
+        .green {
+            color: green;
+        }
 
-.brown {
-  color: brown;
-}
+        .brown {
+            color: brown;
+        }
 
-.gray {
-  color: gray;
-}
+        .gray {
+            color: gray;
+        }
     </style>
 </head>
 
@@ -179,7 +179,8 @@ a {
             <div class="card-body">
                 <div class="flex flex-col my-auto items-center pt-1 mr-1">
                     <div class="mx-9">
-                        <img class="profile-img" th:if="${member.memberImgPath}" th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />
+                        <img class="profile-img" th:if="${member.memberImgPath}" th:src="@{${#authentication.principal.memberImgRedirectUrl}}" />
+                        <!--                        <img class="profile-img" th:unless="${member.memberImgPath}" th:src="@{{#authentication.principal.memberImgPath}}" />-->
                         <img class="profile-img" th:unless="${member.memberImgPath}" th:src="@{/gen/member.png}" />
                         <!--             <img class="picture" src="https://picsum.photos/id/233/300/300"> -->
                     </div>
@@ -210,8 +211,8 @@ a {
                         </li>
                         <li class="flex items-center py-3">
                             <span>닉네임</span>
-<!--                            <span class="ml-auto" th:text="${member.nickname}"></span>-->
-<!--                            <i class="fa-solid fa-circle"></i>-->
+                            <!--                            <span class="ml-auto" th:text="${member.nickname}"></span>-->
+                            <!--                            <i class="fa-solid fa-circle"></i>-->
                             <span th:if="${member.currentLevel == 1}" class="gray ml-auto"><i class="fa-solid fa-meteor mr-1"></i></span>
                             <span th:if="${member.currentLevel == 2}" class="brown ml-auto"><i class="fa-solid fa-meteor mr-1"></i></span>
                             <span th:if="${member.currentLevel == 3}" class="green ml-auto"><i class="fa-solid fa-meteor mr-1"></i></span>
@@ -255,7 +256,7 @@ a {
                         <span th:if="${member.currentLevel == 5}" class="bg-purple text-center w-[15%] h-[25px] mb-2 font-bold text-white px-5" th:text="|Lv.${member.currentLevel}|"></span>
                         <span th:if="${member.currentLevel == 6}" class="bg-gold text-center w-[15%] h-[25px] mb-2 font-bold text-white px-5" th:text="|Lv.${member.currentLevel}|"></span>
                         <span th:if="${member.currentLevel == 7}" class="bg-red text-center w-[15%] h-[25px] mb-2 font-bold text-white px-5" th:text="|Lv.${member.currentLevel}|"></span>
-<!--                        <div class="text-center w-[15%] h-[1px] mb-2 bg-black font-bold text-white px-5" th:text="|Lv.${member.currentLevel}|"></div>-->
+                        <!--                        <div class="text-center w-[15%] h-[1px] mb-2 bg-black font-bold text-white px-5" th:text="|Lv.${member.currentLevel}|"></div>-->
                     </div>
                     <div class="flex">
                         <span class="flex-grow">랭킹점수</span>
@@ -297,9 +298,9 @@ a {
                             <col width="45%" />
                         </colgroup>
                         <thead>
-                            <th class="text-center"> 투표지 번호</th>
-                            <th> 투표지 제목</th>
-                            <th> 투표지 결과</th>
+                        <th class="text-center"> 투표지 번호</th>
+                        <th> 투표지 제목</th>
+                        <th> 투표지 결과</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -319,16 +320,16 @@ a {
 
 <script>
 
-function ImgUpdate(){
-var result = confirm("프로필 이미지를 변경하시겠습니까?");
- if (result == true){
-   console.log("변경이 완료되었습니다.");
- }else{
-   console.log("취소되었습니다");
- }
-}
+    function ImgUpdate(){
+        var result = confirm("프로필 이미지를 변경하시겠습니까?");
+        if (result == true){
+            console.log("변경이 완료되었습니다.");
+        }else{
+            console.log("취소되었습니다");
+        }
+    }
 
-const failImg = (imgTag) =>{
+    const failImg = (imgTag) =>{
         imgTag.onerror="";
         imgTag.src= conPath + "/images/profileImg/member.png";
         return true;
