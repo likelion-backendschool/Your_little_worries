@@ -61,6 +61,9 @@ public class ArticleController {
     @GetMapping("/list")
     public String list(Model model, @RequestParam("category") Integer category_id,
                        @RequestParam(value="page", defaultValue="0") int page) {
+        if (category_id == null) {
+            return "error/404";
+        }
         Category category = categoryService.findById(category_id);
         Page<Article> paging = articleService.getPageList(page, category_id);
 
