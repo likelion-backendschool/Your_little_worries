@@ -22,6 +22,7 @@ import likelion.ylw.util.requestservice.RequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,8 +52,9 @@ public class ArticleController {
     private final StatsCollectionService statsCollectionService;
     private final RequestService requestService;
     private final StatsResultService statsResultService;
-
     private final ArticleRecommendService articleRecommendService;
+
+    private final PasswordEncoder passwordEncoder;
 
     private static int MINIMUM_VOTES = 30;
 
@@ -106,13 +108,16 @@ public class ArticleController {
 
         // Client IP
         String clientIp = requestService.getClientIp(request);
+        // 암호화된 IP
+        String encryptedIp = passwordEncoder.encode(clientIp);
 
         if (principal == null) {
             // 비로그인의 경우
-            List<StatsCollection> findByIPList = statsCollectionService.findByIP(clientIp);
-            int IPcount = (int)findByIPList.stream().filter(statsCollection -> statsCollection.getArticleItem().getArticle().getId() == id).count();
+            List<StatsCollection> findByArticle = statsCollectionService.findByArticle(article);
 
-            if (IPcount != 0) {
+            int IPcount__ = (int) findByArticle.stream().filter(statsCollection -> passwordEncoder.matches(clientIp, statsCollection.getIP())).count();
+
+            if (IPcount__ != 0) {
                 String redirectUri = String.format("/article/vote/%d", id);
                 MessageDto message = new MessageDto("이미 투표하셨습니다.", redirectUri, RequestMethod.GET, null);
                 showMessageAndRedirect(message, model);
@@ -138,7 +143,7 @@ public class ArticleController {
 
         statsCollectionService.createStatsCollection(statsCollectionForm.getArticleItemId(),
                 statsCollectionForm.getAge(), statsCollectionForm.getGender(), statsCollectionForm.getUserName(),
-                clientIp);
+                encryptedIp, article);
 
         // 투표 더 한 것을 db에 계산
         articleItemService.plusResult(statsCollectionForm.getArticleItemId(), statsCollectionForm.getAge(), statsCollectionForm.getGender());

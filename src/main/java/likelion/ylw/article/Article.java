@@ -4,6 +4,7 @@ import likelion.ylw.article.recommend.ArticleRecommend;
 import likelion.ylw.category.Category;
 import likelion.ylw.comment.vote.CommentVote;
 import likelion.ylw.member.Member;
+import likelion.ylw.stats.StatsCollection;
 import likelion.ylw.util.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,4 +47,7 @@ public class Article extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
     private List<ArticleItem> articleItemList;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
+    private List<StatsCollection> statsCollectionList;
 }
