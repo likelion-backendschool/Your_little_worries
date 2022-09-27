@@ -64,13 +64,13 @@
                     </div>
                     <div>
                         <th:block th:if="${rejectResultPage}" class="row justify-content-around font-weight-bold">
-                            <h6 class="font-weight-bold border p-2 bg-info rounded bg-light ">
+                            <h6 class="font-weight-bold border p-2 bg-info rounded bg-light text-center" style="word-break: keep-all">
                                 <span>총 투표수 30을 넘어야 통계 결과를 얻을 수 있습니다.</span>
                             </h6>
                         </th:block>
 
                         <th:block th:unless="${rejectResultPage}">
-                            <h6 class="font-weight-bold border p-2 bg-info rounded bg-light ">
+                            <h6 class="font-weight-bold border p-2 bg-info rounded bg-light text-center" style="word-break: keep-all">
                                 <span th:text="${statsResult.result} ? '통계 계산을 통해 나온 투표 결과에 선호도 차이가 있다고 볼 수 있습니다' : '통계 계산을 통해 나온 투표 결과에 선호도 차이가 없다고 볼 수 있습니다.'"></span>
                             </h6>
                         </th:block>
@@ -82,7 +82,7 @@
     </div>
 
     <div th:if="${statsResult.result}" class="col-lg-12 col-md-12 col-sm-12 mb-4">
-        <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md">
+        <div class="card card-small card-post mb-4 flex rounded-2xl shadow-md ">
             <h6 class="font-weight-bold border p-2 bg-light rounded w-full text-center mt-2 mx-2">
                 <span th:text="|선택지('${maxArticleItemContent}') 이(가) ${maxArticleItemTotal}표(${percentage}%) 로 주된 의견이라 볼 수 있습니다|"></span>
             </h6>
@@ -189,14 +189,26 @@
     </div>
 
     <!-- 나이에 대한 결과 end -->
-    <!-- sns start-->
-    <div class="ml-3">
-        <button type="button" id="shareTw" class="link-icon twitter"></button>
-        <button type="button" id="shareFb" class="link-icon facebook"></button>
-        <button type="button" id="shareKt" class="link-icon kakao"></button>
-        <button type="button" id="shareKs" class="link-icon kakaoStory"></button>
+    <!-- sns 공유하기 start-->
+    <div class=" col-lg-12 col-md-12 col-sm-12" >
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <button type="button" id="shareTw" class="link-icon twitter"></button>
+                <button type="button" id="shareFb" class="link-icon facebook"></button>
+                <button type="button" id="shareKt" class="link-icon kakao"></button>
+                <button type="button" id="shareKs" class="link-icon kakaoStory"></button>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 text-md-right  ">
+                <a class="btn btn-accent" th:href="@{|/article/vote/${article.id}|}">
+                    <i class="material-icons">how_to_vote</i> 투표하기
+                </a>
+                <a th:href="@{|/article/list?category=${article.category.id}|}" class="btn btn-secondary ml-1">
+                    <i class="material-icons">format_list_bulleted</i> 목록으로
+                </a>
+            </div>
+        </div>
     </div>
-    <!-- sns end-->
+    <!-- sns 공유하기 end-->
     <!--/*    댓글 start   */-->
     <div class="col-lg-12 col-md-12 col-sm-12 mb-4 rounded-2xl shadow-md">
         <div th:text="|댓글(${commentList.totalElements})|" class="p-1 text-large" style="font-size:1.25rem">0</div>
@@ -223,11 +235,11 @@
                     </div>
                     <div class="mb-2">
                         <label for="tempNickname" class="form-label m-0 pl-1">임시 닉네임</label>
-                        <input type="text" class="form-control"  th:field="*{tempNickname}" placeholder="닉네임" maxlength="20" >
+                        <input type="text" class="form-control"  th:field="*{tempNickname}" placeholder="닉네임" maxlength="20" autocomplete="on" >
                     </div>
                     <div class="mb-3">
                         <label for="tempPassword" class="form-label m-0 pl-1">임시 비밀번호</label>
-                        <input type="password" class="form-control" th:field="*{tempPassword}"  placeholder="비밀번호" maxlength="20">
+                        <input type="password" class="form-control" th:field="*{tempPassword}"  placeholder="비밀번호" maxlength="20" autocomplete="off" >
                     </div>
                     <div>
                         <label for="content" class="form-label m-0 pl-1">내용</label>
@@ -324,11 +336,11 @@
                                 ==========================
                                 <!--*/-->
                                 <div class="toast-valid d-none position-absolute p-1 rounded shadow-sm" style="z-index:1;background-color:#b4b5b6">
-                                    <div>
+                                    <form>
                                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" disabled/>
                                         <input type="hidden" name="tempNickname" th:value="${comment.tempNickname}" disabled/>
-                                        <input type="password" name="tempPassword" value="" placeholder="비밀번호를 입력해주세요" class="border form-control-sm input-sm" required>
-                                    </div>
+                                        <input type="password" name="tempPassword" value="" placeholder="비밀번호를 입력해주세요" class="border form-control-sm input-sm" autoComplete="off" required>
+                                    </form>
                                     <div class="btn-group-sm mt-1  float-right">
                                         <button type="button" class="btn btn-secondary border-0"
                                                 th:myContent="${comment.content}" th:myId="${comment.id}"
@@ -452,7 +464,6 @@
             </div>
         </div>
     </div>
-
     <!--/*    댓글 end    */-->
     <!--    html밖에다가 하면 적용이 잘 안됨-->
     <script type="text/javascript" th:inline="javascript">
@@ -749,8 +760,8 @@
         container: '#shareKt',
         objectType: 'feed',
         content: {
-            title: '나의 자질구레한 고민들',
-            description: '나의 자질구레한 고민들의 투표 결과입니다.',
+            title: [[${article.title}]],
+            description: [[${article.content}]],
             imageUrl: 'http://eomcheon.com/images/main.jpg',
             link: {
                 mobileWebUrl: pageUrl,
@@ -786,9 +797,6 @@
             }
         })
             .then(res => {
-                if (res.url === "http://localhost:8080/member/login"){
-                    location.href = "http://localhost:8080/member/login";
-                }
                 return res.json();
             })
             .then(data => {
@@ -818,9 +826,6 @@
             }
             })
             .then(res => {
-                if (res.url === "http://localhost:8080/member/login"){
-                    location.href = "http://localhost:8080/member/login";
-                }
                 return res.json();
             })
             .then(data => {
@@ -1002,20 +1007,28 @@
 </script>
 
 <script type="text/javascript">
+
+    const pathArr = location.pathname.split("/");
+    const articleId = pathArr[pathArr.length - 1]; // article id
     // form 요청 이후 스크롤 유지
     window.onbeforeunload = (event) => {
+        const pathArr = location.pathname.split("/");
         localStorage.setItem('resultY', this.scrollY);
+        localStorage.setItem('before', articleId);
     }
     if (localStorage.getItem('resultY')) {
         // 페이징 링크인 경우 댓글 상단부분으로 화면전환
-        if (window.location.search.includes("page")) {
-            const commentFormBtn = document.querySelector('.commentFormBtn');
-            const commentFormBtnOffset = commentFormBtn.getBoundingClientRect();
-            window.scrollTo({top: commentFormBtnOffset.top});
-        } else {
-            window.scrollTo({top: localStorage.getItem('resultY')});
-            localStorage.removeItem('resultY');
+        if (localStorage.getItem('before') == articleId) {
+            // 같은 article인 경우 즉 댓글이 작성된 이후 일 경우에만 앵커 유지
+            if (window.location.search.includes("page")) {
+                const commentFormBtn = document.querySelector('.commentFormBtn');
+                const commentFormBtnOffset = commentFormBtn.getBoundingClientRect();
+                window.scrollTo({top: commentFormBtnOffset.top});
+            } else {
+                window.scrollTo({top: localStorage.getItem('resultY')});
+                localStorage.removeItem('resultY');
+                localStorage.removeItem('before');
+            }
         }
-
     }
 </script>
