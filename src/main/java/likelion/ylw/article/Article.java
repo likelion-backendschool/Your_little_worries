@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@DynamicInsert
 public class Article extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +36,7 @@ public class Article extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(columnDefinition="BIGINT(20) default 0")
     private Long viewCount;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
