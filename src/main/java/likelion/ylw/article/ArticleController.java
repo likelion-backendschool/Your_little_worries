@@ -28,7 +28,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.HashMap;
@@ -76,8 +78,37 @@ public class ArticleController {
 
     @GetMapping("/vote/{id}")
     public String vote(Model model, @PathVariable("id") Integer id, StatsCollectionForm statsCollectionForm,
-                       Principal principal) {
+                       Principal principal, HttpServletRequest request, HttpServletResponse response) {
         Article article = articleService.findById(id);
+
+        /* 조회수 로직 */
+        Cookie oldCookie = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("postView")) {
+                    oldCookie = cookie;
+                }
+            }
+        }
+
+        /* 조회수 로직 */
+        if (oldCookie != null) {
+            if (!oldCookie.getValue().contains("["+ id.toString() +"]")) {
+                articleService.updateViewCount(id);
+                oldCookie.setValue(oldCookie.getValue() + "_[" + id + "]");
+                oldCookie.setPath("/");
+                oldCookie.setMaxAge(60 * 60 * 24); 							// 쿠키 시간
+                response.addCookie(oldCookie);
+            }
+        } else {
+            articleService.updateViewCount(id);
+            Cookie newCookie = new Cookie("postView", "[" + id + "]");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(60 * 60 * 24); 								// 쿠키 시간
+            response.addCookie(newCookie);
+        }
+
         if (principal != null) {
 //             로그인 회원의 좋아요 목록
             Member member = memberService.findByMemberId(principal.getName());

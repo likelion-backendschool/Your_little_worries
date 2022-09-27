@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -28,4 +29,8 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     List<Article> findAll(Specification<Article> spec);
 
     Page<Article> findAllByCategoryId(Integer Category_id, Pageable pageable);
+
+    @Modifying
+    @Query("update Article a set a.viewCount = a.viewCount + 1 where a.id = :id")
+    Integer updateViewCount(@Param("id") Integer id);
 }

@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -138,5 +139,11 @@ public class ArticleService {
         sorts.add(Sort.Order.desc("createdDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
         return articleRepository.findAllByCategoryId(category_id ,pageable);
+    }
+
+    /* Views Counting */
+    @Transactional
+    public Integer updateViewCount(Integer id) {
+        return articleRepository.updateViewCount(id);
     }
 }
