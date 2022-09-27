@@ -1,5 +1,6 @@
 package likelion.ylw.stats;
 
+import likelion.ylw.article.Article;
 import likelion.ylw.article.ArticleItem;
 import likelion.ylw.member.Member;
 import lombok.Getter;
@@ -34,4 +35,7 @@ public class StatsCollection {
     //2     1        21   female  asd   111,132,131,213
     //3     1        22   male    zxc   222,333,111,222
     //4     1        23   male    (null)  111,222,333,444
+
+    @ManyToOne
+    private Article article;
 }
