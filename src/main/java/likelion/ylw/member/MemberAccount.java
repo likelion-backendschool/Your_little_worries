@@ -13,10 +13,13 @@ public class MemberAccount extends User {
 
     private final String memberImgPath;
 
+    private final String nickname;
+
     public MemberAccount(Member member, Collection<? extends GrantedAuthority> authorities) {
         super(member.getMemberId(), member.getPassword(), authorities);
         this.id = member.getId();
         this.memberImgPath = member.getMemberImgPath();
+        this.nickname = member.getNickname();
     }
 
     public String getMemberImgRedirectUrl() {
