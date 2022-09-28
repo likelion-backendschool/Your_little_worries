@@ -30,9 +30,9 @@
                 </div>
                 <li sec:authorize="isAuthenticated()" class="nav-item dropdown d-flex align-items-center">
                     <a class="nav-link dropdown-toggle text-nowrap px-3 d-flex align-items-center" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                        <img class="user-avatar rounded-circle mr-2" th:if="${#authentication.principal.memberImgPath}"
-                             th:src="@{/gen/} + ${#authentication.principal.memberImgPath}" />
-                        <img class="user-avatar rounded-circle mr-2" th:unless="${#authentication.principal.memberImgPath}"
+                        <img class="card-post__author-avatar card-post__author-avatar--small mr-2" th:if="${#authentication.principal.memberImgPath}"
+                             th:src="@{${#authentication.principal.memberImgRedirectUrl}}" />
+                        <img class="card-post__author-avatar card-post__author-avatar--small mr-2" th:unless="${#authentication.principal.memberImgPath}"
                              th:src="@{/gen/member.png}"/>
                         <span class="d-none d-md-inline-block" th:text="${#authentication.name}"></span>
                     </a>
