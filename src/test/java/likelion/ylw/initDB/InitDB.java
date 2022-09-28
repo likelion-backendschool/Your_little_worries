@@ -38,7 +38,7 @@ public class InitDB {
     private StatsResultService statsResultService;
 
     @Test
-    @DisplayName("유저 6명 생성")
+    @DisplayName("유저 20명 생성")
     void t1() {
         Member member1 = memberService.create("member1","1234","member1@test.com", "김멤버");
         Member member2 = memberService.create("member2","1234","member2@test.com", "이멤버");
@@ -60,7 +60,6 @@ public class InitDB {
         Member member18 = memberService.create("member18","1234","member18@test.com", "고멤버");
         Member member19 = memberService.create("member19","1234","member19@test.com", "바멤버");
         Member member20 = memberService.create("member20","1234","member20@test.com", "우멤버");
-        Member member21 = memberService.create("member21","1234","member21@test.com", "여멤버");
     }
 
     @Test
