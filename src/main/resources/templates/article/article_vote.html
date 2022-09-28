@@ -106,7 +106,7 @@
                                                class="delete btn btn-outline-accent mr-2"
                                                th:text="삭제"></a>
                                             <a sec:authorize="isAuthenticated()" th:if="${article.author.memberId == #authentication.getPrincipal().getUsername()}"
-                                               th:href="@{|/article/result/${article.id}|}"
+                                               th:href="@{|/article/modify/${article.id}|}"
                                                class="btn btn-outline-accent mr-2 "
                                                th:text="수정"></a>
                                             <a th:href="@{|/article/result/${article.id}|}"
