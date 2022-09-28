@@ -63,7 +63,7 @@ public class MemberController {
     public String login(HttpServletRequest request) {
 
         String uri = request.getHeader("Referer");
-        if (uri != null && !uri.contains("/login")) {
+        if (uri != null && !uri.contains("/login") && !uri.contains("/mail") && !uri.contains("/member") ) {
             request.getSession().setAttribute("prevPage", uri);
         }
 

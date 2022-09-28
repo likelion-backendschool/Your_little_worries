@@ -21,6 +21,9 @@ public class CustomLogoutSuccessHandler  extends
             throws IOException, ServletException {
 
         String refererUrl = request.getHeader("Referer");
+        if (refererUrl.contains("/member")) {
+            refererUrl = "/";
+        }
 
         response.sendRedirect(refererUrl);
     }
