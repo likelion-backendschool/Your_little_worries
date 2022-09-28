@@ -18,24 +18,32 @@
             <div class="card-header border-bottom d-flex justify-content-between align-items-center">
                 <h4 th:text="${article.title}" class="m-0"></h4>
                 <div class="font-weight-light">
-                    <div class="d-flex justify-content-end" style="font-size: 18px; color: #c4183c;">
-                        <div>
-                            <i th:id="recommend"
-                               th:data-uri="@{|/article/recommend/${article.id}|}"
-                               style="cursor: pointer;"
-                               class="fa-thumbs-up mr-2"
-                               th:classappend="${exist == true} ? 'fa-solid' : 'fa-regular'"></i>
-                        </div>
-
-                        <div th:id="recommendCount" class="d-flex justify-content-center"
-                             th:text="${#sets.size(article.recommends)}"></div>
+                    <div class="d-flex justify-content-end">
+                        <div th:text="|조회수 : ${article.viewCount}|"></div>
                     </div>
-                    <span th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}" class="m-0"></span>
+
+                    <span th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm')}" class="m-0 mr-2"></span>
                     <span th:text="${article.author.nickname}" class="m-0 text-right"></span>
                 </div>
             </div>
             <div class="card-body">
                 <div th:text="${article.content}"></div>
+            </div>
+            <div class="text-center mb-3">
+                <!--                    추천 영역 표시 시작-->
+                <div class="d-flex justify-content-center" style="font-size: 25px; color: #c4183c;">
+                    <div>
+                        <i th:id="recommend"
+                           th:data-uri="@{|/article/recommend/${article.id}|}"
+                           style="cursor: pointer;"
+                           class="fa-thumbs-up mr-2"
+                           th:classappend="${exist == true} ? 'fa-solid' : 'fa-regular'"></i>
+                    </div>
+
+                    <div th:id="recommendCount" class="d-flex justify-content-center"
+                         th:text="${#sets.size(article.recommends)}"></div>
+                </div>
+                <!--                    추천 영역 표시 끝-->
             </div>
         </div>
         <div class="card card-small">
@@ -95,6 +103,7 @@
                                                placeholder="나이를 입력해주세요"/>
                                     </div>
                                 </div>
+
                                 <div class="row mr-1 mt-3">
                                     <span class="col mt-auto">
                                         <a th:href="@{|/article/list?category=${article.category.id}|}"><span>목록으로</span></a>
