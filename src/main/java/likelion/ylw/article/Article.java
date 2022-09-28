@@ -2,9 +2,11 @@ package likelion.ylw.article;
 
 import likelion.ylw.article.recommend.ArticleRecommend;
 import likelion.ylw.category.Category;
+import likelion.ylw.comment.Comment;
 import likelion.ylw.comment.vote.CommentVote;
 import likelion.ylw.member.Member;
 import likelion.ylw.stats.StatsCollection;
+import likelion.ylw.stats.statsResult.StatsResult;
 import likelion.ylw.util.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,9 +50,16 @@ public class Article extends BaseTimeEntity {
     @ManyToOne
     private Category category;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ArticleItem> articleItemList;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<StatsCollection> statsCollectionList;
+
+    @OneToOne(mappedBy = "article", cascade = CascadeType.ALL)
+    @JoinColumn(name = "stats_result_id")
+    private StatsResult statsResult;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Comment> comment;
 }
