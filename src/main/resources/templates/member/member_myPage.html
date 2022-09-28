@@ -172,9 +172,9 @@
             <h3 class="page-title">마이페이지</h3>
         </div>
     </div>
+    <div class="row">
 
-    <div class="flex gap-3">
-        <div class="w-[40%] card card-small card-post mb-4 flex rounded-2xl shadow-md">
+        <div class="card card-small col-12 col-md-6 mb-4 flex shadow-md">
             <div class="text-gray-900 text-center font-bold text-lg my-4"> 프로필 </div>
             <div class="card-body">
                 <div class="flex flex-col my-auto items-center pt-1 mr-1">
@@ -186,7 +186,7 @@
                     </div>
                     <div class="text-center">
                         <form th:action="@{|/member/myPage|}" method="post" enctype="multipart/form-data" class="flex items-center justify-center mt-3">
-                            <div class="w-[290px] pt-3">
+                            <div class="pt-3">
                                 <input type="file" name="memberImg" accept="image/png, image/gif, image/jpeg" /></div>
                             <button id="btn-img" type="submit" onclick="ImgUpdate()" class="text-center w-[80px] rounded-md bg-[#14C38E] text-white text-md hover:shadow hover:bg-black mt-3 pt-1">업로드</button>
                         </form>
@@ -195,7 +195,7 @@
             </div>
         </div>
 
-        <div class="w-[60%] card card-small card-post mb-4 flex rounded-2xl shadow-md">
+        <div class="card card-small col-12 col-md-6 mb-4 flex shadow-md">
             <div class="text-gray-900 text-center font-bold text-lg my-4"> 나의 정보</div>
             <div class="card-body">
                 <div class="flex flex-col my-auto items-center pt-1 mr-1">
@@ -319,7 +319,6 @@
 </html>
 
 <script>
-
     function ImgUpdate(){
         var result = confirm("프로필 이미지를 변경하시겠습니까?");
         if (result == true){
@@ -327,11 +326,5 @@
         }else{
             console.log("취소되었습니다");
         }
-    }
-
-    const failImg = (imgTag) =>{
-        imgTag.onerror="";
-        imgTag.src= conPath + "/images/profileImg/member.png";
-        return true;
     }
 </script>
