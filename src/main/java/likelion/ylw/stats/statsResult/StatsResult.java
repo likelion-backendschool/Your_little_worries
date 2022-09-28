@@ -26,5 +26,6 @@ public class StatsResult {
     private Boolean ageOver50 = false;
 
     @OneToOne
+    @JoinColumn(name = "article_id")
     private Article article;
 }
