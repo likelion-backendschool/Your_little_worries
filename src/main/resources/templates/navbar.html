@@ -34,7 +34,7 @@
                              th:src="@{${#authentication.principal.memberImgRedirectUrl}}" />
                         <img class="card-post__author-avatar card-post__author-avatar--small mr-2" th:unless="${#authentication.principal.memberImgPath}"
                              th:src="@{/gen/member.png}"/>
-                        <span class="d-none d-md-inline-block" th:text="${#authentication.name}"></span>
+                        <span class="d-none d-md-inline-block" th:text="${#authentication.principal.nickname}"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-small">
                         <a class="dropdown-item" th:href="@{|/member/myPage|}">
