@@ -3,6 +3,8 @@ package likelion.ylw.member.mail;
 import likelion.ylw.member.Member;
 import likelion.ylw.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +16,18 @@ import java.io.IOException;
 @RequestMapping(value = "/mail", method = RequestMethod.GET)
 @Controller
 @RequiredArgsConstructor
+@Component
 public class MailController {
+
+    @Value("${spring.sendgrid.api-key}")
+    private String sendGridKey;
+
+    @Value("${spring.sendgrid.url}")
+    private String emailUrl;
+
+    @Value("${spring.sendgrid.email}")
+    private String adminEmail;
+
     private final MailService mailService;
     private final MemberService memberService;
     private String email;
@@ -43,16 +56,11 @@ public class MailController {
                         "해당 이메일로 가입된 회원이 없습니다");
                 return "member/mail/mail_send_form";
             }
-            Example.sendEmail(email);
-            System.out.println("----------------------");
-            System.out.println("메일을 성공적으로 보냈습니다");
-            System.out.println("----------------------");
+            Example.sendEmail(email, adminEmail, sendGridKey, emailUrl);
+
             this.email = email;
             return "member/mail/mail_complete";
         } catch(NotFoundEmailException e) {
-            System.out.println("----------------------");
-            System.out.println("메일을 찾을 수 없습니다");
-            System.out.println("----------------------");
             bindingResult.reject("notFoundEmail", e.getMessage());
             System.out.println(e.getMessage());
             return "member/mail/mail_send_form";
