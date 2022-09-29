@@ -32,7 +32,7 @@
                     <div class="card-post__author d-flex">
                         <img class="card-post__author-avatar card-post__author-avatar--small"
                              th:if="${article.author.memberImgPath}"
-                             th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
+                             th:src="@{/gen/} + ${article.author.memberImgPath}"/>
                         <img class="card-post__author-avatar card-post__author-avatar--small"
                              th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
                         <div class="d-flex flex-column justify-content-center ml-3">
