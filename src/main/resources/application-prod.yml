@@ -2,7 +2,7 @@ spring:
   sendgrid:
     api-key: ${sendgridApiKey}
     email: uyeop1114@gmail.com
-    url: https://ylw.nunus.site/email/auth
+    url: https://ylw.nunus.site/mail/auth
   datasource:
     url: jdbc:mariadb://${dbIp}:3306/ylw?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Seoul
     username: ${dbId}
