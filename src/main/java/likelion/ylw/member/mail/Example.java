@@ -8,14 +8,20 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+@RequiredArgsConstructor
 @Service
 @Slf4j
 public abstract class Example {
+    @Value("${spring.sendgrid.api-key}")
+    private String apikey;
+
     public static void sendEmail(String email) throws IOException {
         Email from = new Email("uyeop1114@gmail.com");
         Email to = new Email(email);
