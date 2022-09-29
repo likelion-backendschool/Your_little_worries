@@ -307,7 +307,7 @@
                         <tr class="p-3" th:each="myArticle, loop : ${myArticles}">
                             <td class="text-center" th:text="${myArticle.id}"></td>
                             <td class="w-[400px] mr-5 pt-3 d-inline-block mb-3 whitespace-nowrap overflow-hidden text-ellipsis" th:text="${myArticle.title}"></td>
-                            <td><a th:href="@{/}">결과보기</a></td>
+                            <td><a th:href="@{|/article/result/${myArticle.id}|}" class="text-gray-500">결과보러가기</a></td>
                         </tr>
                         </tbody>
                     </table>
