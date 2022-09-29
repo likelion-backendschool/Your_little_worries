@@ -35,6 +35,7 @@ public class MemberService {
             member.setPassword(passwordEncoder.encode(password));
             member.setEmail(email);
             member.setNickname(nickname);
+            member.setRole(Role.USER);
 //            memberService.setMemberImgByUrl(member, "https://i.imgur.com/64exPCm.png");
             memberRepository.save(member);
             return member;

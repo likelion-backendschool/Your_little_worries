@@ -35,7 +35,7 @@
     </table>
     <!-- 페이징처리 시작 -->
     <div class="">
-      <a th:href="@{|/notice/create|}" type="button" class="mb-2 btn btn-primary mr-3 float-right">작성하기</a>
+      <a sec:authorize="hasRole('ADMIN')" th:href="@{|/notice/create|}" type="button" class="mb-2 btn btn-primary mr-3 float-right">작성하기</a>
       <div th:if="${!paging.isEmpty()}">
         <ul class="pagination justify-content-center">
           <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">

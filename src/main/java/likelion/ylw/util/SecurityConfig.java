@@ -32,20 +32,20 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/member/login")
-                .successHandler(successHandler())
+                    .formLogin()
+                    .loginPage("/member/login")
+                    .successHandler(successHandler())
 //                .defaultSuccessUrl("/")
-                .failureUrl("/member/login?error=true")
+                    .failureUrl("/member/login?error=true")
                 .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-//                .logoutSuccessUrl("/")
-                .logoutSuccessHandler(logoutSuccessHandler())
-                .invalidateHttpSession(true)
+                    .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+    //                .logoutSuccessUrl("/")
+                    .logoutSuccessHandler(logoutSuccessHandler())
+                    .invalidateHttpSession(true)
                 .and()
-                .csrf()
-                .csrfTokenRepository(new HttpSessionCsrfTokenRepository());
+                    .csrf()
+                    .csrfTokenRepository(new HttpSessionCsrfTokenRepository());
         return http.build();
     }
     @Bean
