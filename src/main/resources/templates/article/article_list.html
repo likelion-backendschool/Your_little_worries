@@ -30,10 +30,10 @@
                 </div>
                 <div class="card-footer border-top d-flex">
                     <div class="card-post__author d-flex">
-                        <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small"
+                        <img class="card-post__author-avatar card-post__author-avatar--small"
                              th:if="${article.author.memberImgPath}"
                              th:src="@{/gen/} + ${#authentication.principal.memberImgPath}"/>
-                        <img class="card-post__author-avatar card-post__author-avatar&#45;&#45;small"
+                        <img class="card-post__author-avatar card-post__author-avatar--small"
                              th:unless="${article.author.memberImgPath}" th:src="@{/gen/member.png}"/>
                         <div class="d-flex flex-column justify-content-center ml-3">
                             <span class="card-post__author-name" th:text="${article.author.nickname}"></span>
