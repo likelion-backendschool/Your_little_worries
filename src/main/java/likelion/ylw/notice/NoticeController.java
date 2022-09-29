@@ -38,7 +38,7 @@ public class NoticeController {
         return "notice/notice_detail";
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/create")
     public String noticeCreate(NoticeForm noticeForm) {
         return "notice/notice_form";
