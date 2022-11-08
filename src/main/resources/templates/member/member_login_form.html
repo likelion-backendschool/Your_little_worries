@@ -6,13 +6,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
           integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <style>
+        .alert-red {
+            color: #ff0000;
+        }
+    </style>
 </head>
 
 <body class="flex justify-center" style="background-color: #f5f6f8;">
 <div class="container mt-[70px] w-[700px]">
     <div class="flex flex-col items-center">
         <a th:href="@{/}">
-        <img src="/images/logo.png" style="" alt="logo-ylw" class="w-[190px]"/>
+            <img src="/images/logo.png" style="" alt="logo-ylw" class="w-[190px]"/>
         </a>
     </div>
 
@@ -20,7 +25,7 @@
         <form th:action="@{/member/login}" method="post" class="flex flex-col">
             <div>
                 <div th:if="${param.error}">
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger alert-red">
                         사용자ID 또는 비밀번호를 확인해 주세요.
                     </div>
                 </div>
